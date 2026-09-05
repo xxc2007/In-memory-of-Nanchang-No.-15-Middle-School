@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>南昌市第十五中学 · 青山湖畔的纪念册</title>
+<meta name="description" content="纪念南昌市第十五中学——江西省重点中学，创建于1958年，坐落于南昌市青山湖畔。熊鑫晨镜头里的校园：红砖楼、香樟、老水塔与操场，25张校园实景摄影。">
+<meta property="og:title" content="南昌市第十五中学 · 青山湖畔的纪念册">
+<meta property="og:description" content="红砖楼、香樟与老水塔——熊鑫晨镜头里的南昌十五中，25张校园实景摄影。">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/png" href="images/emblem-64.png">
+<link rel="apple-touch-icon" href="images/emblem-180.png">
+<link rel="stylesheet" href="leaflet/leaflet.css">
+<link rel="stylesheet" href="/comment/dist/Artalk.css">
+<style>
+  /* ============ Claude / Anthropic 视觉语言 ============ */
+  :root{
+    --cream:#F0EEE6;      /* 页面底色 */
+    --paper:#FAF9F5;      /* 卡片白 */
+    --ink:#1F1E1D;        /* 墨色 */
+    --muted:#6E6A5E;      /* 弱文字 */
+    --terra:#D97757;      /* Claude 赤陶橙 */
+    --terra-deep:#C15F3C;
+    --line:#E4DFD3;       /* 发丝线 */
+    --dark:#1F1E1D;       /* 深色区 */
+    --serif:Georgia,"Times New Roman","Songti SC","STSong","Noto Serif CJK SC","SimSun",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth;scroll-padding-top:76px}
+  body{
+    font-family:var(--sans);
+    background:var(--cream);
+    color:var(--ink);
+    font-size:17px;line-height:1.9;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  ::selection{background:var(--terra);color:#fff}
+  img{display:block;max-width:100%;height:auto}
+  a{color:var(--terra-deep);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;transition:color .2s}
+  a:hover{color:var(--terra)}
+  p{text-wrap:pretty}
+
+  /* ============ 顶栏 ============ */
+  .topbar{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    background:rgba(240,238,230,.88);
+    -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+    border-bottom:1px solid transparent;
+    transition:border-color .3s, box-shadow .3s;
+  }
+  .topbar.scrolled{border-bottom-color:var(--line);box-shadow:0 1px 20px rgba(31,30,29,.05)}
+  .progress{
+    position:absolute;left:0;right:0;bottom:-1px;height:2px;
+    background:var(--terra);transform:scaleX(0);transform-origin:0 50%;
+    pointer-events:none;
+  }
+  .topbar-inner{
+    max-width:1200px;margin:0 auto;padding:0 28px;
+    height:64px;display:flex;align-items:center;justify-content:space-between;gap:16px;
+  }
+  .brand{display:flex;align-items:center;gap:10px;white-space:nowrap}
+  .brand img{width:28px;height:28px;border-radius:50%;box-shadow:0 1px 4px rgba(31,30,29,.18)}
+  .brand b{font-family:var(--serif);font-weight:700;font-size:19px;letter-spacing:.04em}
+  .brand span{font-size:12px;color:var(--muted);letter-spacing:.14em;align-self:end;padding-bottom:2px}
+  nav.toc{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+  nav.toc::-webkit-scrollbar{display:none}
+  nav.toc a{
+    font-size:14px;color:var(--muted);text-decoration:none;
+    padding:6px 12px;border-radius:99px;white-space:nowrap;
+    transition:color .2s, background .2s;
+  }
+  nav.toc a:hover{color:var(--ink);background:rgba(217,119,87,.10)}
+  nav.toc a.active{color:var(--terra-deep);background:rgba(217,119,87,.12)}
+
+  /* ============ Hero ============ */
+  .hero{max-width:1200px;margin:0 auto;padding:150px 28px 0}
+  .hero-emblem{width:78px;height:78px;filter:drop-shadow(0 3px 10px rgba(31,30,29,.16));animation:rise .8s 0s both}
+  .hero .eyebrow{
+    font-size:13px;letter-spacing:.32em;color:var(--muted);
+    display:flex;align-items:center;gap:14px;margin-top:26px;
+    animation:rise .8s .08s both;
+  }
+  .hero .eyebrow::before{content:"";width:44px;height:1px;background:var(--terra)}
+  .hero h1{
+    font-family:var(--serif);font-weight:700;
+    font-size:clamp(46px,8vw,96px);line-height:1.18;letter-spacing:.02em;
+    margin:22px 0 10px;
+    animation:rise .8s .15s both;
+  }
+  .hero h1 em{font-style:normal;color:var(--terra)}
+  .hero .sub{
+    font-size:clamp(16px,2.2vw,21px);color:var(--muted);max-width:34em;
+    animation:rise .8s .25s both;
+  }
+  .hero .stats{
+    display:flex;flex-wrap:wrap;gap:0;
+    margin:52px 0 0;border-top:1px solid var(--line);
+    animation:rise .8s .35s both;
+  }
+  .hero .stat{padding:22px 44px 4px 0;margin-right:44px;border-right:1px solid var(--line)}
+  .hero .stat:last-child{border-right:none;margin-right:0}
+  .hero .stat b{
+    display:block;font-family:var(--serif);font-weight:700;
+    font-size:clamp(28px,3.6vw,40px);line-height:1.2;color:var(--ink);
+  }
+  .hero .stat span{font-size:13px;color:var(--muted);letter-spacing:.08em}
+  .hero-figure{max-width:1200px;margin:56px auto 0;padding:0 28px;animation:rise .9s .45s both}
+  .hero-img-wrap{display:block;overflow:hidden;border-radius:10px}
+  .hero-figure img{width:100%;border-radius:10px;will-change:transform}
+  .hero-figure figcaption{
+    font-size:13px;color:var(--muted);padding:12px 2px 0;
+    display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  }
+  .scroll-hint{
+    max-width:1200px;margin:34px auto 0;padding:0 28px 72px;
+    display:flex;align-items:center;gap:10px;color:var(--muted);font-size:13px;letter-spacing:.2em;
+    animation:rise .8s .6s both;
+  }
+  .scroll-hint::after{content:"";flex:1;height:1px;background:var(--line)}
+  @keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+
+  /* ============ 通用区块 ============ */
+  section.block{max-width:1200px;margin:0 auto;padding:96px 28px 30px}
+  .sec-head{display:flex;align-items:baseline;gap:18px;margin-bottom:14px}
+  .sec-index{
+    font-family:var(--serif);font-size:15px;color:var(--terra);
+    letter-spacing:.18em;white-space:nowrap;
+  }
+  .sec-head h2{
+    font-family:var(--serif);font-weight:700;
+    font-size:clamp(30px,4.4vw,46px);letter-spacing:.03em;line-height:1.3;
+  }
+  .sec-rule{border:none;border-top:1px solid var(--line);margin:10px 0 34px}
+  .sec-lede{color:var(--muted);max-width:44em;margin-bottom:34px}
+
+  /* ============ 概况 ============ */
+  .about-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:56px}
+  .about-text p{margin-bottom:1.35em}
+  .about-text .pull{
+    border-left:3px solid var(--terra);
+    padding:6px 0 6px 22px;margin:30px 0 8px;
+    font-family:var(--serif);font-size:22px;line-height:2;color:var(--ink);
+  }
+  .about-text .pull small{display:block;font-family:var(--sans);font-size:13px;color:var(--muted);margin-top:6px}
+  .fact-card{
+    background:var(--paper);border:1px solid var(--line);border-radius:12px;
+    padding:34px 32px 14px;align-self:start;
+  }
+  .fact-card h3{
+    font-size:13px;letter-spacing:.24em;color:var(--muted);font-weight:600;margin-bottom:8px;
+  }
+  .fact-row{
+    display:flex;justify-content:space-between;align-items:baseline;gap:14px;
+    padding:14px 0;border-bottom:1px solid var(--line);font-size:15px;
+  }
+  .fact-row:last-child{border-bottom:none}
+  .fact-row b{font-family:var(--serif);font-size:26px;font-weight:700;color:var(--ink);white-space:nowrap}
+  .fact-row b i{font-style:normal;font-size:15px;font-family:var(--sans);font-weight:400;color:var(--muted);margin-left:2px}
+  .fact-row span{color:var(--muted);text-align:right}
+  .honors{display:flex;gap:10px;flex-wrap:wrap;padding:18px 0 14px}
+  .honors em{
+    font-style:normal;font-size:13px;color:var(--terra-deep);
+    border:1px solid rgba(217,119,87,.45);border-radius:99px;padding:5px 14px;letter-spacing:.06em;
+  }
+  /* 校园文化条 */
+  .culture{
+    margin-top:56px;border-top:1px solid var(--line);
+    display:grid;grid-template-columns:repeat(4,1fr);
+  }
+  .culture-item{padding:24px 26px 0 0;margin-right:26px;border-right:1px solid var(--line)}
+  .culture-item:last-child{border-right:none;margin-right:0}
+  .culture-item h4{font-size:13px;letter-spacing:.22em;color:var(--terra-deep);font-weight:600;margin-bottom:8px}
+  .culture-item p{font-family:var(--serif);font-size:17px;line-height:1.9;color:var(--ink)}
+  .campus-info{margin-top:34px;border:1px solid var(--line);background:var(--paper);border-radius:12px;padding:26px 30px;max-width:640px}
+  .campus-info h4{font-size:13px;letter-spacing:.22em;color:var(--terra-deep);font-weight:600;margin-bottom:10px}
+  .campus-info p{font-size:15px;line-height:2;color:var(--ink)}
+  .campus-info p+p{color:var(--muted);font-size:14px}
+
+  /* ============ 沿革时间线 ============ */
+  .timeline{position:relative;margin:10px 0 8px;padding-left:34px;max-width:760px}
+  .timeline::before{content:"";position:absolute;left:7px;top:8px;bottom:8px;width:1px;background:var(--line)}
+  .t-item{position:relative;padding:0 0 42px}
+  .t-item:last-child{padding-bottom:6px}
+  .t-fill{position:absolute;left:7px;top:8px;width:1px;height:0;background:var(--terra)}
+  .t-item::before{
+    content:"";position:absolute;left:-31px;top:13px;
+    width:9px;height:9px;border-radius:50%;
+    background:var(--cream);border:2px solid var(--terra);
+    transition:background .45s;
+  }
+  .t-item.now::before,.t-item.lit::before{background:var(--terra)}
+  .t-year{
+    font-family:var(--serif);font-weight:700;font-size:clamp(26px,3.4vw,34px);
+    line-height:1.3;letter-spacing:.02em;
+  }
+  .t-item p{color:var(--muted);margin-top:6px;max-width:38em}
+  .t-item p strong{color:var(--ink);font-weight:600}
+  .t-tag{
+    display:inline-block;font-size:12px;color:var(--terra-deep);
+    border:1px solid rgba(217,119,87,.4);border-radius:99px;
+    padding:2px 10px;margin-left:12px;letter-spacing:.1em;vertical-align:6px;
+  }
+
+  /* ============ 画廊（统一网格） ============ */
+  .group-head{display:flex;align-items:baseline;gap:14px;margin:58px 0 6px}
+  .group-head:first-of-type{margin-top:26px}
+  .group-head .g-no{font-family:var(--serif);font-size:14px;color:var(--terra);letter-spacing:.16em}
+  .group-head h3{font-family:var(--serif);font-size:clamp(21px,2.8vw,27px);font-weight:700;letter-spacing:.04em}
+  .group-head .g-note{font-size:13px;color:var(--muted);margin-left:auto;text-align:right}
+  .group-desc{font-size:14px;color:var(--muted);margin:2px 0 22px;max-width:52em}
+  .gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .ph{
+    background:var(--paper);border:1px solid var(--line);border-radius:10px;
+    overflow:hidden;display:flex;flex-direction:column;
+    transition:transform .35s cubic-bezier(.2,.7,.3,1), box-shadow .35s;
+  }
+  .ph:hover{transform:translateY(-3px);box-shadow:0 14px 34px rgba(31,30,29,.10)}
+  .ph a{display:block;flex:1}
+  .ph-img{aspect-ratio:4/3;overflow:hidden}
+  .ph-img img{width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.2,.7,.3,1)}
+  .ph:hover .ph-img img{transform:scale(1.045)}
+  .ph figcaption{
+    display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+    padding:11px 15px 12px;border-top:1px solid var(--line);
+  }
+  .ph .cap-t{font-size:14px;font-weight:600;letter-spacing:.02em}
+  .ph .cap-d{font-size:12px;color:var(--muted);white-space:nowrap}
+
+  /* ============ 老水塔（深色区） ============ */
+  .landmark{
+    background:var(--dark);color:#EFEBE0;
+    margin-top:96px;padding:96px 0;
+  }
+  .landmark .inner{max-width:1200px;margin:0 auto;padding:0 28px}
+  .landmark .sec-index{color:var(--terra)}
+  .landmark .sec-rule{border-top-color:#3A3835}
+  .landmark .sec-lede{color:#A8A294}
+  .landmark .duo{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .landmark .duo .ph{background:#2A2827;border-color:#3A3835}
+  .landmark .ph:hover{box-shadow:0 14px 34px rgba(0,0,0,.45)}
+  .landmark .ph figcaption{border-top-color:#3A3835}
+  .landmark .cap-t{color:#EFEBE0}
+  .landmark .cap-d{color:#A8A294}
+  .landmark .tale{
+    max-width:44em;margin-top:40px;color:#C9C3B4;font-size:16.5px;
+  }
+  .landmark .tale em{color:var(--terra);font-style:normal}
+
+  /* ============ 寄语 ============ */
+  .words blockquote{
+    font-family:var(--serif);
+    font-size:clamp(21px,3vw,29px);line-height:2.1;letter-spacing:.02em;
+    max-width:36em;margin:10px auto 26px;text-align:left;
+  }
+  .words blockquote em{font-style:normal;color:var(--terra)}
+  .words .sign{
+    text-align:right;color:var(--muted);font-size:15px;font-family:var(--serif);letter-spacing:.12em;margin-top:6px;
+  }
+  .words .sign b{font-family:var(--serif);font-size:17px;color:var(--ink);letter-spacing:.08em}
+
+  /* ============ 页脚 ============ */
+  footer{border-top:1px solid var(--line);margin-top:90px}
+  .footer-inner{
+    max-width:1200px;margin:0 auto;padding:48px 28px 60px;
+    display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;
+    font-size:13.5px;color:var(--muted);
+  }
+  .footer-inner img{width:44px;height:44px;border-radius:50%;box-shadow:0 2px 8px rgba(31,30,29,.15);margin-bottom:14px}
+  .footer-inner .f-brand{font-family:var(--serif);font-size:16px;color:var(--ink)}
+  .footer-inner .right{text-align:right}
+
+  /* ============ 灯箱 ============ */
+  .lightbox{
+    position:fixed;inset:0;z-index:100;
+    background:rgba(20,19,18,.96);
+    display:flex;flex-direction:column;
+    opacity:0;pointer-events:none;transition:opacity .28s;
+  }
+  .lightbox.open{opacity:1;pointer-events:auto}
+  .lb-top{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:18px 26px;color:#B8B2A4;font-size:14px;letter-spacing:.1em;
+  }
+  .lb-count{font-family:var(--serif);color:#EFEBE0}
+  .lb-close{
+    background:none;border:1px solid #4A4744;color:#EFEBE0;
+    width:42px;height:42px;border-radius:50%;cursor:pointer;
+    font-size:17px;line-height:1;transition:border-color .2s, color .2s;
+  }
+  .lb-close:hover{border-color:var(--terra);color:var(--terra)}
+  .lb-stage{flex:1;display:flex;align-items:center;justify-content:center;position:relative;min-height:0;padding:0 74px}
+  .lb-stage img{
+    max-width:100%;max-height:100%;
+    border-radius:6px;box-shadow:0 22px 70px rgba(0,0,0,.55);
+    opacity:0;transition:opacity .3s;
+    cursor:zoom-in;touch-action:none;
+    user-select:none;-webkit-user-select:none;-webkit-user-drag:none;
+  }
+  .lightbox.open .lb-stage img.show{opacity:1}
+  .lb-stage img.grab{cursor:grab}
+  .lb-stage img.grabbing{cursor:grabbing}
+  .lb-hint{font-size:12px;color:#8A8578;letter-spacing:.08em}
+  .lb-nav{
+    position:absolute;top:50%;transform:translateY(-50%);
+    background:rgba(250,249,245,.06);border:1px solid #4A4744;color:#EFEBE0;
+    width:52px;height:52px;border-radius:50%;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    transition:border-color .2s, background .2s;
+  }
+  .lb-nav:hover{border-color:var(--terra);background:rgba(217,119,87,.15)}
+  .lb-nav svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.6}
+  .lb-prev{left:14px}
+  .lb-next{right:14px}
+  .lb-cap{
+    padding:20px 26px 30px;text-align:center;color:#EFEBE0;
+  }
+  .lb-cap .cap-t{font-family:var(--serif);font-size:18px;letter-spacing:.04em}
+  .lb-cap .cap-d{display:block;font-size:13px;color:#A8A294;margin-top:4px;letter-spacing:.08em}
+  body.lb-lock{overflow:hidden}
+
+  /* ============ 滚动显现 ============ */
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.2,.65,.3,1), transform .8s cubic-bezier(.2,.65,.3,1)}
+  .reveal.visible{opacity:1;transform:none}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    .reveal{opacity:1;transform:none;transition:none}
+    .hero-emblem,.hero .eyebrow,.hero h1,.hero .sub,.hero .stats,.hero-figure,.scroll-hint{animation:none}
+    .ph{transition:none}
+    .ph-img img{transition:none}
+    .hero-figure img{transform:none!important}
+    .t-fill{display:none}
+  }
+
+  /* ============ 响应式 ============ */
+  @media (max-width:1000px){
+    .gallery-grid{grid-template-columns:repeat(2,1fr)}
+    .culture{grid-template-columns:repeat(2,1fr);row-gap:26px}
+    .culture-item:nth-child(2n){border-right:none;margin-right:0}
+  }
+  @media (max-width:900px){
+    .about-grid{grid-template-columns:1fr;gap:36px}
+    .landmark .duo{grid-template-columns:1fr}
+    .hero .stat{padding-right:26px;margin-right:26px}
+    .lb-hint{display:none}
+  }
+  @media (max-width:640px){
+    .topbar-inner{padding:0 18px}
+    .brand span{display:none}
+    .hero{padding-top:120px}
+    section.block{padding:72px 18px 20px}
+    .hero-figure,.scroll-hint{padding-left:18px;padding-right:18px}
+    .gallery-grid{grid-template-columns:1fr}
+    .hero .stat{padding:16px 18px 2px 0;margin-right:18px}
+    .culture{grid-template-columns:1fr}
+    .culture-item{border-right:none;margin-right:0}
+    .lb-stage{padding:0 10px}
+    .lb-nav{width:44px;height:44px}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== 顶栏 ===================== -->
+<header class="topbar" id="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <img src="images/emblem-320.png" alt="南昌市第十五中学校徽">
+      <b>南昌市第十五中学</b><span>纪念册 · 2022–2025</span>
+    </div>
+    <nav class="toc" aria-label="页面导航">
+      <a href="#about">概况</a>
+      <a href="#history">沿革</a>
+      <a href="#gallery">光影</a>
+      <a href="#landmark">水塔</a>
+      <a href="#map">寻踪</a>
+      <a href="#words">寄语</a>
+      <a href="#wall">留言</a>
+    </nav>
+  </div>
+  <span class="progress" id="progress" aria-hidden="true"></span>
+</header>
+
+<main>
+  <!-- ===================== Hero ===================== -->
+  <section class="hero">
+    <img class="hero-emblem" src="images/emblem-320.png" alt="南昌市第十五中学校徽">
+    <p class="eyebrow">NANCHANG NO. 15 MIDDLE SCHOOL · EST. 1958</p>
+    <h1>青山湖畔，<br>红砖楼与<em>香樟</em>记得。</h1>
+    <p class="sub">这是一座校园的私人纪念册——南昌市第十五中学，江西省重点中学，创建于1958年。2022年至2025年，熊鑫晨用手机镜头记下这里的操场、走廊、晚霞与雪。</p>
+    <div class="stats">
+      <div class="stat"><b><span class="stat-n" data-count="1958">1958</span></b><span>建校年份</span></div>
+      <div class="stat"><b><span class="stat-n" data-count="51">51</span></b><span>教学班 · 初中23 / 高中28</span></div>
+      <div class="stat"><b><span class="stat-n" data-count="2600">2600</span><i>+</i></b><span>在校学生</span></div>
+      <div class="stat"><b><span class="stat-n" data-count="25">25</span></b><span>本页收录的实景照片</span></div>
+    </div>
+  </section>
+  <figure class="hero-figure">
+    <span class="hero-img-wrap"><img src="images/full/18-plaza-summer.jpg" width="1600" height="1200" alt="暑假里空旷的校园广场，香樟与雪松环抱办公楼" fetchpriority="high"></span>
+    <figcaption><span>暑假的广场 · 办公楼与月牙雕塑静立</span><span>2025年8月23日</span></figcaption>
+  </figure>
+  <div class="scroll-hint">向下滚动</div>
+
+  <!-- ===================== 概况 ===================== -->
+  <section class="block" id="about">
+    <div class="sec-head reveal"><span class="sec-index">壹 · ABOUT</span><h2>学校概况</h2></div>
+    <hr class="sec-rule reveal">
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p>南昌市第十五中学创建于<strong>1958年</strong>，是南昌市教育局直属公办完全中学，<strong>江西省重点中学</strong>、<strong>江西省文明校园</strong>。学校坐落于南昌市<strong>青山湖畔</strong>。据公开资料，学校现有<strong>51个教学班</strong>（初中23个、高中28个），在校学生<strong>2600余人</strong>。</p>
+        <p><strong>2012年</strong>，经南昌市人民政府批准，学校与原南昌市第三十中学合并办学，原三十中校区作为初中校区。此后初中部于<strong>2016年</strong>更名为「南昌二中教育集团青山湖校区」，高中部于<strong>2017年</strong>开办「二中班」，由南昌二中派驻师资、共享教育资源。据2024年公开信息，学校编制人数<strong>154人</strong>，校长为熊祎。</p>
+        <p>校园内，红砖教学楼与香樟、雪松相映，老水塔立在树梢之上；田径场、篮球场、网球场与图书馆一应俱全，体育场馆并向社会开放。</p>
+        <div class="pull">
+          「敬业以立德，笃学以修身。」
+          <small>—— 校训</small>
+        </div>
+      </div>
+      <aside class="fact-card reveal">
+        <h3>FACTS · 关键数字</h3>
+        <div class="fact-row"><b>1958</b><span>创建于青山湖畔</span></div>
+        <div class="fact-row"><b>51<i>班</i></b><span>初中23个 · 高中28个</span></div>
+        <div class="fact-row"><b>2600<i>+</i></b><span>在校学生</span></div>
+        <div class="fact-row"><b>154<i>人</i></b><span>教职工编制（2024）</span></div>
+        <div class="fact-row"><b>2<i>部</i></b><span>2012年与原南昌三十中合并办学</span></div>
+        <div class="honors">
+          <em>江西省重点中学</em>
+          <em>江西省文明校园</em>
+          <em>市教育局直属</em>
+        </div>
+      </aside>
+    </div>
+    <div class="culture reveal">
+      <div class="culture-item"><h4>师 训</h4><p>服务学生，体现自我</p></div>
+      <div class="culture-item"><h4>校本特色</h4><p>平民教育</p></div>
+      <div class="culture-item"><h4>办学理念</h4><p>文明治校 · 文明立校 · 文明兴校</p></div>
+      <div class="culture-item"><h4>课堂理念</h4><p>爱心课堂 · 互动课堂 · 效益课堂</p></div>
+    </div>
+    <div class="campus-info reveal">
+      <h4>高中部 · 主校区</h4>
+      <p>江西省南昌市青山湖区塘山街新何村47号（江纺路以南、江纺西路以西 · 青山湖畔）</p>
+      <p>邮政编码 330096 <span class="sep">·</span> 联系电话 0791-88633296 / 0791-88601420</p>
+    </div>
+  </section>
+
+  <!-- ===================== 沿革 ===================== -->
+  <section class="block" id="history">
+    <div class="sec-head reveal"><span class="sec-index">贰 · HISTORY</span><h2>沿革纪要</h2></div>
+    <hr class="sec-rule reveal">
+    <p class="sec-lede reveal">只列有据可查的年份——历史的克制，也是纪念的诚意。</p>
+    <div class="timeline">
+      <div class="t-item reveal">
+        <div class="t-year">1958</div>
+        <p>南昌市第十五中学创建。此后六十余载，校址始终依偎在青山湖畔。</p>
+      </div>
+      <div class="t-item reveal">
+        <div class="t-year">2012</div>
+        <p><strong>与原南昌市第三十中学合并办学</strong>，原三十中校区作为初中校区，学校成为初高中两部并行的市教育局直属完全中学。</p>
+      </div>
+      <div class="t-item reveal">
+        <div class="t-year">2016</div>
+        <p>初中部正式更名为<strong>「南昌二中教育集团青山湖校区」</strong>，进入集团化办学轨道。</p>
+      </div>
+      <div class="t-item reveal">
+        <div class="t-year">2017</div>
+        <p>高中部开办<strong>「二中班」</strong>，由南昌二中派驻师资、共享教育资源。</p>
+      </div>
+      <div class="t-item reveal">
+        <div class="t-year">2022–2025<span class="t-tag">本页视角</span></div>
+        <p><strong>熊鑫晨的三年</strong>：从2022年8月31日清晨的开学操场，到2025年夏天毕业离别。本页25张照片，皆摄于这段时光。</p>
+      </div>
+      <div class="t-item now reveal">
+        <div class="t-year">2026</div>
+        <p>这座纪念网页在互联网上落成——把三年光阴放进一个可以随时回去的地址。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 画廊 ===================== -->
+  <section class="block" id="gallery">
+    <div class="sec-head reveal"><span class="sec-index">叁 · GALLERY</span><h2>校园光影</h2></div>
+    <hr class="sec-rule reveal">
+
+    <!-- 组一 · 门与广场 -->
+    <div class="group-head reveal"><span class="g-no">其一</span><h3>门与广场</h3><span class="g-note">入门第一眼，是校门、旗杆与空阔的广场</span></div>
+    <p class="group-desc reveal">粉砖门柱上「南昌十五中」五个大字，是三年里进出千百次的坐标；暑假的广场空无一人，办公楼前的月牙雕塑仍指向天空。</p>
+    <div class="gallery-grid">
+      <figure class="ph reveal" data-cap="校门铭牌 · 黄昏时分" data-date="2025年4月">
+        <a href="images/full/01-gate.jpg" target="_blank" rel="noopener">
+          <span class="ph-img"><img src="images/thumbs/01-gate.jpg" width="1200" height="1600" alt="黄昏光线里，粉砖门柱上「南昌十五中」五个银色大字" loading="lazy" decoding="async"></span>
+        </a>
+        <figcaption><span class="cap-t">校门铭牌 · 黄昏时分</span><span class="cap-d">2025.04</span></figcaption>
+      </figure>
+      <figure class="ph reveal" data-cap="暑假的广场 · 办公楼与月牙雕塑" data-date="2025年8月23日">
+        <a href="images/full/18-plaza-summer.jpg" target="_blank" rel="noopener">
+          <span class="ph-img"><img src="images/thumbs/18-plaza-summer.jpg" width="1600" height="1200" alt="暑假空旷的广场，办公楼前的月牙雕塑" loading="lazy" decoding="async"></span>
+        </a>
+        <figcaption><span class="cap-t">暑假的广场 · 办公楼与月牙雕塑</span><span class="cap-d">2025.08.23</span></figcaption>
+      </figure>
+      <figure class="ph reveal" data-cap="广场电子屏与雪松" data-date="2025年8月23日">
+        <a href="images/full/20-plaza-screen.jpg" target="_blank" rel="noopener">
+          <span class="ph-img"><img src="images/thumbs/20-plaza-screen.jpg" width="1600" height="1200" alt="广场一侧的LED电子屏与高大的雪松" loading="lazy" decoding="async"></span>
+        </a>
+        <figcaption><span class="cap-t">广场电子屏与雪松</span><span class="cap-d">2025.08.23</span></figcaption>
+      </figure>
+    </div>
+
+    <!-- 组二 · 楼与教室 -->
+    <div class="group-head reveal"><span class="g-no">其二</span><h3>楼与教室</h3><span class="g-note">知识发生的地方</span></div>
+    <p class="group-desc reveal">红砖与白窗带的教学楼、悬着校训的教室、贴着「高一年级组」门牌的走廊——还有毕业前最后一个月，那间洒满阳光的开放学习空间。</p>
+    <div class="gallery-grid">
+      <figure class="ph reveal" data-cap="冬日黄昏的教学楼" data-date="2022年12月19日">
+        <a href="images/full/04-teaching-building-winter-dusk.jpg" target="_blank" rel="noopener">
+          <span class="ph-img"><img src="images/thumbs/04-teaching-building-winter-dusk.jpg" width="1600" height="1200" alt="冬日黄昏里的红砖教学楼与玻璃楼梯间" loading="lazy" decoding="async"></span>
+        </a>
+        <figcaption><span class="cap-t">冬日黄昏的教学楼</span><span class="cap-d">2022.12.19</span></figcaption>
+      </figure>
+      <figure class="ph reveal" data-cap="教室 · 黑板、多媒体与校训" data-date="2022–2023学年">
+        <a href="images/full/03-classroom.jpg" target="_blank" rel="noopener">
+          <span class="ph-img"><img src="images/thumbs/03-classroom.jpg" width="1600" height="900" alt="教室内景：黑板、多媒体屏幕，前墙悬着「敬业以立德，笃学以修身」校训" loading="lazy" decoding="async"></span>
+        </a>
+        <figcaption><span class="cap-t">教室 · 黑板、多媒体与校训</span><span class="cap-d">2022–2023学年</span></figcaption>
+      </figure>
+      <figure class="ph reveal" data-cap="高一年级组所在的走廊" data-date="2023年2月17日">
+        <a href="images/full/05-corridor-grade1.jpg" target="_blank" rel="noopener">
+          <span class="ph-img"><img src="images/thumbs/05-corridor-grade1.jpg" width="1200" height="1600" alt="白瓷砖走廊，两侧门牌写着高一年级组、英语组" loading="lazy" decoding="async"></span>
+        </a>
+        <figcaption><span class="cap-t">高一年级组所在的走廊</span><span class="cap-d">2023.02.17</span></figcaption>
+      </figure>
+      <figure class="ph reveal" data-cap="走廊尽头的城市天际线" data-date="2023年3月7日">
+        <a href="images/full/06-corridor-sunset.jpg" target="_blank" rel="noopener">
+          <span class="ph-img"><img src="images/thumbs/06-corridor-sunset.jpg" width="1200" height="1600" alt="黄昏的走廊，窗外是南昌城的高楼与晚霞" loading="lazy" decoding="async"></span>
+        </a>
+        <figcaption><span class="cap-t">走廊尽头的城市天际线</span><span class="cap-d">2023.03.07</span></figcaption>
+      </figure>
+      <figure class="ph reveal" data-cap="仰拍综合楼 · 蓝天积云" data-date="2025年8月23日">
+        <a href="images/full/19-library-building-sky.jpg" target="_blank" rel="noopener">
+          <span class="ph-img"><img src="images/thumbs/19-library-building-sky.jpg" width="1600" height="1200" alt="仰拍综合楼，蓝天上大朵积云" loading="lazy" decoding="async"></span>
+        </a>
+        <figcaption><span class="cap-t">仰拍综合楼 · 蓝天积云</span><span class="cap-d">2025.08.23</span></figcaption>
+      </figure>
+      <figure class="ph reveal" data-cap="开放学习空间" data-date="2025年5月30日">
+        <a href="images/full/17-study-lounge.jpg" target="_blank" rel="noopener">
+          <span class="ph-img"><img src="images/thumbs/17-study-lounge.jpg" width="1600" height="1200" alt="洒满阳光的开放学习空间，六角桌与窗外的操场" loading="lazy" decoding="async"></span>
+        </a>
+        <figcaption><span class="cap-t">开放学习空间</span><span class="cap-d">2025.05.30</span></figcaption>
+      </figure>
+    </div>
+
+    <!-- 组三 · 四季草木与天光 -->
+    <div class="group-head reveal"><span class="g-no">其三</span><h3>四季 · 草木与天光</h3><span class="g-note">春樟 · 夏霞 · 秋暮 · 冬雪</span></div>
+    <p class="group-desc reveal">香樟在春分抽出红绿交织的新叶；六月晚霞把水塔染成剪影；深秋的路灯次第亮起；而2024年1月22日那场大雪，压弯了雪松，也压住了整个校园的喧哗。</p>
+    <div class="gallery-grid">
+      <figure class="ph reveal" data-cap="春分 · 香樟新叶与车棚" data-date="2023年3月22日">
+        <a href="images/full/07-camphor-spring.jpg" target="_blank" rel="noopener">
+          <span class="ph-img"><img src="images/thumbs/07-camphor-spring.jpg" width="1200" height="1600" alt="春天的香樟新叶红绿交织，树下是覆着雨衣的电动车" loading="lazy" decoding="async"></span>
+        </a>
+        <figcaption><span class="cap-t">春分 · 香樟新叶与车棚</span><span class="cap-d">2023.03.22</span></figcaption>
+      </figure>
+      <figure class="ph reveal" data-cap="香樟林与老教学楼" data-date="2023年3月22日">
+        <a href="images/full/09-camphor-grove.jpg" target="_blank" rel="noopener">
+          <span class="ph-img"><img src="images/thumbs/09-camphor-grove.jpg" width="1600" height="1200" alt="俯瞰香樟林、老教学楼与停满电动车的车棚" loading="lazy" decoding="async"></span>
+        </a>
+        <figcaption><span class="cap-t">香樟林与老教学楼</span><span class="cap-d">2023.03.22</span></figcaption>
+      </figure>
+      <figure class="ph reveal" data-cap="老水塔（夏）" data-date="2023年6月28日">
+        <a href="images/full/11-water-tower.jpg" target="_blank" rel="noopener">
+          <span class="ph-img"><img src="images/thumbs/11-water-tower.jpg" width="1600" height="1200" alt="绿树环抱中的老水塔，蓝天白云" loading="lazy" decoding="async"></span>
+        </a>
+        <figcaption><span class="cap-t">老水塔（夏）</span><span class="cap-d">2023.06.28</span></figcaption>
+      </figure>
+      <figure class="ph reveal" data-cap="晚霞 · 教学楼与旗杆" data-date="2023年6月">
+        <a href="images/full/12-sunset-building-flag.jpg" target="_blank" rel="noopener">
+          <span class="ph-img"><img src="images/thumbs/12-sunset-building-flag.jpg" width="1440" height="1080" alt="粉金色晚霞下的红砖教学楼与国旗" loading="lazy" decoding="async"></span>
+        </a>
+        <figcaption><span class="cap-t">晚霞 · 教学楼与旗杆</span><span class="cap-d">2023.06</span></figcaption>
+      </figure>
+      <figure class="ph reveal" data-cap="深秋黄昏的楼群" data-date="2023年11月2日">
+        <a href="images/full/14-autumn-dusk.jpg" target="_blank" rel="noopener">
+          <span class="ph-img"><img src="images/thumbs/14-autumn-dusk.jpg" width="1600" height="1200" alt="深秋黄昏，教学楼剪影与初亮的路灯" loading="lazy" decoding="async"></span>
+        </a>
+        <figcaption><span class="cap-t">深秋黄昏的楼群</span><span class="cap-d">2023.11.02</span></figcaption>
+      </figure>
+      <figure class="ph reveal" data-cap="晚霞 · 水塔剪影" data-date="2023年6月">
+        <a href="images/full/13-sunset-water-tower.jpg" target="_blank" rel="noopener">
+          <span class="ph-img"><img src="images/thumbs/13-sunset-water-tower.jpg" width="1440" height="1080" alt="晚霞中的老水塔与居民楼剪影" loading="lazy" decoding="async"></span>
+        </a>
+        <figcaption><span class="cap-t">晚霞 · 水塔剪影</span><span class="cap-d">2023.06</span></figcaption>
+      </figure>
+      <figure class="ph reveal" data-cap="大雪压松" data-date="2024年1月22日">
+        <a href="images/full/15-snow.jpg" target="_blank" rel="noopener">
+          <span class="ph-img"><img src="images/thumbs/15-snow.jpg" width="1600" height="1200" alt="大雪覆盖的雪松与教学楼，红色标语牌立在雪中" loading="lazy" decoding="async"></span>
+        </a>
+        <figcaption><span class="cap-t">大雪压松</span><span class="cap-d">2024.01.22</span></figcaption>
+      </figure>
+      <figure class="ph reveal" data-cap="围墙外 · 老屋与新城" data-date="2025年8月23日">
+        <a href="images/full/21-old-new-city.jpg" target="_blank" rel="noopener">
+          <span class="ph-img"><img src="images/thumbs/21-old-new-city.jpg" width="1600" height="1200" alt="校园围墙外的老平房与远处拔地而起的高层住宅" loading="lazy" decoding="async"></span>
+        </a>
+        <figcaption><span class="cap-t">围墙外 · 老屋与新城</span><span class="cap-d">2025.08.23</span></figcaption>
+      </figure>
+      <figure class="ph reveal" data-cap="廊架与绿荫一隅" data-date="2025年8月23日">
+        <a href="images/full/24-pergola-corner.jpg" target="_blank" rel="noopener">
+          <span class="ph-img"><img src="images/thumbs/24-pergola-corner.jpg" width="1600" height="1200" alt="校园一隅的木廊架、绿围挡与参天大树" loading="lazy" decoding="async"></span>
+        </a>
+        <figcaption><span class="cap-t">廊架与绿荫一隅</span><span class="cap-d">2025.08.23</span></figcaption>
+      </figure>
+    </div>
+
+    <!-- 组四 · 操场 -->
+    <div class="group-head reveal"><span class="g-no">其四</span><h3>操场</h3><span class="g-note">青春的赤陶色</span></div>
+    <p class="group-desc reveal">2022年8月31日早晨七点十八分，红色跑道迎来一个新高一学生的第一张照片；此后三年，篮球场、网球场与旗杆广场，收藏了所有课间与黄昏。</p>
+    <div class="gallery-grid">
+      <figure class="ph reveal" data-cap="开学第一天的操场" data-date="2022年8月31日 07:18">
+        <a href="images/full/02-playground-firstday.jpg" target="_blank" rel="noopener">
+          <span class="ph-img"><img src="images/thumbs/02-playground-firstday.jpg" width="1600" height="900" alt="2022年8月31日清晨的操场：红色跑道、绿色球场与旗杆广场" loading="lazy" decoding="async"></span>
+        </a>
+        <figcaption><span class="cap-t">开学第一天的操场</span><span class="cap-d">2022.08.31 07:18</span></figcaption>
+      </figure>
+      <figure class="ph reveal" data-cap="俯瞰网球场" data-date="2023年3月22日">
+        <a href="images/full/08-tennis-court.jpg" target="_blank" rel="noopener">
+          <span class="ph-img"><img src="images/thumbs/08-tennis-court.jpg" width="1600" height="1200" alt="从高处俯瞰绿红相间的网球场" loading="lazy" decoding="async"></span>
+        </a>
+        <figcaption><span class="cap-t">俯瞰网球场</span><span class="cap-d">2023.03.22</span></figcaption>
+      </figure>
+      <figure class="ph reveal" data-cap="毕业季清晨的红旗" data-date="2025年5月30日">
+        <a href="images/full/16-morning-flag.jpg" target="_blank" rel="noopener">
+          <span class="ph-img"><img src="images/thumbs/16-morning-flag.jpg" width="1600" height="1200" alt="毕业季前的清晨，红旗在蓝天下飘扬，教学群楼静立" loading="lazy" decoding="async"></span>
+        </a>
+        <figcaption><span class="cap-t">毕业季清晨的红旗</span><span class="cap-d">2025.05.30</span></figcaption>
+      </figure>
+    </div>
+
+    <!-- 组五 · 校园文化艺术节 -->
+    <div class="group-head reveal"><span class="g-no">其五</span><h3>校园文化艺术节</h3><span class="g-note">青春筑梦 · 激扬人生</span></div>
+    <p class="group-desc reveal">2023年5月8日，「青春筑梦 激扬人生」校园文化艺术节启幕：签到处立在广场上，校训、师训与办学理念印上背板。</p>
+    <div class="gallery-grid">
+      <figure class="ph reveal" data-cap="文化艺术节主题背板 · 校园文化上墙" data-date="2023年5月8日">
+        <a href="images/full/28-festival-backdrop.jpg" target="_blank" rel="noopener">
+          <span class="ph-img"><img src="images/thumbs/28-festival-backdrop.jpg" width="1600" height="1200" alt="校园文化艺术节背板：校训「敬业以立德，笃学以修身」、师训与办学理念印在背板上" loading="lazy" decoding="async"></span>
+        </a>
+        <figcaption><span class="cap-t">文化艺术节主题背板 · 校园文化上墙</span><span class="cap-d">2023.05.08</span></figcaption>
+      </figure>
+      <figure class="ph reveal" data-cap="文化艺术节节目单封面" data-date="2023年5月8日">
+        <a href="images/full/27-festival-program.jpg" target="_blank" rel="noopener">
+          <span class="ph-img"><img src="images/thumbs/27-festival-program.jpg" width="1280" height="905" alt="「青春筑梦 激扬人生」校园文化艺术节节目单封面" loading="lazy" decoding="async"></span>
+        </a>
+        <figcaption><span class="cap-t">文化艺术节节目单封面</span><span class="cap-d">2023.05.08</span></figcaption>
+      </figure>
+      <figure class="ph reveal" data-cap="签到处" data-date="2023年5月8日">
+        <a href="images/full/29-festival-arch.jpg" target="_blank" rel="noopener">
+          <span class="ph-img"><img src="images/thumbs/29-festival-arch.jpg" width="1600" height="1200" alt="傍晚的艺术节签到处，红色拱门旁远眺老水塔" loading="lazy" decoding="async"></span>
+        </a>
+        <figcaption><span class="cap-t">签到处</span><span class="cap-d">2023.05.08</span></figcaption>
+      </figure>
+    </div>
+
+    <!-- 组六 · 高考签名墙 -->
+    <div class="group-head reveal"><span class="g-no">其六</span><h3>高考签名墙</h3><span class="g-note">高考前夕 · 告别的方式</span></div>
+    <p class="group-desc reveal">2025年6月6日，高考前一天——广场上立起签名墙，一面墙的名字，是三年最热闹的告别。</p>
+    <div class="gallery-grid">
+      <figure class="ph reveal" data-cap="高考签名墙 · I❤十五中" data-date="2025年6月6日">
+        <a href="images/full/26-festival-signin.jpg" target="_blank" rel="noopener">
+          <span class="ph-img"><img src="images/thumbs/26-festival-signin.jpg" width="1600" height="1200" alt="高考签名墙与「I❤十五中」雕塑，底座刻着校训，远处是老水塔" loading="lazy" decoding="async"></span>
+        </a>
+        <figcaption><span class="cap-t">高考签名墙 · I❤十五中</span><span class="cap-d">2025.06.06</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ===================== 老水塔（深色区） ===================== -->
+  <section class="landmark" id="landmark">
+    <div class="inner">
+      <div class="sec-head reveal"><span class="sec-index">肆 · LANDMARK</span><h2>一座水塔的记忆法</h2></div>
+      <hr class="sec-rule reveal">
+      <p class="sec-lede reveal">每座老校园都有一件比所有教学楼都年长的构筑物。在十五中，是这座立在树梢之上的老水塔。</p>
+      <div class="duo">
+        <figure class="ph reveal" data-cap="老水塔 · 白日" data-date="2023年6月28日">
+          <a href="images/full/11-water-tower.jpg" target="_blank" rel="noopener">
+            <span class="ph-img"><img src="images/thumbs/11-water-tower.jpg" width="1600" height="1200" alt="白日蓝天下的老水塔，绿树环绕" loading="lazy" decoding="async"></span>
+          </a>
+          <figcaption><span class="cap-t">老水塔 · 白日</span><span class="cap-d">2023.06.28</span></figcaption>
+        </figure>
+        <figure class="ph reveal" data-cap="老水塔 · 晚霞" data-date="2023年6月">
+          <a href="images/full/13-sunset-water-tower.jpg" target="_blank" rel="noopener">
+            <span class="ph-img"><img src="images/thumbs/13-sunset-water-tower.jpg" width="1440" height="1080" alt="晚霞中的老水塔剪影" loading="lazy" decoding="async"></span>
+          </a>
+          <figcaption><span class="cap-t">老水塔 · 晚霞</span><span class="cap-d">2023.06</span></figcaption>
+        </figure>
+      </div>
+      <p class="tale reveal">它早已不再供水，却仍每天准时接住<em>日出与晚霞</em>。三年里，它出现在教室窗的右侧、跑道的尽头、放学路上抬头的一瞥里——像一位沉默的守钟人，替我们记着：上课、下课、四季、毕业。</p>
+    </div>
+  </section>
+
+  <!-- ===================== 校园地图 ===================== -->
+  <style>
+    /* ============ 伍 · MAP 校园寻踪 ============ */
+    .campus-map-scope .map-shell{
+      border:1px solid var(--line);border-radius:12px;overflow:hidden;
+      background:var(--paper);box-shadow:0 1px 0 rgba(31,30,29,.03);
+    }
+    #campusMap{height:460px;font-family:var(--sans);background:#EDEAE0}
+    .campus-map-scope .map-note{font-size:12px;color:#8A8578;margin-top:14px;letter-spacing:.04em}
+
+    /* 标记：赤陶橙实心圆 + 米白描边 + 半透明外环（地标加大） */
+    #campusMap .campus-pin{width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+    #campusMap .campus-pin i{
+      display:block;width:14px;height:14px;border-radius:50%;
+      background:var(--terra);border:2px solid var(--paper);
+      box-shadow:0 0 0 1px rgba(217,119,87,.45),0 2px 8px rgba(31,30,29,.28);
+      transition:transform .2s cubic-bezier(.2,.65,.3,1);
+    }
+    #campusMap .campus-pin:hover i{transform:scale(1.3)}
+    #campusMap .campus-pin.is-landmark i{
+      width:19px;height:19px;
+      box-shadow:0 0 0 1px rgba(217,119,87,.55),0 0 0 6px rgba(217,119,87,.16),0 3px 10px rgba(31,30,29,.32);
+    }
+    #campusMap .campus-pin.is-landmark:hover i{transform:scale(1.18)}
+
+    /* 弹窗：paper 底 + 发丝线边框 */
+    #campusMap .leaflet-popup-content-wrapper{background:var(--paper);color:var(--ink);border:1px solid var(--line);border-radius:10px;box-shadow:0 12px 32px rgba(31,30,29,.16)}
+    #campusMap .leaflet-popup-content{margin:10px 12px;line-height:1.5}
+    #campusMap .leaflet-popup-tip{background:var(--paper)}
+    #campusMap a.leaflet-popup-close-button{color:var(--muted)}
+    #campusMap a.leaflet-popup-close-button:hover{color:var(--terra-deep)}
+    .campus-pop{display:flex;align-items:center;gap:12px;min-width:206px}
+    .campus-pop img{width:96px;border-radius:6px;display:block;flex:none}
+    .campus-pop-txt{display:flex;flex-direction:column;gap:3px}
+    .campus-pop-t{font-family:var(--serif);font-size:14px;font-weight:600;color:var(--ink);line-height:1.4}
+    .campus-pop-d{font-size:12px;color:var(--muted);letter-spacing:.05em}
+
+    /* Leaflet 控件淡化 */
+    #campusMap .leaflet-bar{border:1px solid var(--line);box-shadow:0 2px 10px rgba(31,30,29,.08)}
+    #campusMap .leaflet-bar a{background:var(--paper);color:var(--muted);border-bottom:1px solid var(--line)}
+    #campusMap .leaflet-bar a:hover{background:#fff;color:var(--terra-deep)}
+    #campusMap .leaflet-control-attribution{font-size:11px;color:#8A8578;background:rgba(250,249,245,.82);padding:2px 8px}
+    #campusMap .leaflet-control-attribution a{color:#8A8578}
+    /* OSM 标准瓦片降饱和 + 轻微暖化，贴合站内米白色调 */
+    #campusMap .leaflet-tile-pane{filter:grayscale(.62) sepia(.07) brightness(1.03) contrast(.96)}
+
+    /* Leaflet 未能加载时的兜底文案 */
+    #campusMap .campus-map-fallback{display:flex;height:100%;align-items:center;justify-content:center;padding:24px;text-align:center;color:var(--muted);font-size:13px;letter-spacing:.05em;line-height:2}
+
+    @media (max-width:640px){
+      #campusMap{height:340px}
+    }
+    @media (prefers-reduced-motion: reduce){
+      #campusMap .campus-pin i{transition:none}
+    }
+  </style>
+
+  <section class="block campus-map-scope" id="map">
+    <div class="sec-head reveal"><span class="sec-index">伍 · MAP</span><h2>校园寻踪</h2></div>
+    <hr class="sec-rule reveal">
+    <p class="sec-lede reveal">二十七张照片，八个机位。把镜头里的校园放回经纬度之中——记忆有了坐标，就可以重访。</p>
+    <div class="map-shell reveal">
+      <div id="campusMap" role="region" aria-label="南昌市第十五中学青山湖校区地图，标注八个照片拍摄机位"></div>
+    </div>
+    <p class="map-note reveal">机位为示意位置 · 底图 © OpenStreetMap 贡献者</p>
+  </section>
+
+  <!-- ===================== 寄语 ===================== -->
+  <section class="block words" id="words">
+    <div class="sec-head reveal"><span class="sec-index">陆 · EPILOGUE</span><h2>寄语</h2></div>
+    <hr class="sec-rule reveal">
+    <blockquote class="reveal">
+      三年里，我们看过太多这里的清晨与黄昏——旗杆下的晨光、走廊尽头的晚霞、大雪压弯的松枝、暑假空无一人的广场。毕业之后才发现，所谓母校，就是那座<em>你离开之后才开始无限怀念</em>的校园。<br>
+      谨以此页，献给青山湖畔的红砖楼、香樟与老水塔，献给所有在十五中度过少年时代的人。
+    </blockquote>
+    <p class="sign reveal">—— 2025届毕业生</p>
+  </section>
+
+  <!-- ===================== 留言墙 ===================== -->
+  <style>
+    .artalk-card {
+      background: #FAF9F5;
+      border: 1px solid #E4DFD3;
+      border-radius: 12px;
+      padding: 24px 32px;
+      margin-top: 24px;
+    }
+    /* Artalk 配色对齐：米白纸感 + 赤陶橙 */
+    #Comments {
+      --atk-main-color: #1F1E1D;
+      --atk-main-bg-color: transparent;
+      --atk-secondary-color: #6E6A5E;
+      --atk-secondary-bg-color: #F0EEE6;
+      --atk-border-color: #E4DFD3;
+      --atk-send-btn-color: #FAF9F5;
+      --atk-send-btn-bg-color: #C15F3C;
+      --atk-send-btn-bg-hover-color: #D97757;
+      --atk-link-color: #C15F3C;
+      --atk-link-hover-color: #D97757;
+      font-family: var(--sans);
+    }
+    @media (max-width: 640px) {
+      .artalk-card { padding: 16px 14px; }
+    }
+  </style>
+
+  <section class="block wall" id="wall">
+    <div class="sec-head reveal"><span class="sec-index">柒 · WALL</span><h2>留言墙</h2></div>
+    <hr class="sec-rule reveal">
+    <p class="sec-lede reveal">纪念册不该只有一个人的声音。留个名字，写一句那年的话——无需登录，留言经站长看过后就会出现在这里。</p>
+    <div class="artalk-card reveal">
+      <div id="Comments"></div>
+    </div>
+  </section>
+
+  <script src="/comment/dist/Artalk.js"></script>
+  <script>
+    (function () {
+      /* 匿名留言支持：访客未填昵称/邮箱时自动补全（服务端要求二者非空且邮箱格式合法）。
+         Artalk v2.10 前端使用 fetch 发请求，故拦截 window.fetch。
+         同一昵称 → 同一身份哈希；完全匿名 → 「路过的同学」+ 随机身份。 */
+      var origFetch = window.fetch;
+      window.fetch = function (input, init) {
+        var url = typeof input === 'string' ? input : (input && input.url) || '';
+        if (init && init.method === 'POST' && /\/comments(\?|$)/.test(url) && typeof init.body === 'string') {
+          try {
+            var d = JSON.parse(init.body);
+            var nick = (d.name || '').trim();
+            if (!nick) { d.name = '路过的同学'; d.email = 'anon-' + Math.random().toString(36).slice(2, 10) + '@local.xxc2007.me'; }
+            else {
+              var h = 0;
+              for (var i = 0; i < nick.length; i++) { h = (h * 31 + nick.charCodeAt(i)) >>> 0; }
+              d.email = 'anon-' + h.toString(36) + '@local.xxc2007.me';
+            }
+            init = Object.assign({}, init, { body: JSON.stringify(d) });
+          } catch (e) { /* 非 JSON body，放行 */ }
+        }
+        return origFetch.call(this, input, init);
+      };
+
+      function mount() {
+        if (typeof Artalk === 'undefined') return false;
+        Artalk.init({
+          el: '#Comments',
+          server: 'https://xxc2007.me/comment',
+          site: '青山湖畔的纪念册',
+          pageKey: '/guestbook',
+          placeholder: '写一句那年的话……（无需登录，发布后经站长审核即会展示）',
+          noComment: '还没有留言，来做第一个吧。',
+          sendBtn: '发布留言',
+          editorTravel: false,
+          darkMode: false
+        });
+        return true;
+      }
+      if (!mount()) document.addEventListener('DOMContentLoaded', mount);
+    })();
+  </script>
+</main>
+
+<!-- ===================== 页脚 ===================== -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <img src="images/emblem-320.png" alt="南昌市第十五中学校徽">
+      <div class="f-brand">南昌市第十五中学 · 纪念册</div>
+      <div>摄影与制作 · 熊鑫晨</div>
+    </div>
+    <div class="right">
+      <div>xxc2007.me · 2026</div>
+      <div><a href="#topbar" style="text-decoration:none">回到顶部 ↑</a></div>
+    </div>
+  </div>
+</footer>
+
+<!-- ===================== 灯箱 ===================== -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="图片全屏观看" hidden>
+  <div class="lb-top">
+    <span class="lb-count" id="lbCount">1 / 27</span>
+    <span class="lb-hint">滚轮 / 双指缩放 · 双击放大 · 拖动平移</span>
+    <button class="lb-close" id="lbClose" aria-label="关闭（Esc）">✕</button>
+  </div>
+  <div class="lb-stage">
+    <button class="lb-nav lb-prev" id="lbPrev" aria-label="上一张（←）">
+      <svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <img id="lbImg" src="" alt="">
+    <button class="lb-nav lb-next" id="lbNext" aria-label="下一张（→）">
+      <svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+  <div class="lb-cap">
+    <span class="cap-t" id="lbCapT"></span>
+    <span class="cap-d" id="lbCapD"></span>
+  </div>
+</div>
+
+<script src="leaflet/leaflet.js"></script>
+<script data-map-init>
+(function () {
+  'use strict';
+  var el = document.getElementById('campusMap');
+  if (!el || el.getAttribute('data-map-ready')) return;
+
+  /* ---------- 机位数据（维护者只改这里） ----------
+     confidence 三级：
+       exact     = OSM 实测要素中心（跑道 / 球场）
+       approx    = OSM 建筑轮廓，楼栋身份为推断
+       estimated = OSM 无对应要素，按校园布局推算
+     坐标为 WGS84（EPSG:4326），与 GPS / OSM 一致            */
+  var CAMERA_SPOTS = [
+    { name: '校门 · 门柱铭牌',       img: '01-gate.jpg',                         date: '2025.04',    lat: 28.72075, lng: 115.93292, confidence: 'estimated' },
+    { name: '开学第一天的操场',       img: '02-playground-firstday.jpg',          date: '2022.08.31', lat: 28.72068, lng: 115.93181, confidence: 'exact'     },
+    { name: '红砖教学楼 · 冬日黄昏', img: '04-teaching-building-winter-dusk.jpg', date: '2022.12.19', lat: 28.72145, lng: 115.93193, confidence: 'approx'    },
+    { name: '香樟林与老教学楼',       img: '09-camphor-grove.jpg',                date: '2023.03.22', lat: 28.72025, lng: 115.93228, confidence: 'estimated' },
+    { name: '老水塔',                 img: '11-water-tower.jpg',                  date: '2023.06.28', lat: 28.72145, lng: 115.93255, confidence: 'estimated', landmark: true },
+    { name: '俯瞰网球场',             img: '08-tennis-court.jpg',                 date: '2023.03.22', lat: 28.72046, lng: 115.93269, confidence: 'exact'     },
+    { name: '广场 · 月牙雕塑',        img: '18-plaza-summer.jpg',                 date: '2025.08.23', lat: 28.72110, lng: 115.93240, confidence: 'estimated' },
+    { name: '综合楼仰拍',             img: '19-library-building-sky.jpg',         date: '2025.08.23', lat: 28.72078, lng: 115.93244, confidence: 'approx'    }
+  ];
+
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function init() {
+    if (typeof window.L === 'undefined' || el.getAttribute('data-map-ready')) return false;
+    el.setAttribute('data-map-ready', '1');
+
+    var map = L.map(el, {
+      scrollWheelZoom: false,          /* 不劫持页面滚动，拖拽 / 双击缩放照常 */
+      zoomControl: true,
+      attributionControl: true,
+      maxZoom: 18,
+      fadeAnimation: !reduceMotion,
+      zoomAnimation: !reduceMotion,
+      markerZoomAnimation: !reduceMotion
+    });
+    map.attributionControl.setPrefix('');
+
+    /* OSM 标准瓦片：免费匿名、高缩放级可用；CSS 滤镜统一成站内米灰色调 */
+    var tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors',
+      maxZoom: 18
+    }).addTo(map);
+
+    /* OSM 不可达时（连续 6 片失败），静默回退 CARTO（注意其高缩放级需 key，仅作应急） */
+    var tileErrors = 0, fallenBack = false;
+    tiles.on('tileerror', function () {
+      if (fallenBack || ++tileErrors < 6) return;
+      fallenBack = true;
+      map.removeLayer(tiles);
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+        subdomains: 'abcd',
+        maxZoom: 18
+      }).addTo(map);
+    });
+
+    var bounds = [];
+    CAMERA_SPOTS.forEach(function (s) {
+      var icon = L.divIcon({
+        className: '',   /* 置空以去掉 leaflet-div-icon 默认白底 */
+        html: '<span class="campus-pin' + (s.landmark ? ' is-landmark' : '') + '" aria-hidden="true"><i></i></span>',
+        iconSize: [28, 28],
+        iconAnchor: [14, 14],
+        popupAnchor: [0, -14]
+      });
+      var m = L.marker([s.lat, s.lng], { icon: icon, title: s.name, riseOnHover: true }).addTo(map);
+      m.bindPopup(
+        '<div class="campus-pop">'
+        + '<img src="images/thumbs/' + s.img + '" alt="' + s.name + '" width="96" loading="lazy">'
+        + '<span class="campus-pop-txt">'
+        + '<span class="campus-pop-t">' + s.name + '</span>'
+        + '<span class="campus-pop-d">' + s.date + '</span>'
+        + '</span></div>',
+        { maxWidth: 260 }
+      );
+      bounds.push([s.lat, s.lng]);
+    });
+
+    /* fitBounds 上限 17：让校园占画面约一半，保留丹霞路等周边参照。
+       若初始化时容器还没有布局尺寸（首屏直跳等场景），
+       applyView 会在尺寸就绪后 invalidateSize 并重新定位 */
+    var initialBounds = L.latLngBounds(bounds);
+    var viewDone = false;
+    function applyView(){
+      var had = map.getSize().x;
+      map.invalidateSize();
+      if (!viewDone || (!had && map.getSize().x)){
+        map.fitBounds(initialBounds, { padding: [38, 38], maxZoom: 17, animate: !reduceMotion });
+        viewDone = true;
+      }
+    }
+    applyView();
+    [350, 1200].forEach(function(d){ setTimeout(applyView, d); });
+    window.addEventListener('load', applyView);
+    return true;
+  }
+
+  /* 启动时机：leaflet.js 已在本脚本之前同步引入，DOMContentLoaded 后再补一次尝试 */
+  var started = false;
+  function tryInit() {
+    if (started) return;
+    started = (init() === true);
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', tryInit);
+  } else {
+    tryInit();
+  }
+  window.addEventListener('load', function () {
+    tryInit();
+    if (!started) {
+      el.innerHTML = '<p class="campus-map-fallback">地图组件未能加载。<br>校园位于南昌市青山湖区塘山街，<br>28.7208°N, 115.9322°E（WGS84）。</p>';
+    }
+  });
+})();
+</script>
+
+<script>
+(function(){
+  'use strict';
+
+  /* ---------- 统一滚动驱动（rAF 节流） ---------- */
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var topbar = document.getElementById('topbar');
+  var progress = document.getElementById('progress');
+  var updaters = [];
+  var ticking = false;
+  function requestTick(){
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function(){
+      ticking = false;
+      for (var i = 0; i < updaters.length; i++) updaters[i]();
+    });
+  }
+  window.addEventListener('scroll', requestTick, {passive:true});
+  window.addEventListener('resize', requestTick);
+
+  /* 顶栏状态 + 阅读进度条 */
+  updaters.push(function(){
+    topbar.classList.toggle('scrolled', window.scrollY > 8);
+    if (progress){
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      progress.style.transform = 'scaleX(' + (max > 0 ? Math.min(1, window.scrollY / max) : 0).toFixed(4) + ')';
+    }
+  });
+
+  /* ---------- 导航高亮（scrollspy） ---------- */
+  (function(){
+    var links = Array.prototype.slice.call(document.querySelectorAll('nav.toc a[href^="#"]'));
+    var sections = [];
+    links.forEach(function(a){
+      var sec = document.getElementById(a.getAttribute('href').slice(1));
+      if (sec) sections.push({link: a, sec: sec});
+    });
+    if (!sections.length) return;
+    updaters.push(function(){
+      var active = null;
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4){
+        active = sections[sections.length - 1];
+      } else {
+        for (var i = 0; i < sections.length; i++){
+          if (sections[i].sec.getBoundingClientRect().top <= 96) active = sections[i];
+        }
+      }
+      sections.forEach(function(s){ s.link.classList.toggle('active', s === active); });
+    });
+  })();
+
+  /* ---------- 滚动显现 ---------- */
+  var reveals = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); }
+      });
+    }, {threshold:.12, rootMargin:'0px 0px -4% 0px'});
+    reveals.forEach(function(el){ io.observe(el); });
+  } else {
+    reveals.forEach(function(el){ el.classList.add('visible'); });
+  }
+
+  /* ---------- 关键数字滚动 ---------- */
+  (function(){
+    var nums = document.querySelectorAll('.stat-n[data-count]');
+    if (!nums.length || reduceMotion || !('IntersectionObserver' in window)) return;
+    var nio = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (!e.isIntersecting) return;
+        nio.unobserve(e.target);
+        var el = e.target;
+        var target = parseInt(el.getAttribute('data-count'), 10);
+        var t0 = null;
+        function step(ts){
+          if (t0 === null) t0 = ts;
+          var p = Math.min(1, (ts - t0) / 1600);
+          el.textContent = String(Math.round((1 - Math.pow(1 - p, 4)) * target));
+          if (p < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+      });
+    }, {threshold:.5});
+    nums.forEach(function(el){ el.textContent = '0'; nio.observe(el); });
+  })();
+
+  /* ---------- Hero 大图视差 ---------- */
+  (function(){
+    if (reduceMotion) return;
+    var fig = document.querySelector('.hero-figure');
+    var img = fig ? fig.querySelector('img') : null;
+    if (!img) return;
+    updaters.push(function(){
+      var r = fig.getBoundingClientRect();
+      var vh = window.innerHeight;
+      if (r.bottom < -80 || r.top > vh + 80) return;
+      var p = (vh - r.top) / (vh + r.height);
+      p = Math.max(0, Math.min(1, p));
+      img.style.transform = 'translateY(' + ((p - .5) * 52).toFixed(1) + 'px) scale(1.09)';
+    });
+  })();
+
+  /* ---------- 时间线生长 ---------- */
+  (function(){
+    if (reduceMotion) return;
+    var tl = document.querySelector('.timeline');
+    if (!tl) return;
+    var fill = document.createElement('span');
+    fill.className = 't-fill';
+    tl.insertBefore(fill, tl.firstChild);
+    var items = Array.prototype.slice.call(tl.querySelectorAll('.t-item'));
+    updaters.push(function(){
+      var r = tl.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > window.innerHeight) return;
+      var p = (window.innerHeight * .72 - r.top) / r.height;
+      p = Math.max(0, Math.min(1, p));
+      var h = p * (r.height - 16);
+      fill.style.height = h.toFixed(1) + 'px';
+      items.forEach(function(item){
+        item.classList.toggle('lit', item.offsetTop + 13 <= h + 8);
+      });
+    });
+  })();
+
+  /* ---------- 灯箱 ---------- */
+  var figures = Array.prototype.slice.call(document.querySelectorAll('.ph'));
+  var box = document.getElementById('lightbox');
+  var lbImg = document.getElementById('lbImg');
+  var lbCount = document.getElementById('lbCount');
+  var lbCapT = document.getElementById('lbCapT');
+  var lbCapD = document.getElementById('lbCapD');
+  var current = -1, lastFocus = null;
+  var stage = box.querySelector('.lb-stage');
+
+  /* ---------- 灯箱缩放与平移状态 ---------- */
+  var zoom = 1, tx = 0, ty = 0;
+  var pointers = new Map();
+  var pinch = null, pan = null, suppressSwipe = false;
+
+  function clampPan(){
+    var maxX = Math.max(0, (lbImg.clientWidth * zoom - stage.clientWidth) / 2);
+    var maxY = Math.max(0, (lbImg.clientHeight * zoom - stage.clientHeight) / 2);
+    tx = Math.max(-maxX, Math.min(maxX, tx));
+    ty = Math.max(-maxY, Math.min(maxY, ty));
+  }
+  function syncCursor(){
+    lbImg.classList.toggle('grab', zoom > 1 && !pan);
+  }
+  function applyTransform(){
+    lbImg.style.transform = 'translate(' + tx.toFixed(1) + 'px,' + ty.toFixed(1) + 'px) scale(' + zoom.toFixed(3) + ')';
+  }
+  function resetZoom(){
+    zoom = 1; tx = 0; ty = 0;
+    lbImg.classList.remove('grab', 'grabbing');
+    applyTransform();
+  }
+
+  function preload(i){
+    if (i < 0 || i >= figures.length) return;
+    var im = new Image();
+    im.src = figures[i].querySelector('a').getAttribute('href');
+  }
+  function show(i){
+    if (!figures.length) return;
+    current = (i + figures.length) % figures.length;
+    var fig = figures[current];
+    var link = fig.querySelector('a');
+    var full = link.getAttribute('href');
+    var thumb = fig.querySelector('img');
+    lbImg.classList.remove('show');
+    resetZoom();
+    lbImg.onload = function(){
+      requestAnimationFrame(function(){ lbImg.classList.add('show'); });
+    };
+    lbImg.src = full;
+    lbImg.alt = thumb ? thumb.alt : '';
+    lbCount.textContent = (current + 1) + ' / ' + figures.length;
+    lbCapT.textContent = fig.getAttribute('data-cap') || '';
+    lbCapD.textContent = fig.getAttribute('data-date') || '';
+    preload(current + 1);
+    preload(current - 1);
+  }
+  function open(i){
+    lastFocus = document.activeElement;
+    box.hidden = false;
+    document.body.classList.add('lb-lock');
+    show(i);
+    requestAnimationFrame(function(){ box.classList.add('open'); });
+    document.getElementById('lbClose').focus();
+  }
+  function close(){
+    box.classList.remove('open');
+    document.body.classList.remove('lb-lock');
+    setTimeout(function(){ box.hidden = true; }, 300);
+    if (lastFocus) lastFocus.focus();
+  }
+
+  figures.forEach(function(fig, i){
+    var link = fig.querySelector('a');
+    link.addEventListener('click', function(ev){
+      ev.preventDefault();
+      open(i);
+    });
+  });
+
+  document.getElementById('lbClose').addEventListener('click', close);
+  document.getElementById('lbPrev').addEventListener('click', function(){ show(current - 1); });
+  document.getElementById('lbNext').addEventListener('click', function(){ show(current + 1); });
+
+  lbImg.draggable = false;
+
+  /* 滚轮缩放（以光标为中心） */
+  box.addEventListener('wheel', function(ev){
+    ev.preventDefault();
+    var prev = zoom;
+    zoom = Math.max(1, Math.min(4, zoom * (ev.deltaY < 0 ? 1.18 : 1 / 1.18)));
+    if (zoom === prev) return;
+    if (zoom === 1){
+      tx = 0; ty = 0;
+    } else {
+      var r = lbImg.getBoundingClientRect();
+      tx += (ev.clientX - (r.left + r.width / 2)) * (1 - zoom / prev);
+      ty += (ev.clientY - (r.top + r.height / 2)) * (1 - zoom / prev);
+      clampPan();
+    }
+    syncCursor();
+    applyTransform();
+  }, {passive:false});
+
+  /* 双击：放大 / 复位 */
+  lbImg.addEventListener('dblclick', function(ev){
+    ev.preventDefault();
+    if (zoom > 1){ resetZoom(); return; }
+    var r = lbImg.getBoundingClientRect();
+    var z2 = 2.5;
+    tx += (ev.clientX - (r.left + r.width / 2)) * (1 - z2 / zoom);
+    ty += (ev.clientY - (r.top + r.height / 2)) * (1 - z2 / zoom);
+    zoom = z2;
+    clampPan();
+    syncCursor();
+    applyTransform();
+  });
+
+  /* 指针：拖拽平移 + 双指捏合 */
+  function ptrDist(){
+    var ps = Array.from(pointers.values());
+    return Math.hypot(ps[0].x - ps[1].x, ps[0].y - ps[1].y);
+  }
+  stage.addEventListener('pointerdown', function(ev){
+    if (ev.target !== lbImg) return;
+    if (lbImg.setPointerCapture){ try { lbImg.setPointerCapture(ev.pointerId); } catch (err) {} }
+    pointers.set(ev.pointerId, {x: ev.clientX, y: ev.clientY});
+    if (pointers.size === 2){
+      pinch = {d: ptrDist(), z: zoom};
+      pan = null;
+      if (ev.pointerType !== 'mouse') suppressSwipe = true;
+      lbImg.classList.remove('grabbing');
+    } else if (pointers.size === 1 && zoom > 1){
+      pan = {x: ev.clientX, y: ev.clientY, tx: tx, ty: ty};
+      if (ev.pointerType !== 'mouse') suppressSwipe = true;
+      lbImg.classList.add('grabbing');
+      lbImg.classList.remove('grab');
+    }
+  });
+  stage.addEventListener('pointermove', function(ev){
+    if (!pointers.has(ev.pointerId)) return;
+    pointers.set(ev.pointerId, {x: ev.clientX, y: ev.clientY});
+    if (pinch && pointers.size >= 2){
+      zoom = Math.max(1, Math.min(4, pinch.z * (ptrDist() / (pinch.d || 1))));
+      if (zoom === 1){ tx = 0; ty = 0; } else clampPan();
+      syncCursor();
+      applyTransform();
+    } else if (pan){
+      tx = pan.tx + (ev.clientX - pan.x);
+      ty = pan.ty + (ev.clientY - pan.y);
+      clampPan();
+      applyTransform();
+    }
+  });
+  function endPointer(ev){
+    if (!pointers.delete(ev.pointerId)) return;
+    if (pointers.size < 2) pinch = null;
+    if (pointers.size === 0){
+      pan = null;
+      lbImg.classList.remove('grabbing');
+      syncCursor();
+    } else if (pointers.size === 1 && zoom > 1){
+      var rest = Array.from(pointers.values())[0];
+      pan = {x: rest.x, y: rest.y, tx: tx, ty: ty};
+      lbImg.classList.add('grabbing');
+      lbImg.classList.remove('grab');
+    }
+  }
+  stage.addEventListener('pointerup', endPointer);
+  stage.addEventListener('pointercancel', endPointer);
+  box.addEventListener('click', function(ev){
+    if (ev.target === box || ev.target.classList.contains('lb-stage')) close();
+  });
+
+  document.addEventListener('keydown', function(ev){
+    if (box.hidden) return;
+    if (ev.key === 'Escape') close();
+    else if (ev.key === 'ArrowLeft') show(current - 1);
+    else if (ev.key === 'ArrowRight') show(current + 1);
+  });
+
+  /* 触摸滑动翻页（缩放/平移手势时让位） */
+  var touchX = null;
+  box.addEventListener('touchstart', function(ev){
+    if (ev.touches.length > 1 || suppressSwipe){ touchX = null; return; }
+    touchX = ev.touches[0].clientX;
+  }, {passive:true});
+  box.addEventListener('touchend', function(ev){
+    if (suppressSwipe){ suppressSwipe = false; touchX = null; return; }
+    if (touchX === null) return;
+    var dx = ev.changedTouches[0].clientX - touchX;
+    if (Math.abs(dx) > 48){ if (dx < 0) show(current + 1); else show(current - 1); }
+    touchX = null;
+  }, {passive:true});
+
+  /* 初始驱动一次，保证首屏状态正确 */
+  requestTick();
+})();
+</script>
+</body>
+</html>
