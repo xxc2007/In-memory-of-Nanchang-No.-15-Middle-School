@@ -11,7 +11,48 @@
 <link rel="icon" type="image/png" href="images/emblem-64.png">
 <link rel="apple-touch-icon" href="images/emblem-180.png">
 <link rel="stylesheet" href="leaflet/leaflet.css">
-<link rel="stylesheet" href="/comment/dist/Artalk.css">
+<style>
+  /* ============ 留言墙（B站风格评论区） ============ */
+  .bili-comments{background:#FAF9F5;border:1px solid #E4DFD3;border-radius:12px;padding:24px 32px;margin-top:24px}
+  .bili-editor-row{display:flex;gap:14px;align-items:flex-start}
+  .bili-avatar{width:40px;height:40px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;
+    color:#FAF9F5;font-weight:700;font-size:17px;user-select:none;background:linear-gradient(135deg,#D97757,#C15F3C)}
+  .bili-editor-box{flex:1;background:#fff;border:1px solid #E4DFD3;border-radius:8px;transition:border-color .2s}
+  .bili-editor-box:focus-within{border-color:#D97757}
+  #cmtInput{display:block;width:100%;min-height:88px;resize:vertical;border:none;background:transparent;
+    padding:14px 16px;font:inherit;font-size:15px;line-height:1.7;color:#1F1E1D;outline:none;box-sizing:border-box}
+  .bili-editor-foot{display:flex;align-items:center;gap:14px;padding:10px 14px;border-top:1px solid #F0EEE6}
+  .bili-nick-wrap{display:flex;align-items:center;gap:6px;font-size:13px;color:#6E6A5E;flex:1}
+  #cmtNick{width:130px;border:none;border-bottom:1px dashed #D8D2C4;background:transparent;padding:3px 2px;
+    font:inherit;font-size:13px;color:#1F1E1D;outline:none;transition:border-color .2s}
+  #cmtNick:focus{border-bottom-color:#D97757}
+  #cmtCount{font-size:12px;color:#B8B2A4}
+  #cmtSubmit{background:#C15F3C;color:#FAF9F5;border:none;border-radius:6px;padding:8px 22px;
+    font:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:background .2s}
+  #cmtSubmit:hover{background:#D97757}
+  #cmtSubmit:disabled{background:#D8D2C4;cursor:wait}
+  .bili-list-head{font-size:15px;font-weight:700;color:#1F1E1D;margin:26px 0 4px}
+  .bili-list-head span{color:#6E6A5E;font-weight:400;font-size:13px;margin-left:4px}
+  .bili-item{display:flex;gap:12px;padding:18px 0;border-bottom:1px solid #F0EEE6}
+  .bili-item:last-child{border-bottom:none}
+  .bili-item .bili-avatar{width:36px;height:36px;font-size:15px}
+  .bili-c{flex:1;min-width:0}
+  .bili-c-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .bili-nick{font-size:14px;font-weight:600;color:#1F1E1D}
+  .bili-time{font-size:12px;color:#8A8578}
+  .bili-ip{font-size:12px;color:#8A8578;background:#F0EEE6;border-radius:4px;padding:1px 7px}
+  .bili-content{margin-top:5px;font-size:15px;line-height:1.85;color:#1F1E1D;word-break:break-word}
+  .bili-like{margin-top:6px;font-size:12px;color:#8A8578;user-select:none}
+  .bili-empty{text-align:center;color:#8A8578;font-size:14px;padding:44px 0 20px}
+  .bili-notice{margin-top:16px;background:#F0EEE6;border:1px solid #E4DFD3;border-radius:8px;
+    padding:12px 18px;font-size:13.5px;color:#6E6A5E;line-height:1.8}
+  .bili-notice b{color:#C15F3C}
+  #cmtLoading{text-align:center;color:#8A8578;font-size:13px;padding:30px 0}
+  @media (max-width:640px){
+    .bili-comments{padding:16px 14px}
+    .bili-editor-row{gap:10px}
+  }
+</style>
 <style>
   /* ============ Claude / Anthropic 视觉语言 ============ */
   :root{
@@ -771,84 +812,149 @@
   </section>
 
   <!-- ===================== 留言墙 ===================== -->
-  <style>
-    .artalk-card {
-      background: #FAF9F5;
-      border: 1px solid #E4DFD3;
-      border-radius: 12px;
-      padding: 24px 32px;
-      margin-top: 24px;
-    }
-    /* Artalk 配色对齐：米白纸感 + 赤陶橙 */
-    #Comments {
-      --atk-main-color: #1F1E1D;
-      --atk-main-bg-color: transparent;
-      --atk-secondary-color: #6E6A5E;
-      --atk-secondary-bg-color: #F0EEE6;
-      --atk-border-color: #E4DFD3;
-      --atk-send-btn-color: #FAF9F5;
-      --atk-send-btn-bg-color: #C15F3C;
-      --atk-send-btn-bg-hover-color: #D97757;
-      --atk-link-color: #C15F3C;
-      --atk-link-hover-color: #D97757;
-      font-family: var(--sans);
-    }
-    @media (max-width: 640px) {
-      .artalk-card { padding: 16px 14px; }
-    }
-  </style>
-
   <section class="block wall" id="wall">
     <div class="sec-head reveal"><span class="sec-index">柒 · WALL</span><h2>留言墙</h2></div>
     <hr class="sec-rule reveal">
-    <p class="sec-lede reveal">纪念册不该只有一个人的声音。留个名字，写一句那年的话——无需登录，留言经站长看过后就会出现在这里。</p>
-    <div class="artalk-card reveal">
-      <div id="Comments"></div>
+    <p class="sec-lede reveal">纪念册不该只有一个人的声音。写一句那年的话——无需登录，发布后经站长审核即会展示。</p>
+    <div class="bili-comments reveal">
+      <div class="bili-editor-row">
+        <div class="bili-avatar" id="myAvatar">访</div>
+        <div class="bili-editor-box">
+          <textarea id="cmtInput" maxlength="500" placeholder="善语结善缘，写一句那年的话……"></textarea>
+          <div class="bili-editor-foot">
+            <span class="bili-nick-wrap">昵称 <input id="cmtNick" maxlength="20" placeholder="留空则显示「路过的同学」"></span>
+            <span id="cmtCount">0 / 500</span>
+            <button id="cmtSubmit">发布</button>
+          </div>
+        </div>
+      </div>
+      <div id="cmtNotice" class="bili-notice" hidden></div>
+      <div class="bili-list-head">全部留言<span id="cmtTotal">0</span></div>
+      <div id="cmtLoading">加载中……</div>
+      <div id="cmtList"></div>
+      <div id="cmtEmpty" class="bili-empty" hidden>还没有留言，来做第一个吧。</div>
     </div>
   </section>
 
-  <script src="/comment/dist/Artalk.js"></script>
   <script>
-    (function () {
-      /* 匿名留言支持：访客未填昵称/邮箱时自动补全（服务端要求二者非空且邮箱格式合法）。
-         Artalk v2.10 前端使用 fetch 发请求，故拦截 window.fetch。
-         同一昵称 → 同一身份哈希；完全匿名 → 「路过的同学」+ 随机身份。 */
-      var origFetch = window.fetch;
-      window.fetch = function (input, init) {
-        var url = typeof input === 'string' ? input : (input && input.url) || '';
-        if (init && init.method === 'POST' && /\/comments(\?|$)/.test(url) && typeof init.body === 'string') {
-          try {
-            var d = JSON.parse(init.body);
-            var nick = (d.name || '').trim();
-            if (!nick) { d.name = '路过的同学'; d.email = 'anon-' + Math.random().toString(36).slice(2, 10) + '@local.xxc2007.me'; }
-            else {
-              var h = 0;
-              for (var i = 0; i < nick.length; i++) { h = (h * 31 + nick.charCodeAt(i)) >>> 0; }
-              d.email = 'anon-' + h.toString(36) + '@local.xxc2007.me';
-            }
-            init = Object.assign({}, init, { body: JSON.stringify(d) });
-          } catch (e) { /* 非 JSON body，放行 */ }
-        }
-        return origFetch.call(this, input, init);
-      };
+  (function(){
+    'use strict';
+    var API = 'https://xxc2007.me/comment/api/v2';
+    var SITE = '青山湖畔的纪念册';
+    var PAGE = '/guestbook';
+    var AVATAR_GRADS = [
+      'linear-gradient(135deg,#D97757,#B05633)',
+      'linear-gradient(135deg,#5B8A72,#3D6A54)',
+      'linear-gradient(135deg,#6B8AB3,#4A6A94)',
+      'linear-gradient(135deg,#C9A227,#A07E18)',
+      'linear-gradient(135deg,#B37A9E,#8F5A7E)',
+      'linear-gradient(135deg,#7A9EB3,#55778E)',
+      'linear-gradient(135deg,#D98A6B,#B0563F)',
+      'linear-gradient(135deg,#94A86B,#6E7E4A)'
+    ];
+    function hash(s){var h=0;for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0;return h;}
+    function esc(s){return String(s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+    function fmtTime(s){var m=/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})/.exec(s||'');return m?(m[1]+'年'+(+m[2])+'月'+(+m[3])+'日 '+m[4]+':'+m[5]):(s||'');}
+    function avatarEl(nick){
+      var ch=(nick||'访').trim().charAt(0).toUpperCase()||'访';
+      var d=document.createElement('div');d.className='bili-avatar';d.textContent=ch;
+      d.style.background=AVATAR_GRADS[hash(nick||'访')%AVATAR_GRADS.length];return d;
+    }
 
-      function mount() {
-        if (typeof Artalk === 'undefined') return false;
-        Artalk.init({
-          el: '#Comments',
-          server: 'https://xxc2007.me/comment',
-          site: '青山湖畔的纪念册',
-          pageKey: '/guestbook',
-          placeholder: '写一句那年的话……（无需登录，发布后经站长审核即会展示）',
-          noComment: '还没有留言，来做第一个吧。',
-          sendBtn: '发布留言',
-          editorTravel: false,
-          darkMode: false
+    /* 昵称：可自定义，本地记忆，头像首字随动 */
+    var nickInput=document.getElementById('cmtNick');
+    var myAvatar=document.getElementById('myAvatar');
+    try{nickInput.value=localStorage.getItem('wallNick')||'';}catch(e){}
+    function syncMyAvatar(){
+      var n=(nickInput.value||'').trim();
+      var ch=n?n.charAt(0).toUpperCase():'访';
+      myAvatar.textContent=ch;
+      myAvatar.style.background=AVATAR_GRADS[hash(n||'访')%AVATAR_GRADS.length];
+    }
+    nickInput.addEventListener('input',function(){
+      syncMyAvatar();
+      try{localStorage.setItem('wallNick',nickInput.value.trim());}catch(e){}
+    });
+    syncMyAvatar();
+
+    var ta=document.getElementById('cmtInput'),count=document.getElementById('cmtCount');
+    ta.addEventListener('input',function(){count.textContent=ta.value.length+' / 500';});
+
+    var notice=document.getElementById('cmtNotice');
+    function showNotice(html){notice.innerHTML=html;notice.hidden=false;}
+
+    function render(list){
+      var wrap=document.getElementById('cmtList');
+      wrap.innerHTML='';
+      list.forEach(function(cm){
+        var row=document.createElement('div');row.className='bili-item';
+        row.appendChild(avatarEl(cm.nick));
+        var col=document.createElement('div');col.className='bili-c';
+        var head=document.createElement('div');head.className='bili-c-head';
+        head.innerHTML='<span class="bili-nick">'+esc(cm.nick||'路过的同学')+'</span>'
+          +'<span class="bili-time">'+fmtTime(cm.date)+'</span>'
+          +(cm.ip_region?'<span class="bili-ip">IP属地：'+esc(cm.ip_region)+'</span>':'');
+        col.appendChild(head);
+        var body=document.createElement('div');body.className='bili-content';
+        body.innerHTML=esc(cm.content).replace(/\n/g,'<br>');
+        col.appendChild(body);
+        var like=document.createElement('div');like.className='bili-like';
+        like.textContent='赞同 '+(cm.vote_up||0);
+        col.appendChild(like);
+        row.appendChild(col);
+        wrap.appendChild(row);
+      });
+      document.getElementById('cmtEmpty').hidden=list.length>0;
+      document.getElementById('cmtTotal').textContent=list.length;
+    }
+
+    function load(){
+      fetch(API+'/comments?page_key='+encodeURIComponent(PAGE)+'&site_name='+encodeURIComponent(SITE)+'&limit=100')
+        .then(function(r){return r.json();})
+        .then(function(d){
+          document.getElementById('cmtLoading').hidden=true;
+          render(d.comments||[]);
+        })
+        .catch(function(){
+          document.getElementById('cmtLoading').textContent='留言加载失败，请刷新重试。';
         });
-        return true;
-      }
-      if (!mount()) document.addEventListener('DOMContentLoaded', mount);
-    })();
+    }
+
+    var submitting=false;
+    document.getElementById('cmtSubmit').addEventListener('click',function(){
+      if(submitting)return;
+      var text=ta.value.trim();
+      if(!text){ta.focus();return;}
+      submitting=true;
+      document.getElementById('cmtSubmit').disabled=true;
+      var nick=(nickInput.value||'').trim();
+      var name=nick||'路过的同学';
+      var email=nick
+        ?('anon-'+hash(name).toString(36)+'@local.xxc2007.me')
+        :('anon-'+Math.random().toString(36).slice(2,10)+'@local.xxc2007.me');
+      fetch(API+'/comments',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({page_key:PAGE,page_title:'留言墙',site_name:SITE,name:name,email:email,content:text})})
+        .then(function(r){return r.json();})
+        .then(function(d){
+          submitting=false;
+          document.getElementById('cmtSubmit').disabled=false;
+          if(d.id){
+            ta.value='';count.textContent='0 / 500';
+            showNotice('<b>留言已提交。</b>站长审核通过后就会出现在这里，感谢你的声音 ✦');
+            load();
+          } else {
+            showNotice('发布失败：'+esc(d.msg||'未知错误'));
+          }
+        })
+        .catch(function(){
+          submitting=false;
+          document.getElementById('cmtSubmit').disabled=false;
+          showNotice('网络异常，发布失败，请稍后重试。');
+        });
+    });
+
+    load();
+  })();
   </script>
 </main>
 
