@@ -865,9 +865,9 @@
     function fmtTime(s){var m=/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})/.exec(s||'');return m?(m[1]+'年'+(+m[2])+'月'+(+m[3])+'日 '+m[4]+':'+m[5]):(s||'');}
     function avatarEl(nick, link){
       var d=document.createElement('div');d.className='bili-avatar';
-      if(link && link.indexOf('/static/images/')===0){
+      if(link && link.indexOf('/static/images/')!==-1){
         var img=document.createElement('img');
-        img.src='/comment'+link;
+        img.src=link.indexOf('http')===0 ? link : '/comment'+link;
         img.alt=(nick||'访客')+'的头像';
         d.appendChild(img);
         return d;
@@ -1003,7 +1003,7 @@
         ?('anon-'+hash(name).toString(36)+'@local.xxc2007.me')
         :('anon-'+Math.random().toString(36).slice(2,10)+'@local.xxc2007.me');
       fetch(API+'/comments',{method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({page_key:PAGE,page_title:'留言墙',site_name:SITE,name:name,email:email,link:avatarURL||'',content:text})})
+        body:JSON.stringify({page_key:PAGE,page_title:'留言墙',site_name:SITE,name:name,email:email,link:avatarURL?('https://xxc2007.me/comment'+avatarURL):'',content:text})})
         .then(function(r){return r.json();})
         .then(function(d){
           submitting=false;

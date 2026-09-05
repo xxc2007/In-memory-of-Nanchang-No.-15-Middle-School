@@ -102,7 +102,7 @@ site/
 Nothing to install:
 
 ```bash
-git clone https://github.com/xxc2007/nanchang-no15-memorial.git
+git clone https://github.com/xxc2007/In-memory-of-Nanchang-No.-15-Middle-School.git
 cd xxc
 python -m http.server 8000   # or just open index.html
 ```
