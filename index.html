@@ -965,69 +965,6 @@
     </div>
   </section>
 
-  /* ---------- 暗河流沙（留言墙粒子：伪流场 + 鼠标斥力增亮） ---------- */
-  (function(){
-    if (reduceMotion) return;
-    var cv = document.getElementById('sandCanvas');
-    if (!cv || !cv.getContext) return;
-    var ctx = cv.getContext('2d');
-    var W = 0, H = 0;
-    var DPR = Math.min(window.devicePixelRatio || 1, 2);
-    var P = [], mouse = {x:-9e3, y:-9e3, inside:false};
-    var N = Math.min(230, Math.max(120, Math.round((window.innerWidth / 1440) * 230)));
-
-    function size(){
-      var r = cv.parentElement.getBoundingClientRect();
-      W = r.width; H = r.height;
-      cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
-      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-    }
-    var t0 = performance.now();
-    function noise(x, y, t){
-      return Math.sin(x * .008 + t * .0004) * Math.cos(y * .006 - t * .0003) * 6.2832;
-    }
-    function frame(t){
-      ctx.clearRect(0, 0, W, H);
-      for (var i = 0; i < P.length; i++){
-        var p = P[i];
-        var ang = noise(p.x, p.y, t - t0);
-        p.vx += Math.cos(ang) * .012;
-        p.vy += Math.sin(ang) * .012;
-        var glow = 0;
-        if (mouse.inside){
-          var dx = p.x - mouse.x, dy = p.y - mouse.y;
-          var d = Math.hypot(dx, dy);
-          if (d < 110 && d > 1){
-            var f = (110 - d) / 110;
-            p.vx += dx / d * f * 1.4;
-            p.vy += dy / d * f * 1.4;
-            glow = f;
-          }
-        }
-        p.vx *= .96; p.vy *= .96;
-        p.x += p.vx + p.sp; p.y += p.vy;
-        if (p.x > W + 4) p.x = -4; if (p.x < -4) p.x = W + 4;
-        if (p.y > H + 4) p.y = -4; if (p.y < -4) p.y = H + 4;
-        var a = Math.min(.85, p.a + glow * .7);
-        ctx.beginPath();
-        ctx.fillStyle = p.warm ? 'rgba(217,119,87,' + a + ')' : 'rgba(201,180,140,' + (a * .8) + ')';
-        ctx.arc(p.x, p.y, p.r + glow * 1.2, 0, 6.2832);
-        ctx.fill();
-      }
-      requestAnimationFrame(frame);
-    }
-    function init(){
-      size();
-      window.addEventListener('resize', function(){ size(); });
-      cv.parentElement.addEventListener('mousemove', function(ev){
-        var r = cv.parentElement.getBoundingClientRect();
-        mouse.x = ev.clientX - r.left; mouse.y = ev.clientY - r.top; mouse.inside = true;
-      });
-      cv.parentElement.addEventListener('mouseleave', function(){ mouse.inside = false; });
-      requestAnimationFrame(frame);
-    }
-    init();
-  })();
 
 
   <script>
@@ -1094,6 +1031,69 @@
     }
     var fileInput=document.getElementById('cmtAvatarInput');
     myAvatar.addEventListener('click',function(){fileInput.click();});
+  /* ---------- 暗河流沙（留言墙粒子：伪流场 + 鼠标斥力增亮） ---------- */
+  (function(){
+    if (reduceMotion) return;
+    var cv = document.getElementById('sandCanvas');
+    if (!cv || !cv.getContext) return;
+    var ctx = cv.getContext('2d');
+    var W = 0, H = 0;
+    var DPR = Math.min(window.devicePixelRatio || 1, 2);
+    var P = [], mouse = {x:-9e3, y:-9e3, inside:false};
+    var N = Math.min(230, Math.max(120, Math.round((window.innerWidth / 1440) * 230)));
+
+    function size(){
+      var r = cv.parentElement.getBoundingClientRect();
+      W = r.width; H = r.height;
+      cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    }
+    var t0 = performance.now();
+    function noise(x, y, t){
+      return Math.sin(x * .008 + t * .0004) * Math.cos(y * .006 - t * .0003) * 6.2832;
+    }
+    function frame(t){
+      ctx.clearRect(0, 0, W, H);
+      for (var i = 0; i < P.length; i++){
+        var p = P[i];
+        var ang = noise(p.x, p.y, t - t0);
+        p.vx += Math.cos(ang) * .012;
+        p.vy += Math.sin(ang) * .012;
+        var glow = 0;
+        if (mouse.inside){
+          var dx = p.x - mouse.x, dy = p.y - mouse.y;
+          var d = Math.hypot(dx, dy);
+          if (d < 110 && d > 1){
+            var f = (110 - d) / 110;
+            p.vx += dx / d * f * 1.4;
+            p.vy += dy / d * f * 1.4;
+            glow = f;
+          }
+        }
+        p.vx *= .96; p.vy *= .96;
+        p.x += p.vx + p.sp; p.y += p.vy;
+        if (p.x > W + 4) p.x = -4; if (p.x < -4) p.x = W + 4;
+        if (p.y > H + 4) p.y = -4; if (p.y < -4) p.y = H + 4;
+        var a = Math.min(.85, p.a + glow * .7);
+        ctx.beginPath();
+        ctx.fillStyle = p.warm ? 'rgba(217,119,87,' + a + ')' : 'rgba(201,180,140,' + (a * .8) + ')';
+        ctx.arc(p.x, p.y, p.r + glow * 1.2, 0, 6.2832);
+        ctx.fill();
+      }
+      requestAnimationFrame(frame);
+    }
+    function init(){
+      size();
+      window.addEventListener('resize', function(){ size(); });
+      cv.parentElement.addEventListener('mousemove', function(ev){
+        var r = cv.parentElement.getBoundingClientRect();
+        mouse.x = ev.clientX - r.left; mouse.y = ev.clientY - r.top; mouse.inside = true;
+      });
+      cv.parentElement.addEventListener('mouseleave', function(){ mouse.inside = false; });
+      requestAnimationFrame(frame);
+    }
+    init();
+  })();
     fileInput.addEventListener('change',function(){
       var f=fileInput.files&&fileInput.files[0];
       fileInput.value='';
