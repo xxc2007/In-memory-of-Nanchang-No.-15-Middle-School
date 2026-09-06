@@ -58,6 +58,12 @@
   @media (max-width:640px){
     .bili-comments{padding:16px 14px}
     .bili-editor-row{gap:10px}
+    .bili-avatar{width:34px;height:34px;font-size:15px}
+    .bili-editor-foot{flex-wrap:wrap;gap:8px 12px;padding:10px 12px}
+    .bili-nick-wrap{flex:1 1 100%}
+    #cmtNick{flex:1;width:auto;min-width:0}
+    #cmtCount{margin-left:auto}
+    #cmtSubmit{white-space:nowrap;flex:none;padding:8px 28px}
   }
 </style>
 <style>
@@ -847,7 +853,7 @@
   <script>
   (function(){
     'use strict';
-    var API = 'https://xxc2007.me/comment/api/v2';
+    var API = '/comment/api/v2';   /* 相对路径：http/https、有无 www 均同源，手机端不会跨域 */
     var SITE = '青山湖畔的纪念册';
     var PAGE = '/guestbook';
     var AVATAR_GRADS = [
@@ -986,9 +992,22 @@
           render(d.comments||[]);
         })
         .catch(function(){
-          document.getElementById('cmtLoading').textContent='留言加载失败，请刷新重试。';
+          var el=document.getElementById('cmtLoading');
+          el.hidden=false;
+          el.setAttribute('data-failed','1');
+          el.style.cursor='pointer';
+          el.textContent='留言加载失败，点击这里重试。';
         });
     }
+    document.getElementById('cmtLoading').addEventListener('click',function(){
+      if(this.getAttribute('data-failed')==='1'){
+        this.removeAttribute('data-failed');
+        this.textContent='加载中……';
+        this.style.cursor='default';
+        load();
+      }
+    });
+    document.getElementById('cmtLoading').style.cursor='default';
 
     var submitting=false;
     document.getElementById('cmtSubmit').addEventListener('click',function(){
