@@ -888,7 +888,7 @@
   <!-- ===================== 留言墙（暗场 · 暗河流沙） ===================== -->
   <style>
     /* 暗场深色版：Oryzo 气质，粒子即记忆的尘埃 */
-    .wall-dark{position:relative;background:var(--dark);color:#EFEBE0;
+    .wall-dark{position:relative;color:#EFEBE0;background:linear-gradient(to bottom, var(--cream) 0%, rgba(240,238,230,0) 110px), linear-gradient(to top, var(--cream) 0%, rgba(240,238,230,0) 110px), var(--dark);
       padding:96px 0 84px;overflow:hidden}
     .wall-dark .sec-index{color:var(--terra)}
     .wall-dark .sec-head h2{color:#EFEBE0}
@@ -1041,7 +1041,7 @@
     var W = 0, H = 0;
     var DPR = Math.min(window.devicePixelRatio || 1, 2);
     var P = [], mouse = {x:-9e3, y:-9e3, inside:false};
-    var N = Math.min(230, Math.max(120, Math.round((window.innerWidth / 1440) * 230)));
+    var N = Math.min(260, Math.max(150, Math.round((window.innerWidth / 1440) * 260)));
 
     function size(){
       var r = cv.parentElement.getBoundingClientRect();
@@ -1053,8 +1053,32 @@
     function noise(x, y, t){
       return Math.sin(x * .008 + t * .0004) * Math.cos(y * .006 - t * .0003) * 6.2832;
     }
+    var P = [];
+    for (var pi = 0; pi < N; pi++){
+      P.push({
+        x: Math.random() * 2000,
+        y: Math.random() * 900,
+        vx: 0, vy: 0,
+        r: 0.9 + Math.random() * 1.9,
+        sp: 0.08 + Math.random() * 0.2,
+        a: 0.25 + Math.random() * 0.4,
+        warm: Math.random() < 0.32
+      });
+    }
+
     function frame(t){
       ctx.clearRect(0, 0, W, H);
+      for (var ri = ripples.length - 1; ri >= 0; ri--){
+        var rp = ripples[ri];
+        var age = (t - rp.born) / 900;
+        if (age > 1){ ripples.splice(ri, 1); continue; }
+        var rr = rp.r0 + age * 130;
+        ctx.beginPath();
+        ctx.strokeStyle = 'rgba(217,119,87,' + (0.5 * (1 - age)).toFixed(3) + ')';
+        ctx.lineWidth = 1.5;
+        ctx.arc(rp.x, rp.y, rr, 0, 6.2832);
+        ctx.stroke();
+      }
       for (var i = 0; i < P.length; i++){
         var p = P[i];
         var ang = noise(p.x, p.y, t - t0);
@@ -1064,8 +1088,8 @@
         if (mouse.inside){
           var dx = p.x - mouse.x, dy = p.y - mouse.y;
           var d = Math.hypot(dx, dy);
-          if (d < 110 && d > 1){
-            var f = (110 - d) / 110;
+          if (d < 130 && d > 1){
+            var f = (130 - d) / 130;
             p.vx += dx / d * f * 1.4;
             p.vy += dy / d * f * 1.4;
             glow = f;
@@ -1075,7 +1099,7 @@
         p.x += p.vx + p.sp; p.y += p.vy;
         if (p.x > W + 4) p.x = -4; if (p.x < -4) p.x = W + 4;
         if (p.y > H + 4) p.y = -4; if (p.y < -4) p.y = H + 4;
-        var a = Math.min(.85, p.a + glow * .7);
+        var a = Math.min(.92, p.a + glow);
         ctx.beginPath();
         ctx.fillStyle = p.warm ? 'rgba(217,119,87,' + a + ')' : 'rgba(201,180,140,' + (a * .8) + ')';
         ctx.arc(p.x, p.y, p.r + glow * 1.2, 0, 6.2832);
@@ -1083,6 +1107,12 @@
       }
       requestAnimationFrame(frame);
     }
+    var ripples = [];
+    cv.parentElement.addEventListener('click', function(ev){
+      var r = cv.parentElement.getBoundingClientRect();
+      ripples.push({x: ev.clientX - r.left, y: ev.clientY - r.top, r0: 6, born: performance.now()});
+      if (ripples.length > 4) ripples.shift();
+    });
     function init(){
       size();
       window.addEventListener('resize', function(){ size(); });
