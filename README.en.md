@@ -17,7 +17,7 @@
 
 <br>
 
-This is a memorial page for Nanchang No. 15 Middle School: **27 photographs of the campus**, a **clickable Leaflet campus map with camera spots**, a **login-free anonymous guestbook**, and a full set of interactions polished for reading — reading progress bar, section-aware navigation, count-up numbers, a growing timeline, and a zoom-and-pan lightbox.
+This is a memorial page for Nanchang No. 15 Middle School: **27 photographs of the campus**, a **clickable 3D satellite campus map (MapLibre GL)**, a **login-free anonymous guestbook**, and a full set of interactions polished for reading — reading progress bar, section-aware navigation, count-up numbers, a growing timeline, and a zoom-and-pan lightbox.
 
 Single file · Zero frameworks · No build step. Clone it, double-click, and it opens.
 
@@ -41,14 +41,14 @@ Single file · Zero frameworks · No build step. Clone it, double-click, and it 
 - Claude visual language: cream paper background + terracotta accents + serif headlines, with consistent hairlines and rounded cards throughout
 - Fully responsive (three breakpoints) with a `prefers-reduced-motion` fallback
 
-### 🗺 Campus Map (Leaflet)
+### 🗺 Campus Map (MapLibre 3D Satellite)
 
 - The school is pinned to OSM way `260420791` (Qingshanhu campus, 28.7208°N, 115.9322°E)
 - **8 camera-spot markers** with popups embedding the matching photo thumbnail and date; all spots live in one `CAMERA_SPOTS` array — easy to edit
-- Free OSM tiles + a CSS filter to blend into the site palette; `scrollWheelZoom: false` keeps page scrolling untouched
+- **Esri high-resolution satellite imagery + AWS terrain elevation**, rendered in WebGL: default 55° tilted view, drag to rotate, right-drag to pitch, cinematic flyTo on load
 
 <p align="center">
-  <img src="docs/screenshot-map.png" alt="Campus map: eight camera-spot markers on a Leaflet map" width="86%">
+  <img src="docs/screenshot-map.png" alt="Campus map: eight camera-spot markers in 3D satellite view" width="86%">
 </p>
 
 ### 💬 Guestbook (self-hosted Artalk)
@@ -71,6 +71,8 @@ Single file · Zero frameworks · No build step. Clone it, double-click, and it 
 | Hero parallax | The hero image drifts at half scroll speed, `scale(1.09)` hides the edges |
 | Growing timeline | The history line draws itself downward; year nodes light up as it passes |
 | Lightbox | Cursor-centered wheel zoom 1–4×, double-click zoom, drag pan, pinch, clamped edges — coexists safely with swipe navigation |
+| Camphor leaves | A canvas of softly falling leaves over the hero, auto-pausing when hidden |
+| Gallery fade & tilt | Images fade in as they load; desktop cards tilt subtly with the cursor |
 
 All animations share a single rAF-driven scroll loop and degrade gracefully when the system asks for reduced motion.
 
@@ -83,7 +85,7 @@ site/
 │   ├── full/           # 25 full-size photographs
 │   ├── thumbs/         # Matching thumbnails
 │   └── emblem-*.png    # School emblem (top bar / hero / footer / favicon)
-├── leaflet/            # Self-hosted Leaflet 1.9.4 (no CDN dependency)
+├── maplibre/           # Self-hosted MapLibre GL v5 (no CDN dependency)
 └── docs/               # Screenshots used by this README
 ```
 
@@ -92,7 +94,7 @@ site/
 | Layer | Choice |
 |------|------|
 | Frontend | Pure HTML / CSS / vanilla JS, single file, no build |
-| Map | [Leaflet](https://leafletjs.com) 1.9.4 + OpenStreetMap tiles |
+| Map | [MapLibre GL](https://maplibre.org) v5 + Esri satellite imagery + AWS 3D terrain |
 | Guestbook | [Artalk](https://artalk.js.org) v2.10 self-hosted + SQLite |
 | Serving | nginx reverse proxy `/comment/` → systemd service |
 | Deployment | Azure VM · Cloudflare DNS · Let's Encrypt |
