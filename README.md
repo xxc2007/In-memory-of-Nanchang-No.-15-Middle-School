@@ -58,7 +58,7 @@
 - 零第三方依赖：Artalk 服务端跑在自己的服务器上，数据是自己的
 
 <p align="center">
-  <img src="docs/screenshot-wall.png" alt="留言墙：Artalk 匿名评论区" width="86%">
+  <img src="docs/screenshot-guestbook.png" alt="留言墙：B站风格匿名评论区（头像 / IP属地 / 北京时间）" width="86%">
 </p>
 
 ### 🎬 动态交互（原生 JS，零依赖）

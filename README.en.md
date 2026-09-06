@@ -58,7 +58,7 @@ Single file · Zero frameworks · No build step. Clone it, double-click, and it 
 - Zero third-party dependency: the Artalk server runs on our own machine, the data stays ours
 
 <p align="center">
-  <img src="docs/screenshot-wall.png" alt="Guestbook: the Artalk anonymous comment area" width="86%">
+  <img src="docs/screenshot-guestbook.png" alt="Guestbook: bilibili-style anonymous comments (avatar / IP region / Beijing time)" width="86%">
 </p>
 
 ### 🎬 Interactions (vanilla JS, zero dependencies)
