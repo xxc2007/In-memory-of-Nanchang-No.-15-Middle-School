@@ -5,469 +5,77 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>南昌市第十五中学 · 青山湖畔的纪念册</title>
 <meta name="description" content="纪念南昌市第十五中学——江西省重点中学，创建于1958年，坐落于南昌市青山湖畔。熊鑫晨镜头里的校园：红砖楼、香樟、老水塔与操场，25张校园实景摄影。">
+<meta name="theme-color" content="#F0EEE6">
+<link rel="canonical" href="https://xxc2007.me/">
 <meta property="og:title" content="南昌市第十五中学 · 青山湖畔的纪念册">
 <meta property="og:description" content="红砖楼、香樟与老水塔——熊鑫晨镜头里的南昌十五中，25张校园实景摄影。">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://xxc2007.me/">
+<meta property="og:image" content="https://xxc2007.me/images/full/12-sunset-building-flag.jpg">
+<meta property="og:site_name" content="青山湖畔的纪念册">
+<meta property="og:locale" content="zh_CN">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/png" href="images/emblem-64.png">
 <link rel="apple-touch-icon" href="images/emblem-180.png">
-<link rel="stylesheet" href="maplibre/maplibre-gl.css?v=20260906">
-<style>
-  /* ============ 留言墙（B站风格评论区） ============ */
-  .bili-comments{background:#FAF9F5;border:1px solid #E4DFD3;border-radius:12px;padding:24px 32px;margin-top:24px}
-  .bili-editor-row{display:flex;gap:14px;align-items:flex-start}
-  .bili-avatar{width:40px;height:40px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;
-    color:#FAF9F5;font-weight:700;font-size:17px;user-select:none;background:linear-gradient(135deg,#D97757,#C15F3C);
-    cursor:pointer;overflow:hidden;position:relative}
-  .bili-avatar img{width:100%;height:100%;object-fit:cover}
-  .bili-editor-row .bili-avatar:hover::after{content:"换头像";position:absolute;inset:0;background:rgba(31,30,29,.55);
-    font-size:10px;font-weight:400;display:flex;align-items:center;justify-content:center}
-  #cmtAvatarInput{display:none}
-  .bili-item .bili-avatar{cursor:default}
-  .bili-item .bili-avatar:hover::after{content:none}
-  .bili-editor-box{flex:1;background:#fff;border:1px solid #E4DFD3;border-radius:8px;transition:border-color .2s}
-  .bili-editor-box:focus-within{border-color:#D97757}
-  #cmtInput{display:block;width:100%;min-height:88px;resize:vertical;border:none;background:transparent;
-    padding:14px 16px;font:inherit;font-size:15px;line-height:1.7;color:#1F1E1D;outline:none;box-sizing:border-box}
-  .bili-editor-foot{display:flex;align-items:center;gap:14px;padding:10px 14px;border-top:1px solid #F0EEE6}
-  .bili-nick-wrap{display:flex;align-items:center;gap:6px;font-size:13px;color:#6E6A5E;flex:1}
-  #cmtNick{width:130px;border:none;border-bottom:1px dashed #D8D2C4;background:transparent;padding:3px 2px;
-    font:inherit;font-size:13px;color:#1F1E1D;outline:none;transition:border-color .2s}
-  #cmtNick:focus{border-bottom-color:#D97757}
-  #cmtCount{font-size:12px;color:#B8B2A4}
-  #cmtSubmit{background:#C15F3C;color:#FAF9F5;border:none;border-radius:6px;padding:8px 22px;
-    font:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:background .2s}
-  #cmtSubmit:hover{background:#D97757}
-  #cmtSubmit:disabled{background:#D8D2C4;cursor:wait}
-  .bili-list-head{font-size:15px;font-weight:700;color:#1F1E1D;margin:26px 0 4px}
-  .bili-list-head span{color:#6E6A5E;font-weight:400;font-size:13px;margin-left:4px}
-  .bili-item{display:flex;gap:12px;padding:18px 0;border-bottom:1px solid #F0EEE6}
-  .bili-item:last-child{border-bottom:none}
-  .bili-item .bili-avatar{width:36px;height:36px;font-size:15px}
-  .bili-c{flex:1;min-width:0}
-  .bili-c-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
-  .bili-nick{font-size:14px;font-weight:600;color:#1F1E1D}
-  .bili-time{font-size:12px;color:#8A8578}
-  .bili-ip{font-size:12px;color:#8A8578;background:#F0EEE6;border-radius:4px;padding:1px 7px}
-  .bili-content{margin-top:5px;font-size:15px;line-height:1.85;color:#1F1E1D;word-break:break-word}
-  .bili-like{margin-top:6px;font-size:12px;color:#8A8578;user-select:none}
-  .bili-empty{text-align:center;color:#8A8578;font-size:14px;padding:44px 0 20px}
-  .bili-notice{margin-top:16px;background:#F0EEE6;border:1px solid #E4DFD3;border-radius:8px;
-    padding:12px 18px;font-size:13.5px;color:#6E6A5E;line-height:1.8}
-  .bili-notice b{color:#C15F3C}
-  #cmtLoading{text-align:center;color:#8A8578;font-size:13px;padding:30px 0}
-  @media (max-width:640px){
-    .bili-comments{padding:16px 14px}
-    .bili-editor-row{gap:10px}
-    .bili-avatar{width:34px;height:34px;font-size:15px}
-    .bili-editor-foot{flex-wrap:wrap;gap:8px 12px;padding:10px 12px}
-    .bili-nick-wrap{flex:1 1 100%}
-    #cmtNick{flex:1;width:auto;min-width:0}
-    #cmtCount{margin-left:auto}
-    #cmtSubmit{white-space:nowrap;flex:none;padding:8px 28px}
+<link rel="stylesheet" href="maplibre/maplibre-gl.css?v=20260906c">
+<link rel="stylesheet" href="assets/style.css?v=20260906c">
+<link rel="preload" as="image" href="images/full/18-plaza-summer.jpg" fetchpriority="high">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "青山湖畔的纪念册",
+  "url": "https://xxc2007.me/",
+  "description": "纪念南昌市第十五中学的私人纪念册：25张校园实景摄影、时光漫游与留言墙。",
+  "author": { "@type": "Person", "name": "熊鑫晨" },
+  "about": {
+    "@type": "HighSchool",
+    "name": "南昌市第十五中学",
+    "foundingDate": "1958",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "塘山街新何村47号",
+      "addressLocality": "南昌市",
+      "addressRegion": "江西省",
+      "postalCode": "330096",
+      "addressCountry": "CN"
+    },
+    "geo": { "@type": "GeoCoordinates", "latitude": 28.72078, "longitude": 115.93216 }
   }
-</style>
-<style>
-  /* ============ Claude / Anthropic 视觉语言 ============ */
-  :root{
-    --cream:#F0EEE6;      /* 页面底色 */
-    --paper:#FAF9F5;      /* 卡片白 */
-    --ink:#1F1E1D;        /* 墨色 */
-    --muted:#6E6A5E;      /* 弱文字 */
-    --terra:#D97757;      /* Claude 赤陶橙 */
-    --terra-deep:#C15F3C;
-    --line:#E4DFD3;       /* 发丝线 */
-    --dark:#1F1E1D;       /* 深色区 */
-    --serif:Georgia,"Times New Roman","Songti SC","STSong","Noto Serif CJK SC","SimSun",serif;
-    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
-  }
-  *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth;scroll-padding-top:76px}
-  body{
-    font-family:var(--sans);
-    background:var(--cream);
-    color:var(--ink);
-    font-size:17px;line-height:1.9;
-    -webkit-font-smoothing:antialiased;
-    text-rendering:optimizeLegibility;
-  }
-  ::selection{background:var(--terra);color:#fff}
-  img{display:block;max-width:100%;height:auto}
-  a{color:var(--terra-deep);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;transition:color .2s}
-  a:hover{color:var(--terra)}
-  p{text-wrap:pretty}
-
-  /* ============ 顶栏 ============ */
-  .topbar{
-    position:fixed;top:0;left:0;right:0;z-index:50;
-    background:rgba(240,238,230,.88);
-    -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
-    border-bottom:1px solid transparent;
-    transition:border-color .3s, box-shadow .3s;
-  }
-  .topbar.scrolled{border-bottom-color:var(--line);box-shadow:0 1px 20px rgba(31,30,29,.05)}
-  .progress{
-    position:absolute;left:0;right:0;bottom:-1px;height:2px;
-    background:var(--terra);transform:scaleX(0);transform-origin:0 50%;
-    pointer-events:none;
-  }
-  .topbar-inner{
-    max-width:1200px;margin:0 auto;padding:0 28px;
-    height:64px;display:flex;align-items:center;justify-content:space-between;gap:16px;
-  }
-  .brand{display:flex;align-items:center;gap:10px;white-space:nowrap}
-  .brand img{width:28px;height:28px;border-radius:50%;box-shadow:0 1px 4px rgba(31,30,29,.18)}
-  .brand b{font-family:var(--serif);font-weight:700;font-size:19px;letter-spacing:.04em}
-  .brand span{font-size:12px;color:var(--muted);letter-spacing:.14em;align-self:end;padding-bottom:2px}
-  nav.toc{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
-  nav.toc::-webkit-scrollbar{display:none}
-  nav.toc a{
-    font-size:14px;color:var(--muted);text-decoration:none;
-    padding:6px 12px;border-radius:99px;white-space:nowrap;
-    transition:color .2s, background .2s;
-  }
-  nav.toc a:hover{color:var(--ink);background:rgba(217,119,87,.10)}
-  nav.toc a.active{color:var(--terra-deep);background:rgba(217,119,87,.12)}
-
-  /* ============ Hero ============ */
-  .hero{max-width:1200px;margin:0 auto;padding:150px 28px 0;position:relative}
-  .hero>*{position:relative;z-index:1}
-  .hero-emblem{width:78px;height:78px;filter:drop-shadow(0 3px 10px rgba(31,30,29,.16));animation:rise .8s 0s both}
-  .hero .eyebrow{
-    font-size:13px;letter-spacing:.32em;color:var(--muted);
-    display:flex;align-items:center;gap:14px;margin-top:26px;
-    animation:rise .8s .08s both;
-  }
-  .hero .eyebrow::before{content:"";width:44px;height:1px;background:var(--terra)}
-  .hero h1{
-    font-family:var(--serif);font-weight:700;
-    font-size:clamp(46px,8vw,96px);line-height:1.18;letter-spacing:.02em;
-    margin:22px 0 10px;
-    animation:rise .8s .15s both;
-  }
-  .hero h1 em{font-style:normal;color:var(--terra)}
-  .hero .sub{
-    font-size:clamp(16px,2.2vw,21px);color:var(--muted);max-width:34em;
-    animation:rise .8s .25s both;
-  }
-  .hero .stats{
-    display:flex;flex-wrap:wrap;gap:0;
-    margin:52px 0 0;border-top:1px solid var(--line);
-    animation:rise .8s .35s both;
-  }
-  .hero .stat{padding:22px 44px 4px 0;margin-right:44px;border-right:1px solid var(--line)}
-  .hero .stat:last-child{border-right:none;margin-right:0}
-  .hero .stat b{
-    display:block;font-family:var(--serif);font-weight:700;
-    font-size:clamp(28px,3.6vw,40px);line-height:1.2;color:var(--ink);
-  }
-  .hero .stat span{font-size:13px;color:var(--muted);letter-spacing:.08em}
-  .hero-figure{max-width:1200px;margin:56px auto 0;padding:0 28px;animation:rise .9s .45s both}
-  .hero-img-wrap{display:block;overflow:hidden;border-radius:10px}
-  .hero-figure img{width:100%;border-radius:10px;will-change:transform}
-  .hero-figure figcaption{
-    font-size:13px;color:var(--muted);padding:12px 2px 0;
-    display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
-  }
-  .scroll-hint{
-    max-width:1200px;margin:34px auto 0;padding:0 28px 72px;
-    display:flex;align-items:center;gap:10px;color:var(--muted);font-size:13px;letter-spacing:.2em;
-    animation:rise .8s .6s both;
-  }
-  .scroll-hint::after{content:"";flex:1;height:1px;background:var(--line)}
-  @keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
-
-  /* 标题逐行揭示：每行套 .line-mask，内部 .line 上滑 */
-  .line-mask{display:block;overflow:hidden}
-  .hero h1 .line{display:block;transform:translateY(105%);animation:lineUp 1.1s cubic-bezier(.16,.84,.28,1) forwards}
-  .hero h1 .line:nth-child(2){animation-delay:.16s}
-  @keyframes lineUp{to{transform:none}}
-  @media (prefers-reduced-motion: reduce){
-    .hero h1 .line{transform:none;animation:none}
-  }
-
-  /* 画廊卡片交错入场：visible 后按 --i 延迟上浮 */
-  .gallery-grid .ph{transition-delay:calc(var(--i, 0) * 70ms)}
-
-
-  /* ============ Oryzo 式电影感层 ============ */
-  #dustCanvas{position:fixed;inset:0;pointer-events:none;z-index:3}
-  @media (prefers-reduced-motion: reduce){#dustCanvas{display:none}}
-
-  /* 1) 章节大标题渐显上浮（惯性缓动，挂在现有 .reveal 上加深一层） */
-  .sec-head h2{opacity:0;transform:translateY(34px);
-    transition:opacity 1s cubic-bezier(.16,.84,.28,1), transform 1s cubic-bezier(.16,.84,.28,1);
-    transition-delay:.08s}
-  .sec-head.visible h2{opacity:1;transform:none}
-
-  /* 2) 滚动景深：画廊图片轻微 scale 纵深（加载时 1.06 → 1） */
-  .ph-img img{transform:scale(1.06)}
-  .ph-img img.ld{transform:scale(1)}
-
-  /* 3) 灯箱开场电影感：背景加深 + 图片从 0.94 缓浮 */
-  .lightbox{background:rgba(16,15,14,.0)}
-  .lightbox.open{background:rgba(16,15,14,.97);transition:background .45s ease}
-  .lightbox .lb-stage img{transform:scale(.94);opacity:0;
-    transition:transform .6s cubic-bezier(.16,.84,.28,1), opacity .5s ease}
-  .lightbox.open .lb-stage img.show{transform:scale(1);opacity:1}
-
-  /* ============ 通用区块 ============ */
-  section.block{max-width:1200px;margin:0 auto;padding:96px 28px 30px}
-  .sec-head{display:flex;align-items:baseline;gap:18px;margin-bottom:14px}
-  .sec-index{
-    font-family:var(--serif);font-size:15px;color:var(--terra);
-    letter-spacing:.18em;white-space:nowrap;
-  }
-  .sec-head h2{
-    font-family:var(--serif);font-weight:700;
-    font-size:clamp(30px,4.4vw,46px);letter-spacing:.03em;line-height:1.3;
-  }
-  .sec-rule{border:none;border-top:1px solid var(--line);margin:10px 0 34px}
-  .sec-lede{color:var(--muted);max-width:44em;margin-bottom:34px}
-
-  /* ============ 概况 ============ */
-  .about-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:56px}
-  .about-text p{margin-bottom:1.35em}
-  .about-text .pull{
-    border-left:3px solid var(--terra);
-    padding:6px 0 6px 22px;margin:30px 0 8px;
-    font-family:var(--serif);font-size:22px;line-height:2;color:var(--ink);
-  }
-  .about-text .pull small{display:block;font-family:var(--sans);font-size:13px;color:var(--muted);margin-top:6px}
-  .fact-card{
-    background:var(--paper);border:1px solid var(--line);border-radius:12px;
-    padding:34px 32px 14px;align-self:start;
-  }
-  .fact-card h3{
-    font-size:13px;letter-spacing:.24em;color:var(--muted);font-weight:600;margin-bottom:8px;
-  }
-  .fact-row{
-    display:flex;justify-content:space-between;align-items:baseline;gap:14px;
-    padding:14px 0;border-bottom:1px solid var(--line);font-size:15px;
-  }
-  .fact-row:last-child{border-bottom:none}
-  .fact-row b{font-family:var(--serif);font-size:26px;font-weight:700;color:var(--ink);white-space:nowrap}
-  .fact-row b i{font-style:normal;font-size:15px;font-family:var(--sans);font-weight:400;color:var(--muted);margin-left:2px}
-  .fact-row span{color:var(--muted);text-align:right}
-  .honors{display:flex;gap:10px;flex-wrap:wrap;padding:18px 0 14px}
-  .honors em{
-    font-style:normal;font-size:13px;color:var(--terra-deep);
-    border:1px solid rgba(217,119,87,.45);border-radius:99px;padding:5px 14px;letter-spacing:.06em;
-  }
-  /* 校园文化条 */
-  .culture{
-    margin-top:56px;border-top:1px solid var(--line);
-    display:grid;grid-template-columns:repeat(4,1fr);
-  }
-  .culture-item{padding:24px 26px 0 0;margin-right:26px;border-right:1px solid var(--line)}
-  .culture-item:last-child{border-right:none;margin-right:0}
-  .culture-item h4{font-size:13px;letter-spacing:.22em;color:var(--terra-deep);font-weight:600;margin-bottom:8px}
-  .culture-item p{font-family:var(--serif);font-size:17px;line-height:1.9;color:var(--ink)}
-  .campus-info{margin-top:34px;border:1px solid var(--line);background:var(--paper);border-radius:12px;padding:26px 30px;max-width:640px}
-  .campus-info h4{font-size:13px;letter-spacing:.22em;color:var(--terra-deep);font-weight:600;margin-bottom:10px}
-  .campus-info p{font-size:15px;line-height:2;color:var(--ink)}
-  .campus-info p+p{color:var(--muted);font-size:14px}
-
-  /* ============ 沿革时间线 ============ */
-  .timeline{position:relative;margin:10px 0 8px;padding-left:34px;max-width:760px}
-  .timeline::before{content:"";position:absolute;left:7px;top:8px;bottom:8px;width:1px;background:var(--line)}
-  .t-item{position:relative;padding:0 0 42px}
-  .t-item:last-child{padding-bottom:6px}
-  .t-fill{position:absolute;left:7px;top:8px;width:1px;height:0;background:var(--terra)}
-  .t-item::before{
-    content:"";position:absolute;left:-31px;top:13px;
-    width:9px;height:9px;border-radius:50%;
-    background:var(--cream);border:2px solid var(--terra);
-    transition:background .45s;
-  }
-  .t-item.now::before,.t-item.lit::before{background:var(--terra)}
-  .t-year{
-    font-family:var(--serif);font-weight:700;font-size:clamp(26px,3.4vw,34px);
-    line-height:1.3;letter-spacing:.02em;
-  }
-  .t-item p{color:var(--muted);margin-top:6px;max-width:38em}
-  .t-item p strong{color:var(--ink);font-weight:600}
-  .t-tag{
-    display:inline-block;font-size:12px;color:var(--terra-deep);
-    border:1px solid rgba(217,119,87,.4);border-radius:99px;
-    padding:2px 10px;margin-left:12px;letter-spacing:.1em;vertical-align:6px;
-  }
-
-  /* ============ 画廊（统一网格） ============ */
-  .group-head{display:flex;align-items:baseline;gap:14px;margin:58px 0 6px}
-  .group-head:first-of-type{margin-top:26px}
-  .group-head .g-no{font-family:var(--serif);font-size:14px;color:var(--terra);letter-spacing:.16em}
-  .group-head h3{font-family:var(--serif);font-size:clamp(21px,2.8vw,27px);font-weight:700;letter-spacing:.04em}
-  .group-head .g-note{font-size:13px;color:var(--muted);margin-left:auto;text-align:right}
-  .group-desc{font-size:14px;color:var(--muted);margin:2px 0 22px;max-width:52em}
-  .gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-  .ph{
-    background:var(--paper);border:1px solid var(--line);border-radius:10px;
-    overflow:hidden;display:flex;flex-direction:column;
-    transition:transform .35s cubic-bezier(.2,.7,.3,1), box-shadow .35s;
-    transform-style:preserve-3d;
-  }
-  .ph:hover{transform:translateY(-3px);box-shadow:0 14px 34px rgba(31,30,29,.10)}
-  .ph a{display:block;flex:1}
-  .ph-img{aspect-ratio:4/3;overflow:hidden}
-  .ph-img img{width:100%;height:100%;object-fit:cover;opacity:0;
-    transition:transform .6s cubic-bezier(.2,.7,.3,1), opacity .8s ease}
-  .ph-img img.ld{opacity:1}
-  .ph:hover .ph-img img{transform:scale(1.045)}
-  @media (prefers-reduced-motion: reduce){.ph-img img{opacity:1}}
-  .ph figcaption{
-    display:flex;justify-content:space-between;align-items:baseline;gap:12px;
-    padding:11px 15px 12px;border-top:1px solid var(--line);
-  }
-  .ph .cap-t{font-size:14px;font-weight:600;letter-spacing:.02em}
-  .ph .cap-d{font-size:12px;color:var(--muted);white-space:nowrap}
-
-  /* ============ 老水塔（深色区） ============ */
-  .landmark{
-    background:var(--dark);color:#EFEBE0;
-    margin-top:96px;padding:96px 0;
-  }
-  .landmark .inner{max-width:1200px;margin:0 auto;padding:0 28px}
-  .landmark .sec-index{color:var(--terra)}
-  .landmark .sec-rule{border-top-color:#3A3835}
-  .landmark .sec-lede{color:#A8A294}
-  .landmark .duo{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-  .landmark .duo .ph{background:#2A2827;border-color:#3A3835}
-  .landmark .ph:hover{box-shadow:0 14px 34px rgba(0,0,0,.45)}
-  .landmark .ph figcaption{border-top-color:#3A3835}
-  .landmark .cap-t{color:#EFEBE0}
-  .landmark .cap-d{color:#A8A294}
-  .landmark .tale{
-    max-width:44em;margin-top:40px;color:#C9C3B4;font-size:16.5px;
-  }
-  .landmark .tale em{color:var(--terra);font-style:normal}
-
-  /* ============ 寄语 ============ */
-  .words blockquote{
-    font-family:var(--serif);
-    font-size:clamp(21px,3vw,29px);line-height:2.1;letter-spacing:.02em;
-    max-width:36em;margin:10px auto 26px;text-align:left;
-  }
-  .words blockquote em{font-style:normal;color:var(--terra)}
-  .words .sign{
-    text-align:right;color:var(--muted);font-size:15px;font-family:var(--serif);letter-spacing:.12em;margin-top:6px;
-  }
-  .words .sign b{font-family:var(--serif);font-size:17px;color:var(--ink);letter-spacing:.08em}
-
-  /* ============ 页脚 ============ */
-  footer{border-top:1px solid var(--line);margin-top:90px}
-  .footer-inner{
-    max-width:1200px;margin:0 auto;padding:48px 28px 60px;
-    display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;
-    font-size:13.5px;color:var(--muted);
-  }
-  .footer-inner img{width:44px;height:44px;border-radius:50%;box-shadow:0 2px 8px rgba(31,30,29,.15);margin-bottom:14px}
-  .footer-inner .f-brand{font-family:var(--serif);font-size:16px;color:var(--ink)}
-  .footer-inner .right{text-align:right}
-
-  /* ============ 灯箱 ============ */
-  .lightbox{
-    position:fixed;inset:0;z-index:100;
-    background:rgba(20,19,18,.96);
-    display:flex;flex-direction:column;
-    opacity:0;pointer-events:none;transition:opacity .28s;
-  }
-  .lightbox.open{opacity:1;pointer-events:auto}
-  .lb-top{
-    display:flex;justify-content:space-between;align-items:center;
-    padding:18px 26px;color:#B8B2A4;font-size:14px;letter-spacing:.1em;
-  }
-  .lb-count{font-family:var(--serif);color:#EFEBE0}
-  .lb-close{
-    background:none;border:1px solid #4A4744;color:#EFEBE0;
-    width:42px;height:42px;border-radius:50%;cursor:pointer;
-    font-size:17px;line-height:1;transition:border-color .2s, color .2s;
-  }
-  .lb-close:hover{border-color:var(--terra);color:var(--terra)}
-  .lb-stage{flex:1;display:flex;align-items:center;justify-content:center;position:relative;min-height:0;padding:0 74px}
-  .lb-stage img{
-    max-width:100%;max-height:100%;
-    border-radius:6px;box-shadow:0 22px 70px rgba(0,0,0,.55);
-    opacity:0;transition:opacity .3s;
-    cursor:zoom-in;touch-action:none;
-    user-select:none;-webkit-user-select:none;-webkit-user-drag:none;
-  }
-  .lightbox.open .lb-stage img.show{opacity:1}
-  .lb-stage img.grab{cursor:grab}
-  .lb-stage img.grabbing{cursor:grabbing}
-  .lb-hint{font-size:12px;color:#8A8578;letter-spacing:.08em}
-  .lb-nav{
-    position:absolute;top:50%;transform:translateY(-50%);
-    background:rgba(250,249,245,.06);border:1px solid #4A4744;color:#EFEBE0;
-    width:52px;height:52px;border-radius:50%;cursor:pointer;
-    display:flex;align-items:center;justify-content:center;
-    transition:border-color .2s, background .2s;
-  }
-  .lb-nav:hover{border-color:var(--terra);background:rgba(217,119,87,.15)}
-  .lb-nav svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.6}
-  .lb-prev{left:14px}
-  .lb-next{right:14px}
-  .lb-cap{
-    padding:20px 26px 30px;text-align:center;color:#EFEBE0;
-  }
-  .lb-cap .cap-t{font-family:var(--serif);font-size:18px;letter-spacing:.04em}
-  .lb-cap .cap-d{display:block;font-size:13px;color:#A8A294;margin-top:4px;letter-spacing:.08em}
-  body.lb-lock{overflow:hidden}
-
-  /* ============ 滚动显现 ============ */
-  .reveal{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.2,.65,.3,1), transform .8s cubic-bezier(.2,.65,.3,1)}
-  .reveal.visible{opacity:1;transform:none}
-  @media (prefers-reduced-motion: reduce){
-    html{scroll-behavior:auto}
-    .reveal{opacity:1;transform:none;transition:none}
-    .hero-emblem,.hero .eyebrow,.hero .sub,.hero .stats,.hero-figure,.scroll-hint{animation:none}
-    .ph{transition:none}
-    .ph-img img{transition:none}
-    .hero-figure img{transform:none!important}
-    .t-fill{display:none}
-    .gallery-grid .ph{transition-delay:0ms}
-    .sec-head h2{opacity:1;transform:none;transition:none}
-    .ph-img img{transform:none!important}
-    .ph:hover .ph-img img{transform:none}
-    .lightbox,.lightbox.open{background:rgba(20,19,18,.96)}
-    .lightbox .lb-stage img{transform:none;opacity:0}
-    .lightbox.open .lb-stage img.show{transform:none;opacity:1}
-  }
-
-  /* ============ 响应式 ============ */
-  @media (max-width:1000px){
-    .gallery-grid{grid-template-columns:repeat(2,1fr)}
-    .culture{grid-template-columns:repeat(2,1fr);row-gap:26px}
-    .culture-item:nth-child(2n){border-right:none;margin-right:0}
-  }
-  @media (max-width:900px){
-    .about-grid{grid-template-columns:1fr;gap:36px}
-    .landmark .duo{grid-template-columns:1fr}
-    .hero .stat{padding-right:26px;margin-right:26px}
-    .lb-hint{display:none}
-  }
-  @media (max-width:640px){
-    .topbar-inner{padding:0 18px}
-    .brand span{display:none}
-    .hero{padding-top:120px}
-    section.block{padding:72px 18px 20px}
-    .hero-figure,.scroll-hint{padding-left:18px;padding-right:18px}
-    .gallery-grid{grid-template-columns:1fr}
-    .hero .stat{padding:16px 18px 2px 0;margin-right:18px}
-    .culture{grid-template-columns:1fr}
-    .culture-item{border-right:none;margin-right:0}
-    .lb-stage{padding:0 10px}
-    .lb-nav{width:44px;height:44px}
-  }
-</style>
+}
+</script>
+<script>
+/* 惰性初始化定位图：滚动临近地图区才加载 MapLibre（省首屏 JS 主线程与瓦片流量） */
+window.addEventListener('DOMContentLoaded', function () {
+  if (!('IntersectionObserver' in window)) return;
+  var mapSection = document.getElementById('map');
+  if (!mapSection) return;
+  var io = new IntersectionObserver(function (entries) {
+    if (entries.some(function (e) { return e.isIntersecting; })) {
+      io.disconnect();
+      var s = document.createElement('script');
+      s.src = 'maplibre/maplibre-gl.js?v=20260906c';
+      s.onload = function () {
+        var m = document.createElement('script');
+        m.src = 'assets/map.js?v=20260906c';
+        document.body.appendChild(m);
+      };
+      document.body.appendChild(s);
+    }
+  }, { rootMargin: '600px 0px' });
+  io.observe(mapSection);
+});
+</script>
 </head>
 <body>
+<a class="skip-link" href="#main">跳到正文</a>
 <canvas id="dustCanvas" aria-hidden="true"></canvas>
 
 <!-- ===================== 顶栏 ===================== -->
 <header class="topbar" id="topbar">
   <div class="topbar-inner">
     <div class="brand">
-      <img src="images/emblem-320.png" alt="南昌市第十五中学校徽">
+      <img src="images/emblem-320.png" alt="南昌市第十五中学校徽" width="28" height="28">
       <b>南昌市第十五中学</b><span>纪念册 · 2022–2025</span>
     </div>
     <nav class="toc" aria-label="页面导航">
@@ -483,10 +91,10 @@
   <span class="progress" id="progress" aria-hidden="true"></span>
 </header>
 
-<main>
+<main id="main">
   <!-- ===================== Hero ===================== -->
   <section class="hero">
-    <img class="hero-emblem" src="images/emblem-320.png" alt="南昌市第十五中学校徽">
+    <img class="hero-emblem" src="images/emblem-320.png" alt="南昌市第十五中学校徽" width="78" height="78">
     <p class="eyebrow">NANCHANG NO. 15 MIDDLE SCHOOL · EST. 1958</p>
     <h1><span class="line-mask"><span class="line">青山湖畔，</span></span><span class="line-mask"><span class="line">红砖楼与<em>香樟</em>记得。</span></span></h1>
     <p class="sub">这是一座校园的私人纪念册——南昌市第十五中学，江西省重点中学，创建于1958年。2022年至2025年，熊鑫晨用手机镜头记下这里的操场、走廊、晚霞与雪。</p>
@@ -759,8 +367,8 @@
     <!-- 组六 · 高考签名墙 -->
     <div class="group-head reveal"><span class="g-no">其六</span><h3>高考签名墙</h3><span class="g-note">高考前夕 · 告别的方式</span></div>
     <p class="group-desc reveal">2025年6月6日，高考前一天——广场上立起签名墙，一面墙的名字，是三年最热闹的告别。</p>
-    <div class="gallery-grid">
-      <figure class="ph reveal" style="--i:6" data-cap="高考签名墙 · I❤十五中" data-date="2025年6月6日">
+    <div class="gallery-grid feature">
+      <figure class="ph reveal" data-cap="高考签名墙 · I❤十五中" data-date="2025年6月6日">
         <a href="images/full/26-festival-signin.jpg" target="_blank" rel="noopener">
           <span class="ph-img"><img src="images/thumbs/26-festival-signin.jpg" width="1600" height="1200" alt="高考签名墙与「I❤十五中」雕塑，底座刻着校训，远处是老水塔" loading="lazy" decoding="async"></span>
         </a>
@@ -776,13 +384,13 @@
       <hr class="sec-rule reveal">
       <p class="sec-lede reveal">每座老校园都有一件比所有教学楼都年长的构筑物。在十五中，是这座立在树梢之上的老水塔。</p>
       <div class="duo">
-        <figure class="ph reveal" style="--i:7" data-cap="老水塔 · 白日" data-date="2023年6月28日">
+        <figure class="ph reveal" data-cap="老水塔 · 白日" data-date="2023年6月28日">
           <a href="images/full/11-water-tower.jpg" target="_blank" rel="noopener">
             <span class="ph-img"><img src="images/thumbs/11-water-tower.jpg" width="1600" height="1200" alt="白日蓝天下的老水塔，绿树环绕" loading="lazy" decoding="async"></span>
           </a>
           <figcaption><span class="cap-t">老水塔 · 白日</span><span class="cap-d">2023.06.28</span></figcaption>
         </figure>
-        <figure class="ph reveal" style="--i:8" data-cap="老水塔 · 晚霞" data-date="2023年6月">
+        <figure class="ph reveal" data-cap="老水塔 · 晚霞" data-date="2023年6月">
           <a href="images/full/13-sunset-water-tower.jpg" target="_blank" rel="noopener">
             <span class="ph-img"><img src="images/thumbs/13-sunset-water-tower.jpg" width="1440" height="1080" alt="晚霞中的老水塔剪影" loading="lazy" decoding="async"></span>
           </a>
@@ -794,55 +402,6 @@
   </section>
 
   <!-- ===================== 校园地图（时光漫游） ===================== -->
-  <style>
-    /* ============ 伍 · MAP 时光漫游 ============ */
-    .tour-viewer{position:relative;height:560px;border-radius:12px;overflow:hidden;background:#141312;
-      border:1px solid var(--line)}
-    .tour-viewer img.slide{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-      opacity:0;transform:scale(1.07);transition:opacity 1s ease, transform 8s linear}
-    .tour-viewer img.slide.on{opacity:1;transform:scale(1)}
-    .tour-viewer .veil{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,9,8,.64) 0%,rgba(10,9,8,0) 44%);pointer-events:none}
-    .tour-viewer .cap{position:absolute;left:36px;bottom:30px;color:#FAF9F5;pointer-events:none;z-index:2;max-width:78%}
-    .tour-viewer .cap .t{font-family:var(--serif);font-size:28px;letter-spacing:.03em;text-shadow:0 2px 14px rgba(0,0,0,.55)}
-    .tour-viewer .cap .d{font-size:13px;letter-spacing:.1em;opacity:.88;margin-top:4px}
-    .tour-viewer .num{position:absolute;top:20px;right:26px;color:#FAF9F5;font-family:var(--serif);font-size:15px;
-      letter-spacing:.2em;text-shadow:0 1px 8px rgba(0,0,0,.5);z-index:2}
-    .tour-viewer .arr{position:absolute;top:50%;transform:translateY(-50%);width:52px;height:52px;border-radius:50%;
-      background:rgba(20,19,18,.35);border:1px solid rgba(250,249,245,.35);color:#FAF9F5;font-size:20px;
-      cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .25s;backdrop-filter:blur(3px);z-index:2}
-    .tour-viewer .arr:hover{background:rgba(193,95,60,.85);border-color:transparent}
-    .tour-viewer .arr.prev{left:22px}.tour-viewer .arr.next{right:22px}
-    .tour-dots{display:flex;gap:9px;justify-content:center;margin:16px 0 30px}
-    .tour-dots i{width:7px;height:7px;border-radius:50%;background:#CFC8B8;cursor:pointer;transition:all .25s}
-    .tour-dots i.on{background:var(--terra-deep);width:22px;border-radius:99px}
-
-    .mm-head{display:flex;align-items:baseline;gap:12px;margin:4px 0 10px}
-    .mm-head b{font-family:var(--serif);font-size:17px;color:var(--ink)}
-    .mm-head span{font-size:12px;color:var(--muted)}
-    .minimap{position:relative;border:1px solid var(--line);border-radius:12px;overflow:hidden;height:280px}
-    #campusMap{height:280px;font-family:var(--sans)}
-    #campusMap .mm-pin{width:13px;height:13px;border-radius:50%;background:rgba(250,249,245,.88);
-      border:1px solid rgba(0,0,0,.4);cursor:pointer;transition:all .25s;box-sizing:border-box}
-    #campusMap .mm-pin.on{width:21px;height:21px;background:var(--terra);border:2.5px solid #FAF9F5;
-      box-shadow:0 0 0 4px rgba(217,119,87,.4),0 2px 8px rgba(0,0,0,.5)}
-    #campusMap .maplibregl-ctrl-group{border-radius:8px}
-    #campusMap .maplibregl-ctrl-attribution{background:rgba(20,19,18,.55);color:#B8B2A4;font-size:10px}
-    #campusMap .maplibregl-ctrl-attribution a{color:#D8D2C4}
-
-    @media (max-width:640px){
-      .tour-viewer{height:380px}
-      .tour-viewer .cap{left:18px;bottom:16px;right:18px}
-      .tour-viewer .cap .t{font-size:21px}
-      .tour-viewer .arr{width:42px;height:42px}
-      .tour-viewer .arr.prev{left:10px}.tour-viewer .arr.next{right:10px}
-      .minimap{height:230px}
-      #campusMap{height:230px}
-    }
-    @media (prefers-reduced-motion: reduce){
-      .tour-viewer img.slide{transition:opacity .4s ease, none;transform:none}
-    }
-  </style>
-
   <section class="block campus-map-scope" id="map">
     <div class="sec-head reveal"><span class="sec-index">伍 · MAP</span><h2>时光漫游</h2></div>
     <hr class="sec-rule reveal">
@@ -856,7 +415,7 @@
     </div>
     <div class="tour-dots" id="tourDots"></div>
 
-    <div class="mm-head reveal"><b>定位图</b><span class="reveal">点击标记，漫游到那个位置</span></div>
+    <div class="mm-head reveal"><b>定位图</b><span>点击标记，漫游到那个位置</span></div>
     <div class="minimap reveal">
       <div id="campusMap" role="region" aria-label="南昌市第十五中学青山湖校区定位图，标注八个照片拍摄位置"></div>
     </div>
@@ -874,396 +433,45 @@
     <p class="sign reveal">—— 2025届毕业生</p>
   </section>
 
-  <!-- ===================== 留言墙（与全站统一容器） ===================== -->
-  <style>
-    /* 柒 · WALL 留言墙：标准 section.block 容器（与全站统一），sandCanvas 绝对定位铺满 */
-    .wall{position:relative}
-    #sandCanvas{position:absolute;inset:0;pointer-events:none;z-index:1}
-    .wall > *:not(#sandCanvas){position:relative;z-index:2}
-
-    /* B站风留言卡片（亮色） */
-    .bili-comments{background:var(--paper);border:1px solid var(--line);border-radius:12px;
-      padding:24px 32px;margin-top:24px}
-    .bili-editor-row{display:flex;gap:14px;align-items:flex-start}
-    .bili-avatar{width:40px;height:40px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;
-      color:#FAF9F5;font-weight:700;font-size:17px;user-select:none;cursor:pointer;overflow:hidden;position:relative;
-      background:linear-gradient(135deg,#D97757,#C15F3C)}
-    .bili-avatar img{width:100%;height:100%;object-fit:cover}
-    #cmtAvatarInput{display:none}
-    .bili-editor-box{flex:1;background:#fff;border:1px solid var(--line);border-radius:8px;transition:border-color .2s}
-    .bili-editor-box:focus-within{border-color:#D97757}
-    #cmtInput{display:block;width:100%;min-height:88px;resize:vertical;border:none;background:transparent;
-      padding:14px 16px;font:inherit;font-size:15px;line-height:1.7;color:var(--ink);outline:none;box-sizing:border-box}
-    .bili-editor-foot{display:flex;align-items:center;gap:14px;padding:10px 14px;border-top:1px solid #F0EEE6}
-    .bili-nick-wrap{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);flex:1}
-    #cmtNick{width:130px;border:none;border-bottom:1px dashed #D8D2C4;background:transparent;padding:3px 2px;
-      font:inherit;font-size:13px;color:var(--ink);outline:none;transition:border-color .2s}
-    #cmtNick:focus{border-bottom-color:#D97757}
-    #cmtCount{font-size:12px;color:#B8B2A4}
-    #cmtSubmit{background:var(--terra-deep);color:#FAF9F5;border:none;border-radius:6px;padding:8px 22px;
-      font:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:background .2s}
-    #cmtSubmit:hover{background:var(--terra)}
-    .bili-list-head{font-size:15px;font-weight:700;color:var(--ink);margin:26px 0 4px}
-    .bili-list-head span{color:var(--muted);font-weight:400;font-size:13px;margin-left:4px}
-    .bili-item{display:flex;gap:12px;padding:18px 0;border-bottom:1px solid #F0EEE6}
-    .bili-item:last-child{border-bottom:none}
-    .bili-item .bili-avatar{width:36px;height:36px;font-size:15px}
-    .bili-c{flex:1;min-width:0}
-    .bili-c-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
-    .bili-nick{font-size:14px;font-weight:600;color:var(--ink)}
-    .bili-time{font-size:12px;color:var(--muted)}
-    .bili-ip{font-size:12px;color:var(--muted);background:#F0EEE6;border-radius:4px;padding:1px 7px}
-    .bili-content{margin-top:5px;font-size:15px;line-height:1.85;color:var(--ink);word-break:break-word}
-    .bili-like{margin-top:6px;font-size:12px;color:var(--muted);user-select:none}
-    .bili-empty{text-align:center;color:var(--muted);font-size:14px;padding:44px 0 20px}
-    .bili-notice{margin-top:16px;background:#F0EEE6;border:1px solid var(--line);border-radius:8px;
-      padding:12px 18px;font-size:13.5px;color:var(--muted);line-height:1.8}
-    .bili-notice b{color:var(--terra-deep)}
-    #cmtLoading{text-align:center;color:var(--muted);font-size:13px;padding:30px 0}
-
-    @media (max-width:640px){
-      .bili-comments{padding:16px 14px}
-      .bili-editor-row{gap:10px}
-      .bili-avatar{width:34px;height:34px;font-size:15px}
-      .bili-editor-foot{flex-wrap:wrap;gap:8px 12px;padding:10px 12px}
-      .bili-nick-wrap{flex:1 1 100%}
-      #cmtNick{flex:1;width:auto;min-width:0}
-      #cmtCount{margin-left:auto}
-      #cmtSubmit{white-space:nowrap;flex:none;padding:8px 28px}
-    }
-  </style>
-
+  <!-- ===================== 留言墙 ===================== -->
   <section class="block wall" id="wall">
-    <canvas id="sandCanvas" aria-hidden="true"></canvas>
     <div class="sec-head reveal"><span class="sec-index">柒 · WALL</span><h2>留言墙</h2></div>
-      <hr class="sec-rule reveal">
-      <p class="sec-lede reveal">纪念册不该只有一个人的声音。写一句那年的话——无需登录，发布后经站长审核即会展示。</p>
-      <div class="bili-comments reveal">
-        <div class="bili-editor-row">
-          <div class="bili-avatar" id="myAvatar" title="点击上传自定义头像">访</div>
-          <input type="file" id="cmtAvatarInput" accept="image/*" hidden>
-          <div class="bili-editor-box">
-            <textarea id="cmtInput" maxlength="500" placeholder="善语结善缘，写一句那年的话……"></textarea>
-            <div class="bili-editor-foot">
-              <span class="bili-nick-wrap">昵称 <input id="cmtNick" maxlength="20" placeholder="留空则显示「路过的同学」"></span>
-              <span id="cmtCount">0 / 500</span>
-              <button id="cmtSubmit">发布</button>
-            </div>
+    <hr class="sec-rule reveal">
+    <p class="sec-lede reveal">纪念册不该只有一个人的声音。写一句那年的话——无需登录，发布后经站长审核即会展示。</p>
+    <div class="bili-comments reveal">
+      <div class="bili-editor-row">
+        <div class="bili-avatar" id="myAvatar" title="点击上传自定义头像">访</div>
+        <input type="file" id="cmtAvatarInput" accept="image/*" hidden>
+        <div class="bili-editor-box">
+          <textarea id="cmtInput" maxlength="500" placeholder="善语结善缘，写一句那年的话……"></textarea>
+          <div class="bili-editor-foot">
+            <span class="bili-nick-wrap">昵称 <input id="cmtNick" maxlength="20" placeholder="留空则显示「路过的同学」"></span>
+            <span id="cmtCount">0 / 500</span>
+            <button id="cmtSubmit">发布</button>
           </div>
         </div>
-    <div id="cmtNotice" class="bili-notice" hidden></div>
-    <div class="bili-list-head">全部留言<span id="cmtTotal">0</span></div>
-    <div id="cmtLoading">加载中……</div>
-    <div id="cmtList"></div>
-    <div id="cmtEmpty" class="bili-empty" hidden>还没有留言，来做第一个吧。</div>
       </div>
+      <div id="cmtNotice" class="bili-notice" hidden></div>
+      <div class="bili-list-head">全部留言<span id="cmtTotal">0</span></div>
+      <div id="cmtLoading">加载中……</div>
+      <div id="cmtList"></div>
+      <div id="cmtEmpty" class="bili-empty" hidden>还没有留言，来做第一个吧。</div>
     </div>
   </section>
-
-
-
-  <script>
-  (function(){
-    'use strict';
-    var API = '/comment/api/v2';   /* 相对路径：http/https、有无 www 均同源，手机端不会跨域 */
-    var SITE = '青山湖畔的纪念册';
-    var PAGE = '/guestbook';
-    var AVATAR_GRADS = [
-      'linear-gradient(135deg,#D97757,#B05633)',
-      'linear-gradient(135deg,#5B8A72,#3D6A54)',
-      'linear-gradient(135deg,#6B8AB3,#4A6A94)',
-      'linear-gradient(135deg,#C9A227,#A07E18)',
-      'linear-gradient(135deg,#B37A9E,#8F5A7E)',
-      'linear-gradient(135deg,#7A9EB3,#55778E)',
-      'linear-gradient(135deg,#D98A6B,#B0563F)',
-      'linear-gradient(135deg,#94A86B,#6E7E4A)'
-    ];
-    function hash(s){var h=0;for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0;return h;}
-    function esc(s){return String(s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
-    function fmtTime(s){var m=/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})/.exec(s||'');return m?(m[1]+'年'+(+m[2])+'月'+(+m[3])+'日 '+m[4]+':'+m[5]):(s||'');}
-    function avatarEl(nick, link){
-      var d=document.createElement('div');d.className='bili-avatar';
-      if(link && link.indexOf('/static/images/')!==-1){
-        var img=document.createElement('img');
-        img.src=link.indexOf('http')===0 ? link : '/comment'+link;
-        img.alt=(nick||'访客')+'的头像';
-        d.appendChild(img);
-        return d;
-      }
-      var ch=(nick||'访').trim().charAt(0).toUpperCase()||'访';
-      d.textContent=ch;
-      d.style.background=AVATAR_GRADS[hash(nick||'访')%AVATAR_GRADS.length];return d;
-    }
-
-    /* 昵称：可自定义，本地记忆，头像首字随动 */
-    var nickInput=document.getElementById('cmtNick');
-    var myAvatar=document.getElementById('myAvatar');
-    try{nickInput.value=localStorage.getItem('wallNick')||'';}catch(e){}
-    function syncMyAvatar(){
-      var n=(nickInput.value||'').trim();
-      var ch=n?n.charAt(0).toUpperCase():'访';
-      myAvatar.textContent=ch;
-      myAvatar.style.background=AVATAR_GRADS[hash(n||'访')%AVATAR_GRADS.length];
-    }
-    nickInput.addEventListener('input',function(){
-      syncMyAvatar();
-      try{localStorage.setItem('wallNick',nickInput.value.trim());}catch(e){}
-    });
-    syncMyAvatar();
-
-    /* 自定义头像：点击上传 → 本地居中裁剪 128×128 → 传到自托管 Artalk → 本地记住 */
-    var avatarURL='';
-    try{avatarURL=localStorage.getItem('wallAvatar')||'';}catch(e){}
-    function applyMyAvatar(){
-      syncMyAvatar();
-      if(avatarURL){
-        myAvatar.innerHTML='';
-        var img=document.createElement('img');
-        img.src='/comment'+avatarURL;
-        img.alt='我的头像';
-        myAvatar.appendChild(img);
-      }
-    }
-    var fileInput=document.getElementById('cmtAvatarInput');
-    myAvatar.addEventListener('click',function(){fileInput.click();});
-  /* ---------- 暗河流沙（留言墙粒子：伪流场 + 鼠标斥力增亮） ---------- */
-  (function(){
-    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduceMotion) return;
-    var cv = document.getElementById('sandCanvas');
-    if (!cv || !cv.getContext) return;
-    var ctx = cv.getContext('2d');
-    var W = 0, H = 0;
-    var DPR = Math.min(window.devicePixelRatio || 1, 2);
-    var P = [], mouse = {x:-9e3, y:-9e3, inside:false};
-    var N = Math.min(260, Math.max(150, Math.round((window.innerWidth / 1440) * 260)));
-
-    function size(){
-      var r = cv.parentElement.getBoundingClientRect();
-      W = r.width; H = r.height;
-      cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
-      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-    }
-    var t0 = performance.now();
-    function noise(x, y, t){
-      return Math.sin(x * .008 + t * .0004) * Math.cos(y * .006 - t * .0003) * 6.2832;
-    }
-    var P = [];
-    for (var pi = 0; pi < N; pi++){
-      P.push({
-        x: Math.random() * 2000,
-        y: Math.random() * 900,
-        vx: 0, vy: 0,
-        r: 0.9 + Math.random() * 1.9,
-        sp: 0.08 + Math.random() * 0.2,
-        a: 0.18 + Math.random() * 0.28,
-        warm: Math.random() < 0.32
-      });
-    }
-
-    function frame(t){
-      ctx.clearRect(0, 0, W, H);
-      for (var ri = ripples.length - 1; ri >= 0; ri--){
-        var rp = ripples[ri];
-        var age = (t - rp.born) / 900;
-        if (age > 1){ ripples.splice(ri, 1); continue; }
-        var rr = rp.r0 + age * 130;
-        ctx.beginPath();
-        ctx.strokeStyle = 'rgba(217,119,87,' + (0.5 * (1 - age)).toFixed(3) + ')';
-        ctx.lineWidth = 1.5;
-        ctx.arc(rp.x, rp.y, rr, 0, 6.2832);
-        ctx.stroke();
-      }
-      for (var i = 0; i < P.length; i++){
-        var p = P[i];
-        var ang = noise(p.x, p.y, t - t0);
-        p.vx += Math.cos(ang) * .012;
-        p.vy += Math.sin(ang) * .012;
-        var glow = 0;
-        if (mouse.inside){
-          var dx = p.x - mouse.x, dy = p.y - mouse.y;
-          var d = Math.hypot(dx, dy);
-          if (d < 130 && d > 1){
-            var f = (130 - d) / 130;
-            p.vx += dx / d * f * 1.4;
-            p.vy += dy / d * f * 1.4;
-            glow = f;
-          }
-        }
-        p.vx *= .96; p.vy *= .96;
-        p.x += p.vx + p.sp; p.y += p.vy;
-        if (p.x > W + 4) p.x = -4; if (p.x < -4) p.x = W + 4;
-        if (p.y > H + 4) p.y = -4; if (p.y < -4) p.y = H + 4;
-        var a = Math.min(.92, p.a + glow);
-        ctx.beginPath();
-        ctx.fillStyle = p.warm ? 'rgba(150,72,45,' + a + ')' : 'rgba(96,112,66,' + (a * .9) + ')';
-        ctx.arc(p.x, p.y, p.r + glow * 1.2, 0, 6.2832);
-        ctx.fill();
-      }
-      requestAnimationFrame(frame);
-    }
-    var ripples = [];
-    cv.parentElement.addEventListener('click', function(ev){
-      var r = cv.parentElement.getBoundingClientRect();
-      ripples.push({x: ev.clientX - r.left, y: ev.clientY - r.top, r0: 6, born: performance.now()});
-      if (ripples.length > 4) ripples.shift();
-    });
-    function init(){
-      size();
-      window.addEventListener('resize', function(){ size(); });
-      cv.parentElement.addEventListener('mousemove', function(ev){
-        var r = cv.parentElement.getBoundingClientRect();
-        mouse.x = ev.clientX - r.left; mouse.y = ev.clientY - r.top; mouse.inside = true;
-      });
-      cv.parentElement.addEventListener('mouseleave', function(){ mouse.inside = false; });
-      requestAnimationFrame(frame);
-    }
-    init();
-  })();
-    fileInput.addEventListener('change',function(){
-      var f=fileInput.files&&fileInput.files[0];
-      fileInput.value='';
-      if(!f)return;
-      var reader=new FileReader();
-      reader.onload=function(){
-        var img=new Image();
-        img.onload=function(){
-          var cv=document.createElement('canvas');
-          cv.width=128;cv.height=128;
-          var ctx=cv.getContext('2d');
-          var side=Math.min(img.width,img.height);
-          ctx.drawImage(img,(img.width-side)/2,(img.height-side)/2,side,side,0,0,128,128);
-          cv.toBlob(function(blob){
-            if(!blob){showNotice('头像处理失败，请换一张图片。');return;}
-            var fd=new FormData();
-            fd.append('file',blob,'avatar.jpg');
-            fetch(API+'/upload',{method:'POST',body:fd})
-              .then(function(r){return r.json();})
-              .then(function(d){
-                if(d.public_url){
-                  avatarURL=d.public_url;
-                  try{localStorage.setItem('wallAvatar',avatarURL);}catch(e){}
-                  applyMyAvatar();
-                  showNotice('<b>头像已更新。</b>发布留言时将展示你的自定义头像 ✦');
-                } else {
-                  showNotice('头像上传失败：'+esc(d.msg||'未知错误'));
-                }
-              })
-              .catch(function(){showNotice('头像上传失败，请稍后重试。');});
-          },'image/jpeg',0.85);
-        };
-        img.onerror=function(){showNotice('图片读取失败，请换一张图片。');};
-        img.src=reader.result;
-      };
-      reader.readAsDataURL(f);
-    });
-    applyMyAvatar();
-
-    var ta=document.getElementById('cmtInput'),count=document.getElementById('cmtCount');
-    ta.addEventListener('input',function(){count.textContent=ta.value.length+' / 500';});
-
-    var notice=document.getElementById('cmtNotice');
-    function showNotice(html){notice.innerHTML=html;notice.hidden=false;}
-
-    function render(list){
-      var wrap=document.getElementById('cmtList');
-      wrap.innerHTML='';
-      list.forEach(function(cm){
-        var row=document.createElement('div');row.className='bili-item';
-        row.appendChild(avatarEl(cm.nick, cm.link));
-        var col=document.createElement('div');col.className='bili-c';
-        var head=document.createElement('div');head.className='bili-c-head';
-        head.innerHTML='<span class="bili-nick">'+esc(cm.nick||'路过的同学')+'</span>'
-          +'<span class="bili-time">'+fmtTime(cm.date)+'</span>'
-          +(cm.ip_region?'<span class="bili-ip">IP属地：'+esc(cm.ip_region)+'</span>':'');
-        col.appendChild(head);
-        var body=document.createElement('div');body.className='bili-content';
-        body.innerHTML=esc(cm.content).replace(/\n/g,'<br>');
-        col.appendChild(body);
-        var like=document.createElement('div');like.className='bili-like';
-        like.textContent='赞同 '+(cm.vote_up||0);
-        col.appendChild(like);
-        row.appendChild(col);
-        wrap.appendChild(row);
-      });
-      document.getElementById('cmtEmpty').hidden=list.length>0;
-      document.getElementById('cmtTotal').textContent=list.length;
-    }
-
-    function load(){
-      fetch(API+'/comments?page_key='+encodeURIComponent(PAGE)+'&site_name='+encodeURIComponent(SITE)+'&limit=100')
-        .then(function(r){return r.json();})
-        .then(function(d){
-          document.getElementById('cmtLoading').hidden=true;
-          render(d.comments||[]);
-        })
-        .catch(function(){
-          var el=document.getElementById('cmtLoading');
-          el.hidden=false;
-          el.setAttribute('data-failed','1');
-          el.style.cursor='pointer';
-          el.textContent='留言加载失败，点击这里重试。';
-        });
-    }
-    document.getElementById('cmtLoading').addEventListener('click',function(){
-      if(this.getAttribute('data-failed')==='1'){
-        this.removeAttribute('data-failed');
-        this.textContent='加载中……';
-        this.style.cursor='default';
-        load();
-      }
-    });
-    document.getElementById('cmtLoading').style.cursor='default';
-
-    var submitting=false;
-    document.getElementById('cmtSubmit').addEventListener('click',function(){
-      if(submitting)return;
-      var text=ta.value.trim();
-      if(!text){ta.focus();return;}
-      submitting=true;
-      document.getElementById('cmtSubmit').disabled=true;
-      var nick=(nickInput.value||'').trim();
-      var name=nick||'路过的同学';
-      var email=nick
-        ?('anon-'+hash(name).toString(36)+'@local.xxc2007.me')
-        :('anon-'+Math.random().toString(36).slice(2,10)+'@local.xxc2007.me');
-      fetch(API+'/comments',{method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({page_key:PAGE,page_title:'留言墙',site_name:SITE,name:name,email:email,link:avatarURL?('https://xxc2007.me/comment'+avatarURL):'',content:text})})
-        .then(function(r){return r.json();})
-        .then(function(d){
-          submitting=false;
-          document.getElementById('cmtSubmit').disabled=false;
-          if(d.id){
-            ta.value='';count.textContent='0 / 500';
-            showNotice('<b>留言已提交。</b>站长审核通过后就会出现在这里，感谢你的声音 ✦');
-            load();
-          } else {
-            showNotice('发布失败：'+esc(d.msg||'未知错误'));
-          }
-        })
-        .catch(function(){
-          submitting=false;
-          document.getElementById('cmtSubmit').disabled=false;
-          showNotice('网络异常，发布失败，请稍后重试。');
-        });
-    });
-
-    load();
-  })();
-  </script>
 </main>
 
 <!-- ===================== 页脚 ===================== -->
 <footer>
   <div class="footer-inner">
     <div>
-      <img src="images/emblem-320.png" alt="南昌市第十五中学校徽">
+      <img src="images/emblem-320.png" alt="南昌市第十五中学校徽" width="44" height="44">
       <div class="f-brand">南昌市第十五中学 · 纪念册</div>
       <div>摄影与制作 · 熊鑫晨</div>
     </div>
     <div class="right">
+      <div class="f-coord">28.7208° N, 115.9322° E · 青山湖畔</div>
       <div>xxc2007.me · 2026</div>
-      <div><a href="#topbar" style="text-decoration:none">回到顶部 ↑</a></div>
+      <div><a href="#topbar">回到顶部 ↑</a></div>
     </div>
   </div>
 </footer>
@@ -1290,532 +498,8 @@
   </div>
 </div>
 
-<script src="maplibre/maplibre-gl.js?v=20260906"></script>
-<script src="maplibre/maplibre-gl.js?v=20260906"></script>
-<script data-map-init>
-(function () {
-  'use strict';
-
-  /* ---------- 机位数据（维护者只改这里） ---------- */
-  var SPOTS = [
-    { name: '校门 · 门柱铭牌',       img: '01-gate.jpg',                         date: '2025.04',    lat: 28.72075, lng: 115.93292, conf: 'estimated', desc: '粉砖门柱上「南昌十五中」五个银色大字，三年里进出千百次的坐标。' },
-    { name: '开学第一天的操场',       img: '02-playground-firstday.jpg',          date: '2022.08.31', lat: 28.72068, lng: 115.93181, conf: 'exact',     desc: '清晨七点十八分，红色跑道迎来新高一学生的第一张照片。' },
-    { name: '红砖教学楼 · 冬日黄昏', img: '04-teaching-building-winter-dusk.jpg', date: '2022.12.19', lat: 28.72145, lng: 115.93193, conf: 'approx',    desc: '冬日黄昏里的红砖教学楼与玻璃楼梯间。' },
-    { name: '香樟林与老教学楼',       img: '09-camphor-grove.jpg',                date: '2023.03.22', lat: 28.72025, lng: 115.93228, conf: 'estimated', desc: '香樟新叶红绿交织，老教学楼静立树下。' },
-    { name: '老水塔',                 img: '11-water-tower.jpg',                  date: '2023.06.28', lat: 28.72145, lng: 115.93255, conf: 'estimated', landmark: true, desc: '比所有教学楼都年长的构筑物，替我们记着上课与下课。' },
-    { name: '俯瞰网球场',             img: '08-tennis-court.jpg',                 date: '2023.03.22', lat: 28.72046, lng: 115.93269, conf: 'exact',     desc: '绿红相间的网球场，收藏了所有课间的黄昏。' },
-    { name: '广场 · 月牙雕塑',        img: '18-plaza-summer.jpg',                 date: '2025.08.23', lat: 28.72110, lng: 115.93240, conf: 'estimated', desc: '暑假的广场空无一人，月牙雕塑仍指向天空。' },
-    { name: '综合楼仰拍',             img: '19-library-building-sky.jpg',         date: '2025.08.23', lat: 28.72078, lng: 115.93244, conf: 'approx',    desc: '仰拍综合楼，蓝天上大朵积云。' }
-  ];
-
-  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var viewer = document.getElementById('tourViewer');
-  var cur = 4, mmMarkers = [], slides = [];
-
-  /* ---------- 全幅照片漫游 ---------- */
-  if (viewer) {
-    SPOTS.forEach(function (s) {
-      var img = document.createElement('img');
-      img.className = 'slide';
-      img.src = 'images/full/' + s.img;
-      img.alt = s.name;
-      viewer.insertBefore(img, viewer.querySelector('.veil'));
-    });
-    slides = Array.prototype.slice.call(viewer.querySelectorAll('img.slide'));
-  }
-  var dotsWrap = document.getElementById('tourDots');
-  var dots = [];
-  if (dotsWrap) {
-    SPOTS.forEach(function (s, i) {
-      var d = document.createElement('i');
-      d.setAttribute('role', 'button');
-      d.setAttribute('aria-label', s.name);
-      d.addEventListener('click', function () { go(i); });
-      dotsWrap.appendChild(d);
-    });
-    dots = Array.prototype.slice.call(dotsWrap.children);
-  }
-
-  function paint() {
-    slides.forEach(function (img, i) { img.classList.toggle('on', i === cur); });
-    document.getElementById('tourTitle').textContent = SPOTS[cur].name;
-    document.getElementById('tourDate').textContent = SPOTS[cur].date + ' · ' + SPOTS[cur].desc;
-    document.getElementById('tourNum').textContent = (cur + 1) + ' / ' + SPOTS.length;
-    dots.forEach(function (d, i) { d.classList.toggle('on', i === cur); });
-    mmMarkers.forEach(function (mm, i) { mm.el.classList.toggle('on', i === cur); });
-  }
-  function go(i) {
-    cur = (i + SPOTS.length) % SPOTS.length;
-    paint();
-    var s = SPOTS[cur];
-    if (window.__campusMap) {
-      if (!reduceMotion) __campusMap.flyTo({ center: [s.lng, s.lat], zoom: 16.5, duration: 1600, essential: true });
-      else __campusMap.jumpTo({ center: [s.lng, s.lat], zoom: 16.5 });
-    }
-  }
-  var prevBtn = document.getElementById('tourPrev');
-  var nextBtn = document.getElementById('tourNext');
-  if (prevBtn) prevBtn.addEventListener('click', function () { go(cur - 1); });
-  if (nextBtn) nextBtn.addEventListener('click', function () { go(cur + 1); });
-  document.addEventListener('keydown', function (ev) {
-    if (ev.key === 'ArrowLeft') go(cur - 1);
-    if (ev.key === 'ArrowRight') go(cur + 1);
-  });
-
-  /* ---------- 定位图（MapLibre 矢量底图：OSM 栅格 + 中文地名，2D 俯视最清晰） ---------- */
-  var el = document.getElementById('campusMap');
-  if (!el || el.getAttribute('data-map-ready')) return;
-  el.setAttribute('data-map-ready', '1');
-
-  var map = new maplibregl.Map({
-    container: el,
-    style: {
-      version: 8,
-      sources: {
-        osm: {
-          type: 'raster',
-          tiles: ['https://tile.openstreetmap.org/{z}/{x}/{y}.png'],
-          tileSize: 256, maxzoom: 19,
-          attribution: '底图 © OpenStreetMap 贡献者'
-        }
-      },
-      glyphs: 'https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf',
-      layers: [
-        { id: 'bg', type: 'background', paint: { 'background-color': '#EDEAE0' } },
-        { id: 'osm', type: 'raster', source: 'osm' }
-      ]
-    },
-    center: [115.93216, 28.72078],
-    zoom: 15.6, pitch: 0, bearing: 0,
-    attributionControl: false
-  });
-  window.__campusMap = map;
-  map.addControl(new maplibregl.AttributionControl({ compact: true }));
-  map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
-
-  SPOTS.forEach(function (s, i) {
-    var pin = document.createElement('div');
-    pin.className = 'mm-pin';
-    pin.title = s.name;
-    pin.setAttribute('role', 'button');
-    pin.setAttribute('aria-label', s.name);
-    var m = new maplibregl.Marker({ element: pin, anchor: 'center' }).setLngLat([s.lng, s.lat]).addTo(map);
-    mmMarkers.push({ el: pin, m: m, s: s });
-    pin.addEventListener('click', function (ev) {
-      ev.stopPropagation();
-      go(i);
-    });
-  });
-
-  window.addEventListener('load', function () { map.resize(); });
-  paint();
-})();
-</script>
-
-<script>
-(function(){
-  'use strict';
-
-  /* ---------- 统一滚动驱动（rAF 节流） ---------- */
-  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var topbar = document.getElementById('topbar');
-  var progress = document.getElementById('progress');
-  var updaters = [];
-  var ticking = false;
-  function requestTick(){
-    if (ticking) return;
-    ticking = true;
-    requestAnimationFrame(function(){
-      ticking = false;
-      for (var i = 0; i < updaters.length; i++) updaters[i]();
-    });
-  }
-  window.addEventListener('scroll', requestTick, {passive:true});
-  window.addEventListener('resize', requestTick);
-
-  /* 顶栏状态 + 阅读进度条 */
-  updaters.push(function(){
-    topbar.classList.toggle('scrolled', window.scrollY > 8);
-    if (progress){
-      var max = document.documentElement.scrollHeight - window.innerHeight;
-      progress.style.transform = 'scaleX(' + (max > 0 ? Math.min(1, window.scrollY / max) : 0).toFixed(4) + ')';
-    }
-  });
-
-  /* ---------- 导航高亮（scrollspy） ---------- */
-  (function(){
-    var links = Array.prototype.slice.call(document.querySelectorAll('nav.toc a[href^="#"]'));
-    var sections = [];
-    links.forEach(function(a){
-      var sec = document.getElementById(a.getAttribute('href').slice(1));
-      if (sec) sections.push({link: a, sec: sec});
-    });
-    if (!sections.length) return;
-    updaters.push(function(){
-      var active = null;
-      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4){
-        active = sections[sections.length - 1];
-      } else {
-        for (var i = 0; i < sections.length; i++){
-          if (sections[i].sec.getBoundingClientRect().top <= 96) active = sections[i];
-        }
-      }
-      sections.forEach(function(s){ s.link.classList.toggle('active', s === active); });
-    });
-  })();
-
-  /* ---------- 滚动显现 ---------- */
-  var reveals = document.querySelectorAll('.reveal');
-  if ('IntersectionObserver' in window){
-    var io = new IntersectionObserver(function(entries){
-      entries.forEach(function(e){
-        if (e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); }
-      });
-    }, {threshold:.12, rootMargin:'0px 0px -4% 0px'});
-    reveals.forEach(function(el){ io.observe(el); });
-  } else {
-    reveals.forEach(function(el){ el.classList.add('visible'); });
-  }
-
-
-  /* ---------- 画廊图片加载渐显 ---------- */
-  (function(){
-    var imgs = document.querySelectorAll('.ph-img img');
-    imgs.forEach(function(img){
-      if (reduceMotion){ img.classList.add('ld'); return; }
-      if (img.complete && img.naturalWidth > 0){ img.classList.add('ld'); }
-      else {
-        img.addEventListener('load', function(){ img.classList.add('ld'); });
-        img.addEventListener('error', function(){ img.classList.add('ld'); });
-      }
-    });
-  })();
-
-  /* ---------- 卡片 3D 微倾（仅桌面精确指针） ---------- */
-  (function(){
-    if (reduceMotion) return;
-    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
-    document.querySelectorAll('.ph').forEach(function(card){
-      card.addEventListener('mousemove', function(ev){
-        var r = card.getBoundingClientRect();
-        var x = (ev.clientX - r.left) / r.width - .5;
-        var y = (ev.clientY - r.top) / r.height - .5;
-        card.style.transform = 'perspective(700px) translateY(-3px) rotateX(' + (-y * 4.5).toFixed(2) + 'deg) rotateY(' + (x * 4.5).toFixed(2) + 'deg)';
-      });
-      card.addEventListener('mouseleave', function(){ card.style.transform = ''; });
-    });
-  })();
-
-  /* ---------- 关键数字滚动 ---------- */
-  (function(){
-    var nums = document.querySelectorAll('.stat-n[data-count]');
-    if (!nums.length || reduceMotion || !('IntersectionObserver' in window)) return;
-    var nio = new IntersectionObserver(function(entries){
-      entries.forEach(function(e){
-        if (!e.isIntersecting) return;
-        nio.unobserve(e.target);
-        var el = e.target;
-        var target = parseInt(el.getAttribute('data-count'), 10);
-        var t0 = null;
-        function step(ts){
-          if (t0 === null) t0 = ts;
-          var p = Math.min(1, (ts - t0) / 1600);
-          el.textContent = String(Math.round((1 - Math.pow(1 - p, 4)) * target));
-          if (p < 1) requestAnimationFrame(step);
-        }
-        requestAnimationFrame(step);
-      });
-    }, {threshold:.5});
-    nums.forEach(function(el){ el.textContent = '0'; nio.observe(el); });
-  })();
-
-  /* ---------- Hero 大图视差 + 光标惯性视差（Oryzo 式景深响应） ---------- */
-  (function(){
-    if (reduceMotion) return;
-    var fig = document.querySelector('.hero-figure');
-    var img = fig ? fig.querySelector('img') : null;
-    if (!img) return;
-    var finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-    var mx = 0, my = 0, cmx = 0, cmy = 0;   /* 光标目标/当前（惯性跟随） */
-    if (finePointer){
-      window.addEventListener('mousemove', function(ev){
-        mx = (ev.clientX / window.innerWidth - .5) * 16;
-        my = (ev.clientY / window.innerHeight - .5) * 10;
-        requestTick();
-      });
-    }
-    updaters.push(function(){
-      cmx += (mx - cmx) * .08;
-      cmy += (my - cmy) * .08;
-      var r = fig.getBoundingClientRect();
-      var vh = window.innerHeight;
-      if (r.bottom < -80 || r.top > vh + 80) return;
-      var p = (vh - r.top) / (vh + r.height);
-      p = Math.max(0, Math.min(1, p));
-      img.style.transform = 'translate(' + cmx.toFixed(1) + 'px,' + ((p - .5) * 52 + cmy).toFixed(1) + 'px) scale(1.09)';
-    });
-  })();
-
-  /* ---------- 惯性平滑滚动（Oryzo/Lusion 手感核心） ----------
-     桌面滚轮 → 惯性插值滚动；触屏/地图/输入框/灯箱开启时不劫持 */
-  (function(){
-    if (reduceMotion) return;
-    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
-    var target = window.scrollY, current = window.scrollY, raf = null;
-    var MAX_STEP = 240;   /* 单次滚轮冲量上限，防飞掠 */
-    function clamp(v, lo, hi){ return Math.max(lo, Math.min(hi, v)); }
-    function maxScroll(){ return document.documentElement.scrollHeight - window.innerHeight; }
-    function loop(){
-      current += (target - current) * .12;             /* 惯性插值 */
-      if (Math.abs(target - current) < .6){
-        current = target;
-        window.scrollTo({top: current, behavior: 'instant'});
-        raf = null;
-        return;
-      }
-      window.scrollTo({top: Math.round(current), behavior: 'instant'});
-      raf = requestAnimationFrame(loop);
-    }
-    function kick(){ if (!raf) raf = requestAnimationFrame(loop); }
-    window.addEventListener('wheel', function(ev){
-      if (ev.ctrlKey) return;                          /* 缩放手势不劫持 */
-      if (document.body.classList.contains('lb-lock')) return;   /* 灯箱开启时交给灯箱 */
-      if (ev.target.closest('#campusMap, .maplibregl-canvas, textarea, input, .atk-editor')) return;
-      ev.preventDefault();
-      var max = maxScroll();
-      target = clamp(target + clamp(ev.deltaY, -MAX_STEP, MAX_STEP), 0, max);
-      current = clamp(current, 0, max);
-      kick();
-    }, {passive:false});
-    /* 锚点跳转 / 键盘 / 拖动滚动条（无 rAF 在跑时）→ 同步目标 */
-    window.addEventListener('scroll', function(){
-      if (!raf){ target = window.scrollY; current = window.scrollY; }
-    }, {passive:true});
-  })();
-
-  /* ---------- 时间线生长 ---------- */
-  (function(){
-    if (reduceMotion) return;
-    var tl = document.querySelector('.timeline');
-    if (!tl) return;
-    var fill = document.createElement('span');
-    fill.className = 't-fill';
-    tl.insertBefore(fill, tl.firstChild);
-    var items = Array.prototype.slice.call(tl.querySelectorAll('.t-item'));
-    updaters.push(function(){
-      var r = tl.getBoundingClientRect();
-      if (r.bottom < 0 || r.top > window.innerHeight) return;
-      var p = (window.innerHeight * .72 - r.top) / r.height;
-      p = Math.max(0, Math.min(1, p));
-      var h = p * (r.height - 16);
-      fill.style.height = h.toFixed(1) + 'px';
-      items.forEach(function(item){
-        item.classList.toggle('lit', item.offsetTop + 13 <= h + 8);
-      });
-    });
-  })();
-
-
-
-  /* ---------- 灯箱 ---------- */
-  var figures = Array.prototype.slice.call(document.querySelectorAll('.ph'));
-  var box = document.getElementById('lightbox');
-  var lbImg = document.getElementById('lbImg');
-  var lbCount = document.getElementById('lbCount');
-  var lbCapT = document.getElementById('lbCapT');
-  var lbCapD = document.getElementById('lbCapD');
-  var current = -1, lastFocus = null;
-  var stage = box.querySelector('.lb-stage');
-
-  /* ---------- 灯箱缩放与平移状态 ---------- */
-  var zoom = 1, tx = 0, ty = 0;
-  var pointers = new Map();
-  var pinch = null, pan = null, suppressSwipe = false;
-
-  function clampPan(){
-    var maxX = Math.max(0, (lbImg.clientWidth * zoom - stage.clientWidth) / 2);
-    var maxY = Math.max(0, (lbImg.clientHeight * zoom - stage.clientHeight) / 2);
-    tx = Math.max(-maxX, Math.min(maxX, tx));
-    ty = Math.max(-maxY, Math.min(maxY, ty));
-  }
-  function syncCursor(){
-    lbImg.classList.toggle('grab', zoom > 1 && !pan);
-  }
-  function applyTransform(){
-    lbImg.style.transform = 'translate(' + tx.toFixed(1) + 'px,' + ty.toFixed(1) + 'px) scale(' + zoom.toFixed(3) + ')';
-  }
-  function resetZoom(){
-    zoom = 1; tx = 0; ty = 0;
-    lbImg.classList.remove('grab', 'grabbing');
-    applyTransform();
-  }
-
-  function preload(i){
-    if (i < 0 || i >= figures.length) return;
-    var im = new Image();
-    im.src = figures[i].querySelector('a').getAttribute('href');
-  }
-  function show(i){
-    if (!figures.length) return;
-    current = (i + figures.length) % figures.length;
-    var fig = figures[current];
-    var link = fig.querySelector('a');
-    var full = link.getAttribute('href');
-    var thumb = fig.querySelector('img');
-    lbImg.classList.remove('show');
-    resetZoom();
-    lbImg.onload = function(){
-      requestAnimationFrame(function(){ lbImg.classList.add('show'); });
-    };
-    lbImg.src = full;
-    lbImg.alt = thumb ? thumb.alt : '';
-    lbCount.textContent = (current + 1) + ' / ' + figures.length;
-    lbCapT.textContent = fig.getAttribute('data-cap') || '';
-    lbCapD.textContent = fig.getAttribute('data-date') || '';
-    preload(current + 1);
-    preload(current - 1);
-  }
-  function open(i){
-    lastFocus = document.activeElement;
-    box.hidden = false;
-    document.body.classList.add('lb-lock');
-    show(i);
-    requestAnimationFrame(function(){ box.classList.add('open'); });
-    document.getElementById('lbClose').focus();
-  }
-  function close(){
-    box.classList.remove('open');
-    document.body.classList.remove('lb-lock');
-    setTimeout(function(){ box.hidden = true; }, 300);
-    if (lastFocus) lastFocus.focus();
-  }
-
-  figures.forEach(function(fig, i){
-    var link = fig.querySelector('a');
-    link.addEventListener('click', function(ev){
-      ev.preventDefault();
-      open(i);
-    });
-  });
-
-  document.getElementById('lbClose').addEventListener('click', close);
-  document.getElementById('lbPrev').addEventListener('click', function(){ show(current - 1); });
-  document.getElementById('lbNext').addEventListener('click', function(){ show(current + 1); });
-
-  lbImg.draggable = false;
-
-  /* 滚轮缩放（以光标为中心） */
-  box.addEventListener('wheel', function(ev){
-    ev.preventDefault();
-    var prev = zoom;
-    zoom = Math.max(1, Math.min(4, zoom * (ev.deltaY < 0 ? 1.18 : 1 / 1.18)));
-    if (zoom === prev) return;
-    if (zoom === 1){
-      tx = 0; ty = 0;
-    } else {
-      var r = lbImg.getBoundingClientRect();
-      tx += (ev.clientX - (r.left + r.width / 2)) * (1 - zoom / prev);
-      ty += (ev.clientY - (r.top + r.height / 2)) * (1 - zoom / prev);
-      clampPan();
-    }
-    syncCursor();
-    applyTransform();
-  }, {passive:false});
-
-  /* 双击：放大 / 复位 */
-  lbImg.addEventListener('dblclick', function(ev){
-    ev.preventDefault();
-    if (zoom > 1){ resetZoom(); return; }
-    var r = lbImg.getBoundingClientRect();
-    var z2 = 2.5;
-    tx += (ev.clientX - (r.left + r.width / 2)) * (1 - z2 / zoom);
-    ty += (ev.clientY - (r.top + r.height / 2)) * (1 - z2 / zoom);
-    zoom = z2;
-    clampPan();
-    syncCursor();
-    applyTransform();
-  });
-
-  /* 指针：拖拽平移 + 双指捏合 */
-  function ptrDist(){
-    var ps = Array.from(pointers.values());
-    return Math.hypot(ps[0].x - ps[1].x, ps[0].y - ps[1].y);
-  }
-  stage.addEventListener('pointerdown', function(ev){
-    if (ev.target !== lbImg) return;
-    if (lbImg.setPointerCapture){ try { lbImg.setPointerCapture(ev.pointerId); } catch (err) {} }
-    pointers.set(ev.pointerId, {x: ev.clientX, y: ev.clientY});
-    if (pointers.size === 2){
-      pinch = {d: ptrDist(), z: zoom};
-      pan = null;
-      if (ev.pointerType !== 'mouse') suppressSwipe = true;
-      lbImg.classList.remove('grabbing');
-    } else if (pointers.size === 1 && zoom > 1){
-      pan = {x: ev.clientX, y: ev.clientY, tx: tx, ty: ty};
-      if (ev.pointerType !== 'mouse') suppressSwipe = true;
-      lbImg.classList.add('grabbing');
-      lbImg.classList.remove('grab');
-    }
-  });
-  stage.addEventListener('pointermove', function(ev){
-    if (!pointers.has(ev.pointerId)) return;
-    pointers.set(ev.pointerId, {x: ev.clientX, y: ev.clientY});
-    if (pinch && pointers.size >= 2){
-      zoom = Math.max(1, Math.min(4, pinch.z * (ptrDist() / (pinch.d || 1))));
-      if (zoom === 1){ tx = 0; ty = 0; } else clampPan();
-      syncCursor();
-      applyTransform();
-    } else if (pan){
-      tx = pan.tx + (ev.clientX - pan.x);
-      ty = pan.ty + (ev.clientY - pan.y);
-      clampPan();
-      applyTransform();
-    }
-  });
-  function endPointer(ev){
-    if (!pointers.delete(ev.pointerId)) return;
-    if (pointers.size < 2) pinch = null;
-    if (pointers.size === 0){
-      pan = null;
-      lbImg.classList.remove('grabbing');
-      syncCursor();
-    } else if (pointers.size === 1 && zoom > 1){
-      var rest = Array.from(pointers.values())[0];
-      pan = {x: rest.x, y: rest.y, tx: tx, ty: ty};
-      lbImg.classList.add('grabbing');
-      lbImg.classList.remove('grab');
-    }
-  }
-  stage.addEventListener('pointerup', endPointer);
-  stage.addEventListener('pointercancel', endPointer);
-  box.addEventListener('click', function(ev){
-    if (ev.target === box || ev.target.classList.contains('lb-stage')) close();
-  });
-
-  document.addEventListener('keydown', function(ev){
-    if (box.hidden) return;
-    if (ev.key === 'Escape') close();
-    else if (ev.key === 'ArrowLeft') show(current - 1);
-    else if (ev.key === 'ArrowRight') show(current + 1);
-  });
-
-  /* 触摸滑动翻页（缩放/平移手势时让位） */
-  var touchX = null;
-  box.addEventListener('touchstart', function(ev){
-    if (ev.touches.length > 1 || suppressSwipe){ touchX = null; return; }
-    touchX = ev.touches[0].clientX;
-  }, {passive:true});
-  box.addEventListener('touchend', function(ev){
-    if (suppressSwipe){ suppressSwipe = false; touchX = null; return; }
-    if (touchX === null) return;
-    var dx = ev.changedTouches[0].clientX - touchX;
-    if (Math.abs(dx) > 48){ if (dx < 0) show(current + 1); else show(current - 1); }
-    touchX = null;
-  }, {passive:true});
-
-  /* 初始驱动一次，保证首屏状态正确 */
-  requestTick();
-})();
-</script>
+<script src="assets/main.js?v=20260906c" defer></script>
+<script src="assets/wall.js?v=20260906c" defer></script>
+<!-- 定位图（map.js）由 head 内的惰性初始化器在滚动临近时按需加载 maplibre-gl.js -->
 </body>
 </html>
