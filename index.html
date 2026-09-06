@@ -10,7 +10,7 @@
 <meta property="og:type" content="website">
 <link rel="icon" type="image/png" href="images/emblem-64.png">
 <link rel="apple-touch-icon" href="images/emblem-180.png">
-<link rel="stylesheet" href="leaflet/leaflet.css">
+<link rel="stylesheet" href="maplibre/maplibre-gl.css">
 <style>
   /* ============ 留言墙（B站风格评论区） ============ */
   .bili-comments{background:#FAF9F5;border:1px solid #E4DFD3;border-radius:12px;padding:24px 32px;margin-top:24px}
@@ -129,7 +129,9 @@
   nav.toc a.active{color:var(--terra-deep);background:rgba(217,119,87,.12)}
 
   /* ============ Hero ============ */
-  .hero{max-width:1200px;margin:0 auto;padding:150px 28px 0}
+  .hero{max-width:1200px;margin:0 auto;padding:150px 28px 0;position:relative}
+  #leafCanvas{position:absolute;inset:0;pointer-events:none;z-index:0}
+  .hero>*{position:relative;z-index:1}
   .hero-emblem{width:78px;height:78px;filter:drop-shadow(0 3px 10px rgba(31,30,29,.16));animation:rise .8s 0s both}
   .hero .eyebrow{
     font-size:13px;letter-spacing:.32em;color:var(--muted);
@@ -269,12 +271,16 @@
     background:var(--paper);border:1px solid var(--line);border-radius:10px;
     overflow:hidden;display:flex;flex-direction:column;
     transition:transform .35s cubic-bezier(.2,.7,.3,1), box-shadow .35s;
+    transform-style:preserve-3d;
   }
   .ph:hover{transform:translateY(-3px);box-shadow:0 14px 34px rgba(31,30,29,.10)}
   .ph a{display:block;flex:1}
   .ph-img{aspect-ratio:4/3;overflow:hidden}
-  .ph-img img{width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.2,.7,.3,1)}
+  .ph-img img{width:100%;height:100%;object-fit:cover;opacity:0;
+    transition:transform .6s cubic-bezier(.2,.7,.3,1), opacity .8s ease}
+  .ph-img img.ld{opacity:1}
   .ph:hover .ph-img img{transform:scale(1.045)}
+  @media (prefers-reduced-motion: reduce){.ph-img img{opacity:1}}
   .ph figcaption{
     display:flex;justify-content:space-between;align-items:baseline;gap:12px;
     padding:11px 15px 12px;border-top:1px solid var(--line);
@@ -439,6 +445,7 @@
 <main>
   <!-- ===================== Hero ===================== -->
   <section class="hero">
+    <canvas id="leafCanvas" aria-hidden="true"></canvas>
     <img class="hero-emblem" src="images/emblem-320.png" alt="南昌市第十五中学校徽">
     <p class="eyebrow">NANCHANG NO. 15 MIDDLE SCHOOL · EST. 1958</p>
     <h1>青山湖畔，<br>红砖楼与<em>香樟</em>记得。</h1>
@@ -746,71 +753,70 @@
     </div>
   </section>
 
-  <!-- ===================== 校园地图 ===================== -->
+  <!-- ===================== 校园地图（3D 卫星） ===================== -->
   <style>
-    /* ============ 伍 · MAP 校园寻踪 ============ */
+    /* ============ 伍 · MAP 校园寻踪（MapLibre 3D 卫星） ============ */
     .campus-map-scope .map-shell{
       border:1px solid var(--line);border-radius:12px;overflow:hidden;
-      background:var(--paper);box-shadow:0 1px 0 rgba(31,30,29,.03);
+      background:#EDEAE0;box-shadow:0 1px 0 rgba(31,30,29,.03);
     }
-    #campusMap{height:460px;font-family:var(--sans);background:#EDEAE0}
+    #campusMap{height:480px;font-family:var(--sans)}
     .campus-map-scope .map-note{font-size:12px;color:#8A8578;margin-top:14px;letter-spacing:.04em}
 
-    /* 标记：赤陶橙实心圆 + 米白描边 + 半透明外环（地标加大） */
-    #campusMap .campus-pin{width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+    /* 标记：赤陶橙实心圆 + 米白描边（地标加大） */
+    #campusMap .campus-pin{width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer}
     #campusMap .campus-pin i{
       display:block;width:14px;height:14px;border-radius:50%;
-      background:var(--terra);border:2px solid var(--paper);
-      box-shadow:0 0 0 1px rgba(217,119,87,.45),0 2px 8px rgba(31,30,29,.28);
+      background:var(--terra);border:2px solid #FAF9F5;
+      box-shadow:0 0 0 1px rgba(217,119,87,.5),0 2px 8px rgba(0,0,0,.45);
       transition:transform .2s cubic-bezier(.2,.65,.3,1);
     }
     #campusMap .campus-pin:hover i{transform:scale(1.3)}
     #campusMap .campus-pin.is-landmark i{
       width:19px;height:19px;
-      box-shadow:0 0 0 1px rgba(217,119,87,.55),0 0 0 6px rgba(217,119,87,.16),0 3px 10px rgba(31,30,29,.32);
+      box-shadow:0 0 0 1px rgba(217,119,87,.6),0 0 0 6px rgba(217,119,87,.28),0 3px 10px rgba(0,0,0,.5);
     }
-    #campusMap .campus-pin.is-landmark:hover i{transform:scale(1.18)}
 
-    /* 弹窗：paper 底 + 发丝线边框 */
-    #campusMap .leaflet-popup-content-wrapper{background:var(--paper);color:var(--ink);border:1px solid var(--line);border-radius:10px;box-shadow:0 12px 32px rgba(31,30,29,.16)}
-    #campusMap .leaflet-popup-content{margin:10px 12px;line-height:1.5}
-    #campusMap .leaflet-popup-tip{background:var(--paper)}
-    #campusMap a.leaflet-popup-close-button{color:var(--muted)}
-    #campusMap a.leaflet-popup-close-button:hover{color:var(--terra-deep)}
+    /* 弹窗：纸感卡片 */
+    #campusMap .maplibregl-popup-content{background:#FAF9F5;color:#1F1E1D;border:1px solid #E4DFD3;border-radius:10px;box-shadow:0 12px 32px rgba(0,0,0,.35);padding:10px 12px}
+    #campusMap .maplibregl-popup-tip{border-top-color:#FAF9F5;border-bottom-color:#FAF9F5}
+    #campusMap .maplibregl-popup-close-button{color:#6E6A5E;font-size:16px;padding:2px 6px}
     .campus-pop{display:flex;align-items:center;gap:12px;min-width:206px}
     .campus-pop img{width:96px;border-radius:6px;display:block;flex:none}
     .campus-pop-txt{display:flex;flex-direction:column;gap:3px}
-    .campus-pop-t{font-family:var(--serif);font-size:14px;font-weight:600;color:var(--ink);line-height:1.4}
-    .campus-pop-d{font-size:12px;color:var(--muted);letter-spacing:.05em}
+    .campus-pop-t{font-family:var(--serif);font-size:14px;font-weight:600;color:#1F1E1D;line-height:1.4}
+    .campus-pop-d{font-size:12px;color:#6E6A5E;letter-spacing:.05em}
 
-    /* Leaflet 控件淡化 */
-    #campusMap .leaflet-bar{border:1px solid var(--line);box-shadow:0 2px 10px rgba(31,30,29,.08)}
-    #campusMap .leaflet-bar a{background:var(--paper);color:var(--muted);border-bottom:1px solid var(--line)}
-    #campusMap .leaflet-bar a:hover{background:#fff;color:var(--terra-deep)}
-    #campusMap .leaflet-control-attribution{font-size:11px;color:#8A8578;background:rgba(250,249,245,.82);padding:2px 8px}
-    #campusMap .leaflet-control-attribution a{color:#8A8578}
-    /* OSM 标准瓦片降饱和 + 轻微暖化，贴合站内米白色调 */
-    #campusMap .leaflet-tile-pane{filter:grayscale(.62) sepia(.07) brightness(1.03) contrast(.96)}
+    /* 控件淡化 */
+    #campusMap .maplibregl-ctrl-group{border-radius:8px;box-shadow:0 2px 10px rgba(0,0,0,.3)}
+    #campusMap .maplibregl-ctrl-group button{width:30px;height:30px}
+    #campusMap .maplibregl-ctrl-scale{background:rgba(20,19,18,.5);color:#EFEBE0;border-color:rgba(250,249,245,.4);font-size:11px}
+    #campusMap .maplibregl-ctrl-attribution{background:rgba(20,19,18,.55);color:#B8B2A4;font-size:11px}
+    #campusMap .maplibregl-ctrl-attribution a{color:#D8D2C4}
+    #campusMap .maplibregl-ctrl-attribution.maplibregl-compact{background:rgba(20,19,18,.55)}
 
-    /* Leaflet 未能加载时的兜底文案 */
+    /* 运镜提示 */
+    .campus-map-scope .map-hint{position:absolute;top:12px;left:12px;z-index:2;
+      background:rgba(20,19,18,.55);color:#EFEBE0;font-size:11px;letter-spacing:.08em;
+      padding:5px 12px;border-radius:99px;backdrop-filter:blur(4px);pointer-events:none}
+
+    /* Leaflet/MapLibre 未能加载时的兜底文案 */
     #campusMap .campus-map-fallback{display:flex;height:100%;align-items:center;justify-content:center;padding:24px;text-align:center;color:var(--muted);font-size:13px;letter-spacing:.05em;line-height:2}
 
     @media (max-width:640px){
-      #campusMap{height:340px}
-    }
-    @media (prefers-reduced-motion: reduce){
-      #campusMap .campus-pin i{transition:none}
+      #campusMap{height:360px}
     }
   </style>
 
   <section class="block campus-map-scope" id="map">
     <div class="sec-head reveal"><span class="sec-index">伍 · MAP</span><h2>校园寻踪</h2></div>
     <hr class="sec-rule reveal">
-    <p class="sec-lede reveal">二十七张照片，八个机位。把镜头里的校园放回经纬度之中——记忆有了坐标，就可以重访。</p>
-    <div class="map-shell reveal">
-      <div id="campusMap" role="region" aria-label="南昌市第十五中学青山湖校区地图，标注八个照片拍摄机位"></div>
+    <p class="sec-lede reveal">二十七张照片，八个机位。拖动旋转、按住右键俯仰——把镜头里的校园放回经纬度之中。</p>
+    <div class="map-shell reveal" style="position:relative">
+      <div id="campusMap" role="region" aria-label="南昌市第十五中学青山湖校区三维卫星地图，标注八个照片拍摄机位"></div>
+      <div class="map-hint">拖动旋转视角 · 右键俯仰 · 点击标记查看机位</div>
     </div>
-    <p class="map-note reveal">机位为示意位置 · 底图 © OpenStreetMap 贡献者</p>
+    <p class="map-note reveal">机位为示意位置 · 影像 © Esri Maxar · 地形 AWS Terrain · © OpenStreetMap 贡献者</p>
   </section>
 
   <!-- ===================== 寄语 ===================== -->
@@ -1084,7 +1090,7 @@
   </div>
 </div>
 
-<script src="leaflet/leaflet.js"></script>
+<script src="maplibre/maplibre-gl.js"></script>
 <script data-map-init>
 (function () {
   'use strict';
@@ -1111,81 +1117,122 @@
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function init() {
-    if (typeof window.L === 'undefined' || el.getAttribute('data-map-ready')) return false;
+    if (typeof window.maplibregl === 'undefined' || el.getAttribute('data-map-ready')) return false;
     el.setAttribute('data-map-ready', '1');
 
-    var map = L.map(el, {
-      scrollWheelZoom: false,          /* 不劫持页面滚动，拖拽 / 双击缩放照常 */
-      zoomControl: true,
-      attributionControl: true,
-      maxZoom: 18,
-      fadeAnimation: !reduceMotion,
-      zoomAnimation: !reduceMotion,
-      markerZoomAnimation: !reduceMotion
+    var map = new maplibregl.Map({
+      container: el,
+      style: {
+        version: 8,
+        sources: {
+          esri: {
+            type: 'raster',
+            tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'],
+            tileSize: 256, maxzoom: 19,
+            attribution: '影像 © Esri, Maxar, Earthstar Geographics'
+          },
+          dem: {
+            type: 'raster-dem',
+            tiles: ['https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png'],
+            encoding: 'terrarium', tileSize: 256, maxzoom: 15
+          }
+        },
+        layers: [
+          { id: 'bg', type: 'background', paint: { 'background-color': '#EDEAE0' } },
+          { id: 'sat', type: 'raster', source: 'esri' }
+        ]
+      },
+      center: [115.93216, 28.72078],
+      zoom: 13.4,
+      pitch: 30,
+      bearing: 0,
+      maxPitch: 72,
+      antialias: true,
+      attributionControl: false,
+      dragRotate: true
     });
-    map.attributionControl.setPrefix('');
+    map.touchZoomRotate.enableRotation();
 
-    /* OSM 标准瓦片：免费匿名、高缩放级可用；CSS 滤镜统一成站内米灰色调 */
-    var tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors',
-      maxZoom: 18
-    }).addTo(map);
+    map.addControl(new maplibregl.AttributionControl({ compact: true }));
+    map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), 'top-right');
+    map.addControl(new maplibregl.ScaleControl({ maxWidth: 110, unit: 'metric' }), 'bottom-left');
 
-    /* OSM 不可达时（连续 6 片失败），静默回退 CARTO（注意其高缩放级需 key，仅作应急） */
-    var tileErrors = 0, fallenBack = false;
-    tiles.on('tileerror', function () {
-      if (fallenBack || ++tileErrors < 6) return;
-      fallenBack = true;
-      map.removeLayer(tiles);
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
-        subdomains: 'abcd',
-        maxZoom: 18
-      }).addTo(map);
+    /* 3D 地形（南昌平坦，夸张系数放大微起伏） */
+    map.on('load', function () {
+      map.setTerrain({ source: 'dem', exaggeration: 1.5 });
     });
 
+    /* 开场运镜：高空拉近 + 俯仰入场的电影镜头 */
+    var target = { center: [115.93216, 28.72078], zoom: 16.3, pitch: 55, bearing: -18 };
+    if (reduceMotion) {
+      map.jumpTo(target);
+    } else {
+      setTimeout(function () {
+        map.flyTo(Object.assign({ duration: 3600, essential: true }, target));
+      }, 600);
+    }
+
+    /* 机位标记：点击弹出照片并运镜飞过去 */
     var bounds = [];
     CAMERA_SPOTS.forEach(function (s) {
-      var icon = L.divIcon({
-        className: '',   /* 置空以去掉 leaflet-div-icon 默认白底 */
-        html: '<span class="campus-pin' + (s.landmark ? ' is-landmark' : '') + '" aria-hidden="true"><i></i></span>',
-        iconSize: [28, 28],
-        iconAnchor: [14, 14],
-        popupAnchor: [0, -14]
+      var pinEl = document.createElement('div');
+      pinEl.className = 'campus-pin' + (s.landmark ? ' is-landmark' : '');
+      pinEl.setAttribute('role', 'button');
+      pinEl.setAttribute('aria-label', s.name);
+      pinEl.innerHTML = '<i></i>';
+
+      var popup = new maplibregl.Popup({ offset: 16, maxWidth: '260px', closeButton: true, focusAfterOpen: false })
+        .setHTML(
+          '<div class="campus-pop">'
+          + '<img src="images/thumbs/' + s.img + '" alt="' + s.name + '" width="96" loading="lazy">'
+          + '<span class="campus-pop-txt">'
+          + '<span class="campus-pop-t">' + s.name + '</span>'
+          + '<span class="campus-pop-d">' + s.date + ' · ' + s.confidence + '</span>'
+          + '</span></div>'
+        );
+
+      var marker = new maplibregl.Marker({ element: pinEl, anchor: 'center' })
+        .setLngLat([s.lng, s.lat])
+        .setPopup(popup)
+        .addTo(map);
+
+      pinEl.addEventListener('click', function () {
+        marker.togglePopup();
+        if (!reduceMotion) {
+          map.flyTo({ center: [s.lng, s.lat], zoom: 17.6, pitch: 62, bearing: -24, duration: 1800, essential: true });
+        }
       });
-      var m = L.marker([s.lat, s.lng], { icon: icon, title: s.name, riseOnHover: true }).addTo(map);
-      m.bindPopup(
-        '<div class="campus-pop">'
-        + '<img src="images/thumbs/' + s.img + '" alt="' + s.name + '" width="96" loading="lazy">'
-        + '<span class="campus-pop-txt">'
-        + '<span class="campus-pop-t">' + s.name + '</span>'
-        + '<span class="campus-pop-d">' + s.date + '</span>'
-        + '</span></div>',
-        { maxWidth: 260 }
-      );
-      bounds.push([s.lat, s.lng]);
+
+      bounds.push([s.lng, s.lat]);
     });
 
-    /* fitBounds 上限 17：让校园占画面约一半，保留丹霞路等周边参照。
-       若初始化时容器还没有布局尺寸（首屏直跳等场景），
-       applyView 会在尺寸就绪后 invalidateSize 并重新定位 */
-    var initialBounds = L.latLngBounds(bounds);
+    /* 视野定位：容器尺寸未就绪时自动重试（applyView 防御） */
+    var initialBounds = bounds.length >= 2
+      ? bounds.reduce(function(b, c){ return b.extend(c); }, new maplibregl.LngLatBounds(bounds[0], bounds[0]))
+      : null;
     var viewDone = false;
     function applyView(){
-      var had = map.getSize().x;
-      map.invalidateSize();
-      if (!viewDone || (!had && map.getSize().x)){
-        map.fitBounds(initialBounds, { padding: [38, 38], maxZoom: 17, animate: !reduceMotion });
+      map.resize();
+      if (!viewDone && map.getContainer().offsetWidth > 0 && initialBounds){
+        map.flyTo(Object.assign({ duration: 0 }, target, {
+          center: initialBounds.getCenter().toArray(),
+          zoom: Math.min(target.zoom, 16.3)
+        }));
         viewDone = true;
       }
     }
-    applyView();
-    [350, 1200].forEach(function(d){ setTimeout(applyView, d); });
-    window.addEventListener('load', applyView);
+    if (reduceMotion && initialBounds) {
+      applyView();
+    } else if (initialBounds) {
+      /* 开场运镜由上方 flyTo 完成；此处仅兜底容器尺寸 */
+      setTimeout(function(){ if (map.getContainer().offsetWidth > 0) map.resize(); }, 800);
+    }
+    window.addEventListener('load', function(){ map.resize(); });
+
     return true;
   }
 
-  /* 启动时机：leaflet.js 已在本脚本之前同步引入，DOMContentLoaded 后再补一次尝试 */
+  /* 启动时机：maplibre-gl.js 已同步引入；DOMContentLoaded 后再补一次尝试 */
   var started = false;
   function tryInit() {
     if (started) return;
@@ -1269,6 +1316,100 @@
   } else {
     reveals.forEach(function(el){ el.classList.add('visible'); });
   }
+
+  /* ---------- 香樟叶飘落（首屏氛围，reduced-motion 关闭） ---------- */
+  (function(){
+    if (reduceMotion) return;
+    var cv = document.getElementById('leafCanvas');
+    if (!cv || !cv.getContext) return;
+    var ctx = cv.getContext('2d');
+    var leaves = [], running = false, raf = null;
+    var COLORS = ['rgba(138,154,91,','rgba(178,140,70,','rgba(196,110,80,','rgba(110,140,80,'];
+
+    function size(){
+      var r = cv.parentElement.getBoundingClientRect();
+      cv.width = Math.round(r.width * devicePixelRatio);
+      cv.height = Math.round(r.height * devicePixelRatio);
+      ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
+    }
+    function maxLeaves(){ return Math.min(12, Math.max(5, Math.round(window.innerWidth / 130))); }
+    function spawn(fromTop){
+      if (leaves.length >= maxLeaves()) return;
+      leaves.push({
+        x: Math.random() * cv.offsetWidth,
+        y: fromTop ? -12 : Math.random() * cv.offsetHeight,
+        s: 4 + Math.random() * 6,
+        a: Math.random() * Math.PI * 2,
+        va: (Math.random() - .5) * .02,
+        vy: .22 + Math.random() * .4,
+        sw: .5 + Math.random() * 1.1,
+        ph: Math.random() * Math.PI * 2,
+        c: COLORS[Math.floor(Math.random() * COLORS.length)] + (.3 + Math.random() * .28) + ')'
+      });
+    }
+    function tick(){
+      ctx.clearRect(0, 0, cv.offsetWidth, cv.offsetHeight);
+      for (var i = leaves.length - 1; i >= 0; i--){
+        var L = leaves[i];
+        L.ph += .012; L.y += L.vy;
+        L.x += Math.sin(L.ph) * L.sw * .45; L.a += L.va;
+        if (L.y > cv.offsetHeight + 14){ leaves.splice(i, 1); continue; }
+        ctx.save(); ctx.translate(L.x, L.y); ctx.rotate(L.a);
+        ctx.fillStyle = L.c;
+        ctx.beginPath();
+        ctx.moveTo(0, -L.s);
+        ctx.quadraticCurveTo(L.s * .85, -L.s * .15, 0, L.s);
+        ctx.quadraticCurveTo(-L.s * .85, -L.s * .15, 0, -L.s);
+        ctx.fill();
+        ctx.restore();
+      }
+      if (Math.random() < .028) spawn(true);
+      raf = requestAnimationFrame(tick);
+    }
+    function start(){ if (!running){ running = true; raf = requestAnimationFrame(tick); } }
+    function stop(){ if (running){ running = false; cancelAnimationFrame(raf); } }
+
+    size();
+    window.addEventListener('resize', size);
+    for (var i = 0; i < 6; i++) spawn(false);
+    if ('IntersectionObserver' in window){
+      new IntersectionObserver(function(es){
+        es.forEach(function(e){ e.isIntersecting ? start() : stop(); });
+      }, {threshold: .03}).observe(cv.parentElement);
+    } else { start(); }
+    document.addEventListener('visibilitychange', function(){
+      if (document.hidden) stop();
+      else if (cv.parentElement.getBoundingClientRect().bottom > 0) start();
+    });
+  })();
+
+  /* ---------- 画廊图片加载渐显 ---------- */
+  (function(){
+    var imgs = document.querySelectorAll('.ph-img img');
+    imgs.forEach(function(img){
+      if (reduceMotion){ img.classList.add('ld'); return; }
+      if (img.complete && img.naturalWidth > 0){ img.classList.add('ld'); }
+      else {
+        img.addEventListener('load', function(){ img.classList.add('ld'); });
+        img.addEventListener('error', function(){ img.classList.add('ld'); });
+      }
+    });
+  })();
+
+  /* ---------- 卡片 3D 微倾（仅桌面精确指针） ---------- */
+  (function(){
+    if (reduceMotion) return;
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+    document.querySelectorAll('.ph').forEach(function(card){
+      card.addEventListener('mousemove', function(ev){
+        var r = card.getBoundingClientRect();
+        var x = (ev.clientX - r.left) / r.width - .5;
+        var y = (ev.clientY - r.top) / r.height - .5;
+        card.style.transform = 'perspective(700px) translateY(-3px) rotateX(' + (-y * 4.5).toFixed(2) + 'deg) rotateY(' + (x * 4.5).toFixed(2) + 'deg)';
+      });
+      card.addEventListener('mouseleave', function(){ card.style.transform = ''; });
+    });
+  })();
 
   /* ---------- 关键数字滚动 ---------- */
   (function(){
