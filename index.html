@@ -130,7 +130,6 @@
 
   /* ============ Hero ============ */
   .hero{max-width:1200px;margin:0 auto;padding:150px 28px 0;position:relative}
-  #leafCanvas{position:absolute;inset:0;pointer-events:none;z-index:0}
   .hero>*{position:relative;z-index:1}
   .hero-emblem{width:78px;height:78px;filter:drop-shadow(0 3px 10px rgba(31,30,29,.16));animation:rise .8s 0s both}
   .hero .eyebrow{
@@ -196,7 +195,6 @@
   .landmark .duo .ph-img img{will-change:transform}
 
   /* ============ Oryzo 式电影感层 ============ */
-  /* 光尘粒子层（全站空白处随鼠标联动，记忆的尘埃） */
   #dustCanvas{position:fixed;inset:0;pointer-events:none;z-index:3}
   @media (prefers-reduced-motion: reduce){#dustCanvas{display:none}}
   /* 0) 水塔深色区视差容器 */
@@ -499,7 +497,6 @@
 <main>
   <!-- ===================== Hero ===================== -->
   <section class="hero">
-    <canvas id="leafCanvas" aria-hidden="true"></canvas>
     <img class="hero-emblem" src="images/emblem-320.png" alt="南昌市第十五中学校徽">
     <p class="eyebrow">NANCHANG NO. 15 MIDDLE SCHOOL · EST. 1958</p>
     <h1><span class="line-mask"><span class="line">青山湖畔，</span></span><span class="line-mask"><span class="line">红砖楼与<em>香樟</em>记得。</span></span></h1>
@@ -888,31 +885,150 @@
     <p class="sign reveal">—— 2025届毕业生</p>
   </section>
 
-  <!-- ===================== 留言墙 ===================== -->
-  <section class="block wall" id="wall">
-    <div class="sec-head reveal"><span class="sec-index">柒 · WALL</span><h2>留言墙</h2></div>
-    <hr class="sec-rule reveal">
-    <p class="sec-lede reveal">纪念册不该只有一个人的声音。写一句那年的话——无需登录，发布后经站长审核即会展示。</p>
-    <div class="bili-comments reveal">
-      <div class="bili-editor-row">
-        <div class="bili-avatar" id="myAvatar" title="点击上传自定义头像">访</div>
-        <input type="file" id="cmtAvatarInput" accept="image/*" hidden>
-        <div class="bili-editor-box">
-          <textarea id="cmtInput" maxlength="500" placeholder="善语结善缘，写一句那年的话……"></textarea>
-          <div class="bili-editor-foot">
-            <span class="bili-nick-wrap">昵称 <input id="cmtNick" maxlength="20" placeholder="留空则显示「路过的同学」"></span>
-            <span id="cmtCount">0 / 500</span>
-            <button id="cmtSubmit">发布</button>
+  <!-- ===================== 留言墙（暗场 · 暗河流沙） ===================== -->
+  <style>
+    /* 暗场深色版：Oryzo 气质，粒子即记忆的尘埃 */
+    .wall-dark{position:relative;background:var(--dark);color:#EFEBE0;
+      padding:96px 0 84px;overflow:hidden}
+    .wall-dark .sec-index{color:var(--terra)}
+    .wall-dark .sec-head h2{color:#EFEBE0}
+    .wall-dark .sec-rule{border-top-color:#3A3835}
+    .wall-dark .sec-lede{color:#A8A294}
+    #sandCanvas{position:absolute;inset:0;pointer-events:none;z-index:1}
+    .wall-dark .wrap{position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:0 28px}
+
+    /* 留言卡片暗色 */
+    .bili-comments{background:rgba(250,249,245,.045);border:1px solid #3A3835;border-radius:12px;
+      padding:24px 32px;margin-top:24px;position:relative;z-index:2}
+    #cmtInput{background:rgba(250,249,245,.05);color:#EFEBE0;border:1px solid #3A3835;border-radius:8px}
+    .bili-editor-box{background:transparent;border:none;border-radius:0}
+    .bili-editor-box:focus-within{border:none}
+    #cmtInput:focus{outline:none;border-color:#D97757}
+    #cmtInput::placeholder{color:#8A8578}
+    .bili-editor-foot{border-top:1px solid #3A3835}
+    .bili-nick-wrap{color:#A8A294}
+    #cmtNick{background:transparent;color:#EFEBE0;border-bottom:1px dashed #55524B}
+    #cmtNick:focus{border-bottom-color:#D97757}
+    #cmtNick::placeholder{color:#77726A}
+    #cmtCount{color:#77726A}
+    #cmtSubmit{background:#C15F3C;color:#FAF9F5}
+    #cmtSubmit:hover{background:#D97757}
+    .bili-list-head{color:#EFEBE0}
+    .bili-list-head span{color:#A8A294}
+    .bili-item{border-bottom:1px solid #3A3835}
+    .bili-nick{color:#EFEBE0}
+    .bili-time{color:#A8A294}
+    .bili-ip{color:#A8A294;background:rgba(250,249,245,.06)}
+    .bili-content{color:#D8D2C4}
+    .bili-like{color:#A8A294}
+    .bili-empty{color:#A8A294}
+    .bili-notice{background:rgba(217,119,87,.1);border:1px solid rgba(217,119,87,.35)}
+    .bili-notice b{color:#D97757}
+    #cmtLoading{color:#A8A294}
+    @media (max-width:640px){
+      .bili-comments{padding:16px 14px}
+      .bili-editor-row{gap:10px}
+      .bili-avatar{width:34px;height:34px;font-size:15px}
+      .bili-editor-foot{flex-wrap:wrap;gap:8px 12px;padding:10px 12px}
+      .bili-nick-wrap{flex:1 1 100%}
+      #cmtNick{flex:1;width:auto;min-width:0}
+      #cmtCount{margin-left:auto}
+      #cmtSubmit{white-space:nowrap;flex:none;padding:8px 28px}
+    }
+  </style>
+
+  <section class="wall wall-dark" id="wall">
+    <canvas id="sandCanvas" aria-hidden="true"></canvas>
+    <div class="wrap">
+      <div class="sec-head reveal"><span class="sec-index">柒 · WALL</span><h2>留言墙</h2></div>
+      <hr class="sec-rule reveal">
+      <p class="sec-lede reveal">纪念册不该只有一个人的声音。写一句那年的话——无需登录，发布后经站长审核即会展示。</p>
+      <div class="bili-comments reveal">
+        <div class="bili-editor-row">
+          <div class="bili-avatar" id="myAvatar" title="点击上传自定义头像">访</div>
+          <input type="file" id="cmtAvatarInput" accept="image/*" hidden>
+          <div class="bili-editor-box">
+            <textarea id="cmtInput" maxlength="500" placeholder="善语结善缘，写一句那年的话……"></textarea>
+            <div class="bili-editor-foot">
+              <span class="bili-nick-wrap">昵称 <input id="cmtNick" maxlength="20" placeholder="留空则显示「路过的同学」"></span>
+              <span id="cmtCount">0 / 500</span>
+              <button id="cmtSubmit">发布</button>
+            </div>
           </div>
         </div>
+        <div id="cmtNotice" class="bili-notice" hidden></div>
+        <div class="bili-list-head">全部留言<span id="cmtTotal">0</span></div>
+        <div id="cmtLoading">加载中……</div>
+        <div id="cmtList"></div>
+        <div id="cmtEmpty" class="bili-empty" hidden>还没有留言，来做第一个吧。</div>
       </div>
-      <div id="cmtNotice" class="bili-notice" hidden></div>
-      <div class="bili-list-head">全部留言<span id="cmtTotal">0</span></div>
-      <div id="cmtLoading">加载中……</div>
-      <div id="cmtList"></div>
-      <div id="cmtEmpty" class="bili-empty" hidden>还没有留言，来做第一个吧。</div>
     </div>
   </section>
+
+  /* ---------- 暗河流沙（留言墙粒子：伪流场 + 鼠标斥力增亮） ---------- */
+  (function(){
+    if (reduceMotion) return;
+    var cv = document.getElementById('sandCanvas');
+    if (!cv || !cv.getContext) return;
+    var ctx = cv.getContext('2d');
+    var W = 0, H = 0;
+    var DPR = Math.min(window.devicePixelRatio || 1, 2);
+    var P = [], mouse = {x:-9e3, y:-9e3, inside:false};
+    var N = Math.min(230, Math.max(120, Math.round((window.innerWidth / 1440) * 230)));
+
+    function size(){
+      var r = cv.parentElement.getBoundingClientRect();
+      W = r.width; H = r.height;
+      cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    }
+    var t0 = performance.now();
+    function noise(x, y, t){
+      return Math.sin(x * .008 + t * .0004) * Math.cos(y * .006 - t * .0003) * 6.2832;
+    }
+    function frame(t){
+      ctx.clearRect(0, 0, W, H);
+      for (var i = 0; i < P.length; i++){
+        var p = P[i];
+        var ang = noise(p.x, p.y, t - t0);
+        p.vx += Math.cos(ang) * .012;
+        p.vy += Math.sin(ang) * .012;
+        var glow = 0;
+        if (mouse.inside){
+          var dx = p.x - mouse.x, dy = p.y - mouse.y;
+          var d = Math.hypot(dx, dy);
+          if (d < 110 && d > 1){
+            var f = (110 - d) / 110;
+            p.vx += dx / d * f * 1.4;
+            p.vy += dy / d * f * 1.4;
+            glow = f;
+          }
+        }
+        p.vx *= .96; p.vy *= .96;
+        p.x += p.vx + p.sp; p.y += p.vy;
+        if (p.x > W + 4) p.x = -4; if (p.x < -4) p.x = W + 4;
+        if (p.y > H + 4) p.y = -4; if (p.y < -4) p.y = H + 4;
+        var a = Math.min(.85, p.a + glow * .7);
+        ctx.beginPath();
+        ctx.fillStyle = p.warm ? 'rgba(217,119,87,' + a + ')' : 'rgba(201,180,140,' + (a * .8) + ')';
+        ctx.arc(p.x, p.y, p.r + glow * 1.2, 0, 6.2832);
+        ctx.fill();
+      }
+      requestAnimationFrame(frame);
+    }
+    function init(){
+      size();
+      window.addEventListener('resize', function(){ size(); });
+      cv.parentElement.addEventListener('mousemove', function(ev){
+        var r = cv.parentElement.getBoundingClientRect();
+        mouse.x = ev.clientX - r.left; mouse.y = ev.clientY - r.top; mouse.inside = true;
+      });
+      cv.parentElement.addEventListener('mouseleave', function(){ mouse.inside = false; });
+      requestAnimationFrame(frame);
+    }
+    init();
+  })();
+
 
   <script>
   (function(){
@@ -1335,71 +1451,6 @@
     reveals.forEach(function(el){ el.classList.add('visible'); });
   }
 
-  /* ---------- 香樟叶飘落（首屏氛围，reduced-motion 关闭） ---------- */
-  (function(){
-    if (reduceMotion) return;
-    var cv = document.getElementById('leafCanvas');
-    if (!cv || !cv.getContext) return;
-    var ctx = cv.getContext('2d');
-    var leaves = [], running = false, raf = null;
-    var COLORS = ['rgba(138,154,91,','rgba(178,140,70,','rgba(196,110,80,','rgba(110,140,80,'];
-
-    function size(){
-      var r = cv.parentElement.getBoundingClientRect();
-      cv.width = Math.round(r.width * devicePixelRatio);
-      cv.height = Math.round(r.height * devicePixelRatio);
-      ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
-    }
-    function maxLeaves(){ return Math.min(12, Math.max(5, Math.round(window.innerWidth / 130))); }
-    function spawn(fromTop){
-      if (leaves.length >= maxLeaves()) return;
-      leaves.push({
-        x: Math.random() * cv.offsetWidth,
-        y: fromTop ? -12 : Math.random() * cv.offsetHeight,
-        s: 4 + Math.random() * 6,
-        a: Math.random() * Math.PI * 2,
-        va: (Math.random() - .5) * .02,
-        vy: .22 + Math.random() * .4,
-        sw: .5 + Math.random() * 1.1,
-        ph: Math.random() * Math.PI * 2,
-        c: COLORS[Math.floor(Math.random() * COLORS.length)] + (.3 + Math.random() * .28) + ')'
-      });
-    }
-    function tick(){
-      ctx.clearRect(0, 0, cv.offsetWidth, cv.offsetHeight);
-      for (var i = leaves.length - 1; i >= 0; i--){
-        var L = leaves[i];
-        L.ph += .012; L.y += L.vy;
-        L.x += Math.sin(L.ph) * L.sw * .45; L.a += L.va;
-        if (L.y > cv.offsetHeight + 14){ leaves.splice(i, 1); continue; }
-        ctx.save(); ctx.translate(L.x, L.y); ctx.rotate(L.a);
-        ctx.fillStyle = L.c;
-        ctx.beginPath();
-        ctx.moveTo(0, -L.s);
-        ctx.quadraticCurveTo(L.s * .85, -L.s * .15, 0, L.s);
-        ctx.quadraticCurveTo(-L.s * .85, -L.s * .15, 0, -L.s);
-        ctx.fill();
-        ctx.restore();
-      }
-      if (Math.random() < .028) spawn(true);
-      raf = requestAnimationFrame(tick);
-    }
-    function start(){ if (!running){ running = true; raf = requestAnimationFrame(tick); } }
-    function stop(){ if (running){ running = false; cancelAnimationFrame(raf); } }
-
-    size();
-    window.addEventListener('resize', size);
-    for (var i = 0; i < 6; i++) spawn(false);
-    if ('IntersectionObserver' in window){
-      new IntersectionObserver(function(es){
-        es.forEach(function(e){ e.isIntersecting ? start() : stop(); });
-      }, {threshold: .03}).observe(cv.parentElement);
-    } else { start(); }
-    document.addEventListener('visibilitychange', function(){
-      if (document.hidden) stop();
-      else if (cv.parentElement.getBoundingClientRect().bottom > 0) start();
-    });
-  })();
 
   /* ---------- 画廊图片加载渐显 ---------- */
   (function(){
@@ -1538,72 +1589,6 @@
     });
   })();
 
-  /* ---------- 光尘粒子（全站氛围，鼠标柔和斥力） ---------- */
-  (function(){
-    if (reduceMotion) return;
-    var cv = document.getElementById('dustCanvas');
-    if (!cv || !cv.getContext) return;
-    var ctx = cv.getContext('2d');
-    var W = 0, H = 0;
-    var DPR = Math.min(window.devicePixelRatio || 1, 2);
-    var parts = [];
-    var mouse = {x: -9999, y: -9999};
-    var TONES = ['rgba(193,95,60,', 'rgba(201,162,39,', 'rgba(138,154,91,', 'rgba(120,110,90,'];
-    var COUNT = Math.min(64, Math.max(26, Math.round(window.innerWidth / 28)));
-
-    function size(){
-      W = window.innerWidth; H = window.innerHeight;
-      cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
-      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-    }
-    function make(x, y){
-      return {
-        x: x !== undefined ? x : Math.random() * W,
-        y: y !== undefined ? y : Math.random() * H,
-        r: .8 + Math.random() * 1.9,
-        vx: (Math.random() - .5) * .22,
-        vy: (Math.random() - .5) * .18,
-        c: TONES[Math.floor(Math.random() * TONES.length)],
-        base: .10 + Math.random() * .22,
-        ph: Math.random() * Math.PI * 2,
-        tw: .004 + Math.random() * .01
-      };
-    }
-    function step(){
-      ctx.clearRect(0, 0, W, H);
-      for (var i = 0; i < parts.length; i++){
-        var p = parts[i];
-        p.ph += p.tw;
-        var dx = p.x - mouse.x, dy = p.y - mouse.y;
-        var d2 = dx*dx + dy*dy;
-        if (d2 < 19600 && d2 > .01){
-          var d = Math.sqrt(d2);
-          var f = (140 - d) / 140 * .9;
-          p.x += (dx / d) * f * 2.4;
-          p.y += (dy / d) * f * 2.4;
-        }
-        p.x += p.vx; p.y += p.vy;
-        if (p.x < -8) p.x = W + 8; if (p.x > W + 8) p.x = -8;
-        if (p.y < -8) p.y = H + 8; if (p.y > H + 8) p.y = -8;
-        var a = p.base * (.72 + .28 * Math.sin(p.ph));
-        ctx.beginPath();
-        ctx.fillStyle = p.c + a.toFixed(3) + ')';
-        ctx.arc(p.x, p.y, p.r, 0, 6.2832);
-        ctx.fill();
-      }
-      raf2 = requestAnimationFrame(step);
-    }
-    var raf2 = null;
-    function start(){ if (!raf2){ raf2 = requestAnimationFrame(step); } }
-    function stop(){ if (raf2){ cancelAnimationFrame(raf2); raf2 = null; } }
-    size();
-    window.addEventListener('resize', size);
-    window.addEventListener('mousemove', function(ev){ mouse.x = ev.clientX; mouse.y = ev.clientY; }, {passive:true});
-    document.addEventListener('mouseleave', function(){ mouse.x = -9999; mouse.y = -9999; });
-    document.addEventListener('visibilitychange', function(){ document.hidden ? stop() : start(); });
-    for (var i = 0; i < COUNT; i++) parts.push(make());
-    start();
-  })();
 
   /* ---------- 水塔深色区视差 ---------- */
   (function(){
