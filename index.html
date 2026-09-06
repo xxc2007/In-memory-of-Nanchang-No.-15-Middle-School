@@ -179,8 +179,8 @@
 
   /* 标题逐行揭示：每行套 .line-mask，内部 .line 上滑 */
   .line-mask{display:block;overflow:hidden}
-  .hero h1 .line{display:block;transform:translateY(105%);animation:lineUp 1s cubic-bezier(.16,.84,.28,1) forwards}
-  .hero h1 .line:nth-child(2){animation-delay:.14s}
+  .hero h1 .line{display:block;transform:translateY(105%);animation:lineUp 1.1s cubic-bezier(.16,.84,.28,1) forwards}
+  .hero h1 .line:nth-child(2){animation-delay:.16s}
   @keyframes lineUp{to{transform:none}}
   @media (prefers-reduced-motion: reduce){
     .hero h1 .line{transform:none;animation:none}
@@ -194,6 +194,30 @@
   .landmark .ph-img{height:100%}
   .landmark .duo .ph{height:100%}
   .landmark .duo .ph-img img{will-change:transform}
+
+  /* ============ Oryzo 式电影感层 ============ */
+  /* 0) 水塔深色区视差容器 */
+  .landmark{overflow:hidden}
+  .landmark .ph-img{height:100%}
+  .landmark .duo .ph{height:100%}
+  .landmark .duo .ph-img img{will-change:transform}
+
+  /* 1) 章节大标题渐显上浮（惯性缓动，挂在现有 .reveal 上加深一层） */
+  .sec-head h2{opacity:0;transform:translateY(34px);
+    transition:opacity 1s cubic-bezier(.16,.84,.28,1), transform 1s cubic-bezier(.16,.84,.28,1);
+    transition-delay:.08s}
+  .sec-head.visible h2{opacity:1;transform:none}
+
+  /* 2) 滚动景深：画廊图片轻微 scale 纵深（加载时 1.06 → 1） */
+  .ph-img img{transform:scale(1.06)}
+  .ph-img img.ld{transform:scale(1)}
+
+  /* 3) 灯箱开场电影感：背景加深 + 图片从 0.94 缓浮 */
+  .lightbox{background:rgba(16,15,14,.0)}
+  .lightbox.open{background:rgba(16,15,14,.97);transition:background .45s ease}
+  .lightbox .lb-stage img{transform:scale(.94);opacity:0;
+    transition:transform .6s cubic-bezier(.16,.84,.28,1), opacity .5s ease}
+  .lightbox.open .lb-stage img.show{transform:scale(1);opacity:1}
 
   /* ============ 通用区块 ============ */
   section.block{max-width:1200px;margin:0 auto;padding:96px 28px 30px}
@@ -411,6 +435,12 @@
     .t-fill{display:none}
     .gallery-grid .ph{transition-delay:0ms}
     .landmark .duo .ph-img img{transform:none!important}
+    .sec-head h2{opacity:1;transform:none;transition:none}
+    .ph-img img{transform:none!important}
+    .ph:hover .ph-img img{transform:none}
+    .lightbox,.lightbox.open{background:rgba(20,19,18,.96)}
+    .lightbox .lb-stage img{transform:none;opacity:0}
+    .lightbox.open .lb-stage img.show{transform:none;opacity:1}
   }
 
   /* ============ 响应式 ============ */
