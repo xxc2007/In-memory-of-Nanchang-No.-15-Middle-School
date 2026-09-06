@@ -886,45 +886,53 @@
   </section>
 
   <!-- ===================== 留言墙（暗场 · 暗河流沙） ===================== -->
-  <style>
-    /* 暗场深色版：Oryzo 气质，粒子即记忆的尘埃 */
-    .wall-dark{position:relative;color:#EFEBE0;background:linear-gradient(to bottom, var(--cream) 0%, rgba(240,238,230,0) 110px), linear-gradient(to top, var(--cream) 0%, rgba(240,238,230,0) 110px), var(--dark);
-      padding:96px 0 84px;overflow:hidden}
-    .wall-dark .sec-index{color:var(--terra)}
-    .wall-dark .sec-head h2{color:#EFEBE0}
-    .wall-dark .sec-rule{border-top-color:#3A3835}
-    .wall-dark .sec-lede{color:#A8A294}
+    <style>
+    /* ============ 柒 · WALL 留言墙（亮色 · 暗河流沙粒子适配） ============ */
+    .wall-bright{position:relative}
     #sandCanvas{position:absolute;inset:0;pointer-events:none;z-index:1}
-    .wall-dark .wrap{position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:0 28px}
 
-    /* 留言卡片暗色 */
-    .bili-comments{background:rgba(250,249,245,.045);border:1px solid #3A3835;border-radius:12px;
+    .bili-comments{background:var(--paper);border:1px solid var(--line);border-radius:12px;
       padding:24px 32px;margin-top:24px;position:relative;z-index:2}
-    #cmtInput{background:rgba(250,249,245,.05);color:#EFEBE0;border:1px solid #3A3835;border-radius:8px}
-    .bili-editor-box{background:transparent;border:none;border-radius:0}
-    .bili-editor-box:focus-within{border:none}
-    #cmtInput:focus{outline:none;border-color:#D97757}
-    #cmtInput::placeholder{color:#8A8578}
-    .bili-editor-foot{border-top:1px solid #3A3835}
-    .bili-nick-wrap{color:#A8A294}
-    #cmtNick{background:transparent;color:#EFEBE0;border-bottom:1px dashed #55524B}
+    .bili-editor-row{display:flex;gap:14px;align-items:flex-start}
+    .bili-avatar{width:40px;height:40px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;
+      color:#FAF9F5;font-weight:700;font-size:17px;user-select:none;cursor:pointer;overflow:hidden;position:relative;
+      background:linear-gradient(135deg,#D97757,#C15F3C)}
+    .bili-avatar img{width:100%;height:100%;object-fit:cover}
+    #cmtAvatarInput{display:none}
+    .bili-editor-box{flex:1;background:#fff;border:1px solid var(--line);border-radius:8px;transition:border-color .2s}
+    .bili-editor-box:focus-within{border-color:#D97757}
+    #cmtInput{display:block;width:100%;min-height:88px;resize:vertical;border:none;background:transparent;
+      padding:14px 16px;font:inherit;font-size:15px;line-height:1.7;color:var(--ink);outline:none;box-sizing:border-box}
+    .bili-editor-foot{display:flex;align-items:center;gap:14px;padding:10px 14px;border-top:1px solid #F0EEE6}
+    .bili-nick-wrap{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);flex:1}
+    #cmtNick{width:130px;border:none;border-bottom:1px dashed #D8D2C4;background:transparent;padding:3px 2px;
+      font:inherit;font-size:13px;color:var(--ink);outline:none;transition:border-color .2s}
     #cmtNick:focus{border-bottom-color:#D97757}
-    #cmtNick::placeholder{color:#77726A}
-    #cmtCount{color:#77726A}
-    #cmtSubmit{background:#C15F3C;color:#FAF9F5}
-    #cmtSubmit:hover{background:#D97757}
-    .bili-list-head{color:#EFEBE0}
-    .bili-list-head span{color:#A8A294}
-    .bili-item{border-bottom:1px solid #3A3835}
-    .bili-nick{color:#EFEBE0}
-    .bili-time{color:#A8A294}
-    .bili-ip{color:#A8A294;background:rgba(250,249,245,.06)}
-    .bili-content{color:#D8D2C4}
-    .bili-like{color:#A8A294}
-    .bili-empty{color:#A8A294}
-    .bili-notice{background:rgba(217,119,87,.1);border:1px solid rgba(217,119,87,.35)}
-    .bili-notice b{color:#D97757}
-    #cmtLoading{color:#A8A294}
+    #cmtCount{font-size:12px;color:#B8B2A4}
+    #cmtSubmit{background:var(--terra-deep);color:#FAF9F5;border:none;border-radius:6px;padding:8px 22px;
+      font:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:background .2s}
+    #cmtSubmit:hover{background:var(--terra)}
+    .bili-list-head{font-size:15px;font-weight:700;color:var(--ink);margin:26px 0 4px}
+    .bili-list-head span{color:var(--muted);font-weight:400;font-size:13px;margin-left:4px}
+    .bili-item{display:flex;gap:12px;padding:18px 0;border-bottom:1px solid #F0EEE6}
+    .bili-item:last-child{border-bottom:none}
+    .bili-item .bili-avatar{width:36px;height:36px;font-size:15px}
+    .bili-c{flex:1;min-width:0}
+    .bili-c-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+    .bili-nick{font-size:14px;font-weight:600;color:var(--ink)}
+    .bili-time{font-size:12px;color:var(--muted)}
+    .bili-ip{font-size:12px;color:var(--muted);background:#F0EEE6;border-radius:4px;padding:1px 7px}
+    .bili-content{margin-top:5px;font-size:15px;line-height:1.85;color:var(--ink);word-break:break-word}
+    .bili-like{margin-top:6px;font-size:12px;color:var(--muted);user-select:none}
+    .bili-empty{text-align:center;color:var(--muted);font-size:14px;padding:44px 0 20px}
+    .bili-notice{margin-top:16px;background:#F0EEE6;border:1px solid var(--line);border-radius:8px;
+      padding:12px 18px;font-size:13.5px;color:var(--muted);line-height:1.8}
+    .bili-notice b{color:var(--terra-deep)}
+    #cmtLoading{text-align:center;color:var(--muted);font-size:13px;padding:30px 0}
+
+    /* 暗河流沙粒子：亮色语境（深色微粒在米白底上） */
+    #sandCanvas{position:absolute;inset:0;pointer-events:none;z-index:1}
+
     @media (max-width:640px){
       .bili-comments{padding:16px 14px}
       .bili-editor-row{gap:10px}
@@ -937,7 +945,7 @@
     }
   </style>
 
-  <section class="wall wall-dark" id="wall">
+  <section class="wall wall-bright" id="wall">
     <canvas id="sandCanvas" aria-hidden="true"></canvas>
     <div class="wrap">
       <div class="sec-head reveal"><span class="sec-index">柒 · WALL</span><h2>留言墙</h2></div>
@@ -1061,7 +1069,7 @@
         vx: 0, vy: 0,
         r: 0.9 + Math.random() * 1.9,
         sp: 0.08 + Math.random() * 0.2,
-        a: 0.25 + Math.random() * 0.4,
+        a: 0.18 + Math.random() * 0.28,
         warm: Math.random() < 0.32
       });
     }
@@ -1101,7 +1109,7 @@
         if (p.y > H + 4) p.y = -4; if (p.y < -4) p.y = H + 4;
         var a = Math.min(.92, p.a + glow);
         ctx.beginPath();
-        ctx.fillStyle = p.warm ? 'rgba(217,119,87,' + a + ')' : 'rgba(201,180,140,' + (a * .8) + ')';
+        ctx.fillStyle = p.warm ? 'rgba(150,72,45,' + a + ')' : 'rgba(96,112,66,' + (a * .9) + ')';
         ctx.arc(p.x, p.y, p.r + glow * 1.2, 0, 6.2832);
         ctx.fill();
       }
