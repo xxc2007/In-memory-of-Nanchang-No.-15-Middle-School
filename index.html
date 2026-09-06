@@ -1172,7 +1172,7 @@
       }, 600);
     }
 
-    /* 机位标记：点击弹出照片并运镜飞过去 */
+    /* 机位标记：点击弹出照片并运镜飞过去（弹窗完全手动管理，同时只保留一个） */
     var bounds = [];
     var openPopup = null;
     CAMERA_SPOTS.forEach(function (s) {
@@ -1190,17 +1190,22 @@
           + '<span class="campus-pop-t">' + s.name + '</span>'
           + '<span class="campus-pop-d">' + s.date + ' · ' + s.confidence + '</span>'
           + '</span></div>'
-        );
+        )
+        .setLngLat([s.lng, s.lat]);
 
       var marker = new maplibregl.Marker({ element: pinEl, anchor: 'center' })
         .setLngLat([s.lng, s.lat])
-        .setPopup(popup)
         .addTo(map);
 
       pinEl.addEventListener('click', function () {
-        /* setPopup 已内置点击开/关；此处只负责"同时只保留一个弹窗" + 运镜 */
-        if (openPopup && openPopup !== popup) openPopup.remove();
-        openPopup = popup;
+        if (openPopup === popup) {           /* 再点同一个 → 关闭 */
+          popup.remove();
+          openPopup = null;
+        } else {                              /* 点新的 → 关旧开新 */
+          if (openPopup) openPopup.remove();
+          popup.addTo(map);
+          openPopup = popup;
+        }
         if (!reduceMotion) {
           map.flyTo({ center: [s.lng, s.lat], zoom: 17.6, pitch: 62, bearing: -24, duration: 1800, essential: true });
         }
