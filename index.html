@@ -196,6 +196,9 @@
   .landmark .duo .ph-img img{will-change:transform}
 
   /* ============ Oryzo 式电影感层 ============ */
+  /* 光尘粒子层（全站空白处随鼠标联动，记忆的尘埃） */
+  #dustCanvas{position:fixed;inset:0;pointer-events:none;z-index:3}
+  @media (prefers-reduced-motion: reduce){#dustCanvas{display:none}}
   /* 0) 水塔深色区视差容器 */
   .landmark{overflow:hidden}
   .landmark .ph-img{height:100%}
@@ -471,6 +474,7 @@
 </style>
 </head>
 <body>
+<canvas id="dustCanvas" aria-hidden="true"></canvas>
 
 <!-- ===================== 顶栏 ===================== -->
 <header class="topbar" id="topbar">
@@ -803,89 +807,74 @@
     </div>
   </section>
 
-  <!-- ===================== 校园地图（3D 卫星） ===================== -->
+  <!-- ===================== 校园地图（时光漫游） ===================== -->
   <style>
-    /* ============ 伍 · MAP 校园寻踪（MapLibre 3D 卫星） ============ */
-    .campus-map-scope .map-shell{
-      border:1px solid var(--line);border-radius:12px;overflow:hidden;
-      background:#EDEAE0;box-shadow:0 1px 0 rgba(31,30,29,.03);
-    }
-    #campusMap{height:480px;font-family:var(--sans)}
-    .campus-map-scope .map-note{font-size:12px;color:#8A8578;margin-top:14px;letter-spacing:.04em}
+    /* ============ 伍 · MAP 时光漫游 ============ */
+    .tour-viewer{position:relative;height:560px;border-radius:12px;overflow:hidden;background:#141312;
+      border:1px solid var(--line)}
+    .tour-viewer img.slide{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+      opacity:0;transform:scale(1.07);transition:opacity 1s ease, transform 8s linear}
+    .tour-viewer img.slide.on{opacity:1;transform:scale(1)}
+    .tour-viewer .veil{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,9,8,.64) 0%,rgba(10,9,8,0) 44%);pointer-events:none}
+    .tour-viewer .cap{position:absolute;left:36px;bottom:30px;color:#FAF9F5;pointer-events:none;z-index:2;max-width:78%}
+    .tour-viewer .cap .t{font-family:var(--serif);font-size:28px;letter-spacing:.03em;text-shadow:0 2px 14px rgba(0,0,0,.55)}
+    .tour-viewer .cap .d{font-size:13px;letter-spacing:.1em;opacity:.88;margin-top:4px}
+    .tour-viewer .num{position:absolute;top:20px;right:26px;color:#FAF9F5;font-family:var(--serif);font-size:15px;
+      letter-spacing:.2em;text-shadow:0 1px 8px rgba(0,0,0,.5);z-index:2}
+    .tour-viewer .arr{position:absolute;top:50%;transform:translateY(-50%);width:52px;height:52px;border-radius:50%;
+      background:rgba(20,19,18,.35);border:1px solid rgba(250,249,245,.35);color:#FAF9F5;font-size:20px;
+      cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .25s;backdrop-filter:blur(3px);z-index:2}
+    .tour-viewer .arr:hover{background:rgba(193,95,60,.85);border-color:transparent}
+    .tour-viewer .arr.prev{left:22px}.tour-viewer .arr.next{right:22px}
+    .tour-dots{display:flex;gap:9px;justify-content:center;margin:16px 0 30px}
+    .tour-dots i{width:7px;height:7px;border-radius:50%;background:#CFC8B8;cursor:pointer;transition:all .25s}
+    .tour-dots i.on{background:var(--terra-deep);width:22px;border-radius:99px}
 
-    /* 标记：赤陶橙实心圆 + 米白描边（地标加大） */
-    #campusMap .campus-pin{width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer}
-    #campusMap .campus-pin i{
-      display:block;width:14px;height:14px;border-radius:50%;
-      background:var(--terra);border:2px solid #FAF9F5;
-      box-shadow:0 0 0 1px rgba(217,119,87,.5),0 2px 8px rgba(0,0,0,.45);
-      transition:transform .2s cubic-bezier(.2,.65,.3,1);
-    }
-    #campusMap .campus-pin:hover i{transform:scale(1.3)}
-    #campusMap .campus-pin.is-landmark i{
-      width:19px;height:19px;
-      box-shadow:0 0 0 1px rgba(217,119,87,.6),0 0 0 6px rgba(217,119,87,.28),0 3px 10px rgba(0,0,0,.5);
-    }
-
-    /* 地名标注：机位中文小标签（高倍缩放显示）+ 周边地标名 */
-    #campusMap .campus-label{font-size:12px;font-weight:600;color:#fff;white-space:nowrap;
-      text-shadow:0 0 3px rgba(0,0,0,.95),0 1px 3px rgba(0,0,0,.85);
-      pointer-events:none;opacity:0;transition:opacity .3s}
-    #campusMap.labels-on .campus-label{opacity:1}
-    #campusMap .place-label{font-size:12px;font-weight:600;color:#fff;white-space:nowrap;
-      letter-spacing:.18em;text-shadow:0 0 4px rgba(0,0,0,.95),0 1px 3px rgba(0,0,0,.85);
-      pointer-events:none;opacity:.95}
-    #campusMap .place-label.major{font-size:14px;letter-spacing:.3em}
-
-    /* 照片卡片（自绘弹窗，同时只保留一个） */
-    .campus-spotpop{position:absolute;z-index:5;width:252px;background:#FAF9F5;border:1px solid #E4DFD3;
-      border-radius:10px;box-shadow:0 12px 32px rgba(0,0,0,.45);padding:8px 8px 10px}
-    .campus-pop-fig{border-radius:7px;overflow:hidden;margin:0 0 10px}
-    .campus-pop-fig img{width:100%;display:block;cursor:zoom-in}
-    .campus-pop-x{position:absolute;top:6px;right:8px;background:rgba(20,19,18,.55);border:none;color:#FAF9F5;
-      width:24px;height:24px;border-radius:50%;font-size:13px;line-height:1;cursor:pointer}
-    .campus-pop-x:hover{background:rgba(193,95,60,.9)}
-    .campus-pop-t{font-family:var(--serif);font-size:16px;font-weight:700;color:#1F1E1D;letter-spacing:.02em}
-    .campus-pop-d{font-size:12px;color:#6E6A5E;margin:3px 0 10px;letter-spacing:.04em}
-    .campus-pop-view{width:100%;background:#C15F3C;color:#FAF9F5;border:none;border-radius:6px;
-      padding:8px 0;font:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:background .2s}
-    .campus-pop-view:hover{background:#D97757}
-    .campus-pop{display:flex;align-items:center;gap:12px}
-    .campus-pop img{width:96px;border-radius:6px;display:block;flex:none}
-    .campus-pop-txt{display:flex;flex-direction:column;gap:3px}
-    .campus-pop-t{font-family:var(--serif);font-size:14px;font-weight:600;color:#1F1E1D;line-height:1.4}
-    .campus-pop-d{font-size:12px;color:#6E6A5E;letter-spacing:.05em}
-
-    /* 控件淡化 */
-    #campusMap .maplibregl-ctrl-group{border-radius:8px;box-shadow:0 2px 10px rgba(0,0,0,.3)}
-    #campusMap .maplibregl-ctrl-group button{width:30px;height:30px}
-    #campusMap .maplibregl-ctrl-scale{background:rgba(20,19,18,.5);color:#EFEBE0;border-color:rgba(250,249,245,.4);font-size:11px}
-    #campusMap .maplibregl-ctrl-attribution{background:rgba(20,19,18,.55);color:#B8B2A4;font-size:11px}
+    .mm-head{display:flex;align-items:baseline;gap:12px;margin:4px 0 10px}
+    .mm-head b{font-family:var(--serif);font-size:17px;color:var(--ink)}
+    .mm-head span{font-size:12px;color:var(--muted)}
+    .minimap{position:relative;border:1px solid var(--line);border-radius:12px;overflow:hidden;height:280px}
+    #campusMap{height:280px;font-family:var(--sans)}
+    #campusMap .mm-pin{width:13px;height:13px;border-radius:50%;background:rgba(250,249,245,.88);
+      border:1px solid rgba(0,0,0,.4);cursor:pointer;transition:all .25s;box-sizing:border-box}
+    #campusMap .mm-pin.on{width:21px;height:21px;background:var(--terra);border:2.5px solid #FAF9F5;
+      box-shadow:0 0 0 4px rgba(217,119,87,.4),0 2px 8px rgba(0,0,0,.5)}
+    #campusMap .maplibregl-ctrl-group{border-radius:8px}
+    #campusMap .maplibregl-ctrl-attribution{background:rgba(20,19,18,.55);color:#B8B2A4;font-size:10px}
     #campusMap .maplibregl-ctrl-attribution a{color:#D8D2C4}
-    #campusMap .maplibregl-ctrl-attribution.maplibregl-compact{background:rgba(20,19,18,.55)}
-
-    /* 运镜提示 */
-    .campus-map-scope .map-hint{position:absolute;top:12px;left:12px;z-index:2;
-      background:rgba(20,19,18,.55);color:#EFEBE0;font-size:11px;letter-spacing:.08em;
-      padding:5px 12px;border-radius:99px;backdrop-filter:blur(4px);pointer-events:none}
-
-    /* Leaflet/MapLibre 未能加载时的兜底文案 */
-    #campusMap .campus-map-fallback{display:flex;height:100%;align-items:center;justify-content:center;padding:24px;text-align:center;color:var(--muted);font-size:13px;letter-spacing:.05em;line-height:2}
 
     @media (max-width:640px){
-      #campusMap{height:360px}
+      .tour-viewer{height:380px}
+      .tour-viewer .cap{left:18px;bottom:16px;right:18px}
+      .tour-viewer .cap .t{font-size:21px}
+      .tour-viewer .arr{width:42px;height:42px}
+      .tour-viewer .arr.prev{left:10px}.tour-viewer .arr.next{right:10px}
+      .minimap{height:230px}
+      #campusMap{height:230px}
+    }
+    @media (prefers-reduced-motion: reduce){
+      .tour-viewer img.slide{transition:opacity .4s ease, none;transform:none}
     }
   </style>
 
   <section class="block campus-map-scope" id="map">
-    <div class="sec-head reveal"><span class="sec-index">伍 · MAP</span><h2>校园寻踪</h2></div>
+    <div class="sec-head reveal"><span class="sec-index">伍 · MAP</span><h2>时光漫游</h2></div>
     <hr class="sec-rule reveal">
-    <p class="sec-lede reveal">二十七张照片，八个机位。拖动旋转、按住右键俯仰——把镜头里的校园放回经纬度之中。</p>
-    <div class="map-shell reveal" style="position:relative">
-      <div id="campusMap" role="region" aria-label="南昌市第十五中学青山湖校区三维卫星地图，标注八个照片拍摄机位"></div>
-      <div class="map-hint">拖动旋转视角 · 右键俯仰 · 点击标记查看机位</div>
+    <p class="sec-lede reveal">八张照片，八个位置。沿着箭头漫游，或点亮下面的地图，让镜头带你回到那个角落。</p>
+    <div class="tour-viewer reveal" id="tourViewer">
+      <div class="veil"></div>
+      <div class="cap"><div class="t" id="tourTitle"></div><div class="d" id="tourDate"></div></div>
+      <div class="num" id="tourNum"></div>
+      <button class="arr prev" id="tourPrev" aria-label="上一张">←</button>
+      <button class="arr next" id="tourNext" aria-label="下一张">→</button>
     </div>
-    <p class="map-note reveal">机位为示意位置 · 影像 © Esri Maxar · 地形 AWS Terrain · © OpenStreetMap 贡献者</p>
+    <div class="tour-dots" id="tourDots"></div>
+
+    <div class="mm-head reveal"><b>定位图</b><span class="reveal">点击标记，漫游到那个位置</span></div>
+    <div class="minimap reveal">
+      <div id="campusMap" role="region" aria-label="南昌市第十五中学青山湖校区定位图，标注八个照片拍摄位置"></div>
+    </div>
+    <p class="map-note reveal">底图 © OpenStreetMap 贡献者（矢量渲染含中文地名）</p>
   </section>
 
   <!-- ===================== 寄语 ===================== -->
@@ -1160,236 +1149,124 @@
 </div>
 
 <script src="maplibre/maplibre-gl.js?v=20260906"></script>
+<script src="maplibre/maplibre-gl.js?v=20260906"></script>
 <script data-map-init>
 (function () {
   'use strict';
-  var el = document.getElementById('campusMap');
-  if (!el || el.getAttribute('data-map-ready')) return;
 
-  /* ---------- 机位数据（维护者只改这里） ----------
-     confidence 三级：
-       exact     = OSM 实测要素中心（跑道 / 球场）
-       approx    = OSM 建筑轮廓，楼栋身份为推断
-       estimated = OSM 无对应要素，按校园布局推算
-     坐标为 WGS84（EPSG:4326），与 GPS / OSM 一致            */
-  var CAMERA_SPOTS = [
-    { name: '校门 · 门柱铭牌',       img: '01-gate.jpg',                         date: '2025.04',    lat: 28.72075, lng: 115.93292, confidence: 'estimated' },
-    { name: '开学第一天的操场',       img: '02-playground-firstday.jpg',          date: '2022.08.31', lat: 28.72068, lng: 115.93181, confidence: 'exact'     },
-    { name: '红砖教学楼 · 冬日黄昏', img: '04-teaching-building-winter-dusk.jpg', date: '2022.12.19', lat: 28.72145, lng: 115.93193, confidence: 'approx'    },
-    { name: '香樟林与老教学楼',       img: '09-camphor-grove.jpg',                date: '2023.03.22', lat: 28.72025, lng: 115.93228, confidence: 'estimated' },
-    { name: '老水塔',                 img: '11-water-tower.jpg',                  date: '2023.06.28', lat: 28.72145, lng: 115.93255, confidence: 'estimated', landmark: true },
-    { name: '俯瞰网球场',             img: '08-tennis-court.jpg',                 date: '2023.03.22', lat: 28.72046, lng: 115.93269, confidence: 'exact'     },
-    { name: '广场 · 月牙雕塑',        img: '18-plaza-summer.jpg',                 date: '2025.08.23', lat: 28.72110, lng: 115.93240, confidence: 'estimated' },
-    { name: '综合楼仰拍',             img: '19-library-building-sky.jpg',         date: '2025.08.23', lat: 28.72078, lng: 115.93244, confidence: 'approx'    }
+  /* ---------- 机位数据（维护者只改这里） ---------- */
+  var SPOTS = [
+    { name: '校门 · 门柱铭牌',       img: '01-gate.jpg',                         date: '2025.04',    lat: 28.72075, lng: 115.93292, conf: 'estimated', desc: '粉砖门柱上「南昌十五中」五个银色大字，三年里进出千百次的坐标。' },
+    { name: '开学第一天的操场',       img: '02-playground-firstday.jpg',          date: '2022.08.31', lat: 28.72068, lng: 115.93181, conf: 'exact',     desc: '清晨七点十八分，红色跑道迎来新高一学生的第一张照片。' },
+    { name: '红砖教学楼 · 冬日黄昏', img: '04-teaching-building-winter-dusk.jpg', date: '2022.12.19', lat: 28.72145, lng: 115.93193, conf: 'approx',    desc: '冬日黄昏里的红砖教学楼与玻璃楼梯间。' },
+    { name: '香樟林与老教学楼',       img: '09-camphor-grove.jpg',                date: '2023.03.22', lat: 28.72025, lng: 115.93228, conf: 'estimated', desc: '香樟新叶红绿交织，老教学楼静立树下。' },
+    { name: '老水塔',                 img: '11-water-tower.jpg',                  date: '2023.06.28', lat: 28.72145, lng: 115.93255, conf: 'estimated', landmark: true, desc: '比所有教学楼都年长的构筑物，替我们记着上课与下课。' },
+    { name: '俯瞰网球场',             img: '08-tennis-court.jpg',                 date: '2023.03.22', lat: 28.72046, lng: 115.93269, conf: 'exact',     desc: '绿红相间的网球场，收藏了所有课间的黄昏。' },
+    { name: '广场 · 月牙雕塑',        img: '18-plaza-summer.jpg',                 date: '2025.08.23', lat: 28.72110, lng: 115.93240, conf: 'estimated', desc: '暑假的广场空无一人，月牙雕塑仍指向天空。' },
+    { name: '综合楼仰拍',             img: '19-library-building-sky.jpg',         date: '2025.08.23', lat: 28.72078, lng: 115.93244, conf: 'approx',    desc: '仰拍综合楼，蓝天上大朵积云。' }
   ];
 
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var viewer = document.getElementById('tourViewer');
+  var cur = 4, mmMarkers = [], slides = [];
 
-  function init() {
-    if (typeof window.maplibregl === 'undefined' || el.getAttribute('data-map-ready')) return false;
-    el.setAttribute('data-map-ready', '1');
-
-    var map = new maplibregl.Map({
-      container: el,
-      style: {
-        version: 8,
-        sources: {
-          esri: {
-            type: 'raster',
-            tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'],
-            tileSize: 256, maxzoom: 19,
-            attribution: '影像 © Esri, Maxar, Earthstar Geographics'
-          },
-          esriRef: {
-            type: 'raster',
-            tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}'],
-            tileSize: 256, maxzoom: 19
-          },
-          dem: {
-            type: 'raster-dem',
-            tiles: ['https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png'],
-            encoding: 'terrarium', tileSize: 256, maxzoom: 15
-          }
-        },
-        glyphs: 'https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf',
-        layers: [
-          { id: 'bg', type: 'background', paint: { 'background-color': '#EDEAE0' } },
-          { id: 'sat', type: 'raster', source: 'esri' },
-          { id: 'sat-labels', type: 'raster', source: 'esriRef', paint: { 'raster-opacity': 0.92 } }
-        ]
-      },
-      center: [115.93216, 28.72078],
-      zoom: 13.4,
-      pitch: 30,
-      bearing: 0,
-      maxPitch: 72,
-      antialias: true,
-      attributionControl: false,
-      dragRotate: true
+  /* ---------- 全幅照片漫游 ---------- */
+  if (viewer) {
+    SPOTS.forEach(function (s) {
+      var img = document.createElement('img');
+      img.className = 'slide';
+      img.src = 'images/full/' + s.img;
+      img.alt = s.name;
+      viewer.insertBefore(img, viewer.querySelector('.veil'));
     });
-    map.touchZoomRotate.enableRotation();
-
-    map.addControl(new maplibregl.AttributionControl({ compact: true }));
-    map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), 'top-right');
-    map.addControl(new maplibregl.ScaleControl({ maxWidth: 110, unit: 'metric' }), 'bottom-left');
-
-    /* 3D 地形（南昌平坦，夸张系数放大微起伏） */
-    map.on('load', function () {
-      map.setTerrain({ source: 'dem', exaggeration: 1.5 });
+    slides = Array.prototype.slice.call(viewer.querySelectorAll('img.slide'));
+  }
+  var dotsWrap = document.getElementById('tourDots');
+  var dots = [];
+  if (dotsWrap) {
+    SPOTS.forEach(function (s, i) {
+      var d = document.createElement('i');
+      d.setAttribute('role', 'button');
+      d.setAttribute('aria-label', s.name);
+      d.addEventListener('click', function () { go(i); });
+      dotsWrap.appendChild(d);
     });
-
-    /* 开场运镜：高空拉近 + 俯仰入场的电影镜头 */
-    var target = { center: [115.93216, 28.72078], zoom: 16.3, pitch: 55, bearing: -18 };
-    if (reduceMotion) {
-      map.jumpTo(target);
-    } else {
-      setTimeout(function () {
-        map.flyTo(Object.assign({ duration: 3600, essential: true }, target));
-      }, 600);
-    }
-
-    /* 机位标记 + 常显中文标签；点击显示照片卡片 + 运镜飞过去 */
-    var bounds = [];
-    var openSpotName = null, currentPin = null, currentSpot = null;
-    var spotPopup = document.createElement('div');
-    spotPopup.className = 'campus-spotpop';
-    spotPopup.hidden = true;
-    spotPopup.setAttribute('role', 'dialog');
-    el.parentElement.appendChild(spotPopup);
-
-    var FULL_IMG = { '01-gate.jpg': '01-gate.jpg', '02-playground-firstday.jpg': '02-playground-firstday.jpg', '04-teaching-building-winter-dusk.jpg': '04-teaching-building-winter-dusk.jpg', '09-camphor-grove.jpg': '09-camphor-grove.jpg', '11-water-tower.jpg': '11-water-tower.jpg', '08-tennis-court.jpg': '08-tennis-court.jpg', '18-plaza-summer.jpg': '18-plaza-summer.jpg', '19-library-building-sky.jpg': '19-library-building-sky.jpg' };
-
-    function positionSpot(pinEl){
-      var shellR = el.parentElement.getBoundingClientRect();
-      var pinR = pinEl.getBoundingClientRect();
-      var left = pinR.left - shellR.left - 120;
-      left = Math.max(10, Math.min(left, shellR.width - 266));
-      var top = Math.max(10, pinR.top - shellR.top - 152);
-      spotPopup.style.left = left + 'px';
-      spotPopup.style.top = top + 'px';
-    }
-    function showSpot(s, pinEl){
-      spotPopup.innerHTML =
-        '<button class="campus-pop-x" aria-label="关闭">×</button>'
-        + '<figure class="campus-pop-fig"><img src="images/thumbs/' + s.img + '" alt="' + s.name + '" loading="lazy"></figure>'
-        + '<div class="campus-pop-t">' + s.name + '</div>'
-        + '<div class="campus-pop-d">' + s.date + ' 摄于该处 · 机位精度：' + s.confidence + '</div>'
-        + '<button class="campus-pop-view" data-img="images/full/' + (FULL_IMG[s.img] || s.img) + '" data-cap="' + s.name + '" data-date="' + s.date + '">🔍 查看大图</button>';
-      spotPopup.hidden = false;
-      openSpotName = s.name;
-      currentPin = pinEl;
-      currentSpot = s;
-      setTimeout(function(){ positionSpot(pinEl); }, 60);
-    }
-    function hideSpotPopup(){ spotPopup.hidden = true; openSpotName = null; }
-    spotPopup.addEventListener('click', function(ev){
-      if (ev.target.classList && ev.target.classList.contains('campus-pop-x')) { hideSpotPopup(); return; }
-      var btn = ev.target.closest && ev.target.closest('.campus-pop-view');
-      if (btn) {
-        /* 接入全站灯箱：找画廊里同图的那张，触发它的打开逻辑 */
-        var fig = document.querySelector('.ph[data-cap] a[href$="' + btn.getAttribute('data-img').split('/').pop() + '"]');
-        if (fig) { fig.click(); hideSpotPopup(); }
-      }
-    });
-    map.on('click', hideSpotPopup);
-    map.on('moveend', function(){
-      if (openSpotName && currentPin) positionSpot(currentPin);
-    });
-
-    /* 地标地名（ major 级：更大字距） */
-    var PLACES = [
-      { name: '青山湖', lng: 115.946, lat: 28.714, major: true },
-      { name: '塘山街', lng: 115.9355, lat: 28.7228 },
-      { name: '丹霞路', lng: 115.9290, lat: 28.7255 },
-      { name: '江纺住宅区', lng: 115.9395, lat: 28.7245 }
-    ];
-    PLACES.forEach(function(p){
-      var d = document.createElement('div');
-      d.className = 'place-label' + (p.major ? ' major' : '');
-      d.textContent = p.name;
-      new maplibregl.Marker({ element: d, anchor: 'center' })
-        .setLngLat([p.lng, p.lat])
-        .addTo(map);
-    });
-
-    CAMERA_SPOTS.forEach(function (s) {
-      var pinWrap = document.createElement('div');
-      pinWrap.style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:3px';
-      var pinEl = document.createElement('div');
-      pinEl.className = 'campus-pin' + (s.landmark ? ' is-landmark' : '');
-      pinEl.setAttribute('role', 'button');
-      pinEl.setAttribute('aria-label', s.name);
-      pinEl.innerHTML = '<i></i>';
-      var lbl = document.createElement('span');
-      lbl.className = 'campus-label';
-      lbl.textContent = s.name;
-      pinWrap.appendChild(pinEl);
-      pinWrap.appendChild(lbl);
-
-      new maplibregl.Marker({ element: pinWrap, anchor: 'bottom' })
-        .setLngLat([s.lng, s.lat])
-        .addTo(map);
-
-      pinEl.addEventListener('click', function (ev) {
-        ev.stopPropagation();
-        if (openSpotName === s.name) { hideSpotPopup(); }
-        else { showSpot(s, pinEl); }
-        if (!reduceMotion) {
-          map.flyTo({ center: [s.lng, s.lat], zoom: 17.6, pitch: 62, bearing: -24, duration: 1800, essential: true });
-        }
-      });
-
-      bounds.push([s.lng, s.lat]);
-    });
-
-    /* 缩放到 16 级以上才显示机位中文标签，避免低空拥挤 */
-    function syncLabels(){ el.classList.toggle('labels-on', map.getZoom() >= 15.4); }
-    map.on('zoom', syncLabels);
-    map.on('load', syncLabels);
-
-    /* 视野定位：容器尺寸未就绪时自动重试（applyView 防御） */
-    var initialBounds = bounds.length >= 2
-      ? bounds.reduce(function(b, c){ return b.extend(c); }, new maplibregl.LngLatBounds(bounds[0], bounds[0]))
-      : null;
-    var viewDone = false;
-    function applyView(){
-      map.resize();
-      if (!viewDone && map.getContainer().offsetWidth > 0 && initialBounds){
-        map.flyTo(Object.assign({ duration: 0 }, target, {
-          center: initialBounds.getCenter().toArray(),
-          zoom: Math.min(target.zoom, 16.3)
-        }));
-        viewDone = true;
-      }
-    }
-    if (reduceMotion && initialBounds) {
-      applyView();
-    } else if (initialBounds) {
-      /* 开场运镜由上方 flyTo 完成；此处仅兜底容器尺寸 */
-      setTimeout(function(){ if (map.getContainer().offsetWidth > 0) map.resize(); }, 800);
-    }
-    window.addEventListener('load', function(){ map.resize(); });
-
-    return true;
+    dots = Array.prototype.slice.call(dotsWrap.children);
   }
 
-  /* 启动时机：maplibre-gl.js 已同步引入；DOMContentLoaded 后再补一次尝试 */
-  var started = false;
-  function tryInit() {
-    if (started) return;
-    started = (init() === true);
+  function paint() {
+    slides.forEach(function (img, i) { img.classList.toggle('on', i === cur); });
+    document.getElementById('tourTitle').textContent = SPOTS[cur].name;
+    document.getElementById('tourDate').textContent = SPOTS[cur].date + ' · ' + SPOTS[cur].desc;
+    document.getElementById('tourNum').textContent = (cur + 1) + ' / ' + SPOTS.length;
+    dots.forEach(function (d, i) { d.classList.toggle('on', i === cur); });
+    mmMarkers.forEach(function (mm, i) { mm.el.classList.toggle('on', i === cur); });
   }
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', tryInit);
-  } else {
-    tryInit();
-  }
-  window.addEventListener('load', function () {
-    tryInit();
-    if (!started) {
-      el.innerHTML = '<p class="campus-map-fallback">地图组件未能加载。<br>校园位于南昌市青山湖区塘山街，<br>28.7208°N, 115.9322°E（WGS84）。</p>';
+  function go(i) {
+    cur = (i + SPOTS.length) % SPOTS.length;
+    paint();
+    var s = SPOTS[cur];
+    if (window.__campusMap) {
+      if (!reduceMotion) __campusMap.flyTo({ center: [s.lng, s.lat], zoom: 16.5, duration: 1600, essential: true });
+      else __campusMap.jumpTo({ center: [s.lng, s.lat], zoom: 16.5 });
     }
+  }
+  var prevBtn = document.getElementById('tourPrev');
+  var nextBtn = document.getElementById('tourNext');
+  if (prevBtn) prevBtn.addEventListener('click', function () { go(cur - 1); });
+  if (nextBtn) nextBtn.addEventListener('click', function () { go(cur + 1); });
+  document.addEventListener('keydown', function (ev) {
+    if (ev.key === 'ArrowLeft') go(cur - 1);
+    if (ev.key === 'ArrowRight') go(cur + 1);
   });
+
+  /* ---------- 定位图（MapLibre 矢量底图：OSM 栅格 + 中文地名，2D 俯视最清晰） ---------- */
+  var el = document.getElementById('campusMap');
+  if (!el || el.getAttribute('data-map-ready')) return;
+  el.setAttribute('data-map-ready', '1');
+
+  var map = new maplibregl.Map({
+    container: el,
+    style: {
+      version: 8,
+      sources: {
+        osm: {
+          type: 'raster',
+          tiles: ['https://tile.openstreetmap.org/{z}/{x}/{y}.png'],
+          tileSize: 256, maxzoom: 19,
+          attribution: '底图 © OpenStreetMap 贡献者'
+        }
+      },
+      glyphs: 'https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf',
+      layers: [
+        { id: 'bg', type: 'background', paint: { 'background-color': '#EDEAE0' } },
+        { id: 'osm', type: 'raster', source: 'osm' }
+      ]
+    },
+    center: [115.93216, 28.72078],
+    zoom: 15.6, pitch: 0, bearing: 0,
+    attributionControl: false
+  });
+  window.__campusMap = map;
+  map.addControl(new maplibregl.AttributionControl({ compact: true }));
+  map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
+
+  SPOTS.forEach(function (s, i) {
+    var pin = document.createElement('div');
+    pin.className = 'mm-pin';
+    pin.title = s.name;
+    pin.setAttribute('role', 'button');
+    pin.setAttribute('aria-label', s.name);
+    var m = new maplibregl.Marker({ element: pin, anchor: 'center' }).setLngLat([s.lng, s.lat]).addTo(map);
+    mmMarkers.push({ el: pin, m: m, s: s });
+    pin.addEventListener('click', function (ev) {
+      ev.stopPropagation();
+      go(i);
+    });
+  });
+
+  window.addEventListener('load', function () { map.resize(); });
+  paint();
 })();
 </script>
 
@@ -1659,6 +1536,73 @@
         item.classList.toggle('lit', item.offsetTop + 13 <= h + 8);
       });
     });
+  })();
+
+  /* ---------- 光尘粒子（全站氛围，鼠标柔和斥力） ---------- */
+  (function(){
+    if (reduceMotion) return;
+    var cv = document.getElementById('dustCanvas');
+    if (!cv || !cv.getContext) return;
+    var ctx = cv.getContext('2d');
+    var W = 0, H = 0;
+    var DPR = Math.min(window.devicePixelRatio || 1, 2);
+    var parts = [];
+    var mouse = {x: -9999, y: -9999};
+    var TONES = ['rgba(193,95,60,', 'rgba(201,162,39,', 'rgba(138,154,91,', 'rgba(120,110,90,'];
+    var COUNT = Math.min(64, Math.max(26, Math.round(window.innerWidth / 28)));
+
+    function size(){
+      W = window.innerWidth; H = window.innerHeight;
+      cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    }
+    function make(x, y){
+      return {
+        x: x !== undefined ? x : Math.random() * W,
+        y: y !== undefined ? y : Math.random() * H,
+        r: .8 + Math.random() * 1.9,
+        vx: (Math.random() - .5) * .22,
+        vy: (Math.random() - .5) * .18,
+        c: TONES[Math.floor(Math.random() * TONES.length)],
+        base: .10 + Math.random() * .22,
+        ph: Math.random() * Math.PI * 2,
+        tw: .004 + Math.random() * .01
+      };
+    }
+    function step(){
+      ctx.clearRect(0, 0, W, H);
+      for (var i = 0; i < parts.length; i++){
+        var p = parts[i];
+        p.ph += p.tw;
+        var dx = p.x - mouse.x, dy = p.y - mouse.y;
+        var d2 = dx*dx + dy*dy;
+        if (d2 < 19600 && d2 > .01){
+          var d = Math.sqrt(d2);
+          var f = (140 - d) / 140 * .9;
+          p.x += (dx / d) * f * 2.4;
+          p.y += (dy / d) * f * 2.4;
+        }
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < -8) p.x = W + 8; if (p.x > W + 8) p.x = -8;
+        if (p.y < -8) p.y = H + 8; if (p.y > H + 8) p.y = -8;
+        var a = p.base * (.72 + .28 * Math.sin(p.ph));
+        ctx.beginPath();
+        ctx.fillStyle = p.c + a.toFixed(3) + ')';
+        ctx.arc(p.x, p.y, p.r, 0, 6.2832);
+        ctx.fill();
+      }
+      raf2 = requestAnimationFrame(step);
+    }
+    var raf2 = null;
+    function start(){ if (!raf2){ raf2 = requestAnimationFrame(step); } }
+    function stop(){ if (raf2){ cancelAnimationFrame(raf2); raf2 = null; } }
+    size();
+    window.addEventListener('resize', size);
+    window.addEventListener('mousemove', function(ev){ mouse.x = ev.clientX; mouse.y = ev.clientY; }, {passive:true});
+    document.addEventListener('mouseleave', function(){ mouse.x = -9999; mouse.y = -9999; });
+    document.addEventListener('visibilitychange', function(){ document.hidden ? stop() : start(); });
+    for (var i = 0; i < COUNT; i++) parts.push(make());
+    start();
   })();
 
   /* ---------- 水塔深色区视差 ---------- */
