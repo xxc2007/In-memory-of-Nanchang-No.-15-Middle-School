@@ -777,11 +777,13 @@
       box-shadow:0 0 0 1px rgba(217,119,87,.6),0 0 0 6px rgba(217,119,87,.28),0 3px 10px rgba(0,0,0,.5);
     }
 
-    /* 弹窗：纸感卡片 */
-    #campusMap .maplibregl-popup-content{background:#FAF9F5;color:#1F1E1D;border:1px solid #E4DFD3;border-radius:10px;box-shadow:0 12px 32px rgba(0,0,0,.35);padding:10px 12px}
-    #campusMap .maplibregl-popup-tip{border-top-color:#FAF9F5;border-bottom-color:#FAF9F5}
-    #campusMap .maplibregl-popup-close-button{color:#6E6A5E;font-size:16px;padding:2px 6px}
-    .campus-pop{display:flex;align-items:center;gap:12px;min-width:206px}
+    /* 照片卡片（自绘弹窗，同时只保留一个） */
+    .campus-spotpop{position:absolute;z-index:5;width:238px;background:#FAF9F5;border:1px solid #E4DFD3;
+      border-radius:10px;box-shadow:0 12px 32px rgba(0,0,0,.45);padding:10px 12px}
+    .campus-pop-x{position:absolute;top:2px;right:6px;background:none;border:none;color:#6E6A5E;
+      font-size:16px;line-height:1;cursor:pointer;padding:2px}
+    .campus-pop-x:hover{color:#C15F3C}
+    .campus-pop{display:flex;align-items:center;gap:12px}
     .campus-pop img{width:96px;border-radius:6px;display:block;flex:none}
     .campus-pop-txt{display:flex;flex-direction:column;gap:3px}
     .campus-pop-t{font-family:var(--serif);font-size:14px;font-weight:600;color:#1F1E1D;line-height:1.4}
@@ -1172,9 +1174,47 @@
       }, 600);
     }
 
-    /* 机位标记：点击弹出照片并运镜飞过去（弹窗完全手动管理，同时只保留一个） */
+    /* 机位标记：点击显示照片卡片（自绘弹窗，同时只保留一个）+ 运镜飞过去 */
     var bounds = [];
-    var openPopup = null;
+    var openSpotName = null, currentPin = null;
+    var spotPopup = document.createElement('div');
+    spotPopup.className = 'campus-spotpop';
+    spotPopup.hidden = true;
+    spotPopup.setAttribute('role', 'dialog');
+    el.parentElement.appendChild(spotPopup);
+
+    function positionSpot(pinEl){
+      var shellR = el.parentElement.getBoundingClientRect();
+      var pinR = pinEl.getBoundingClientRect();
+      var left = pinR.left - shellR.left - 100;
+      left = Math.max(10, Math.min(left, shellR.width - 252));
+      var top = Math.max(10, pinR.top - shellR.top - 132);
+      spotPopup.style.left = left + 'px';
+      spotPopup.style.top = top + 'px';
+    }
+    function showSpot(s, pinEl){
+      spotPopup.innerHTML =
+        '<button class="campus-pop-x" aria-label="关闭">×</button>'
+        + '<div class="campus-pop">'
+        + '<img src="images/thumbs/' + s.img + '" alt="' + s.name + '" width="96" loading="lazy">'
+        + '<span class="campus-pop-txt">'
+        + '<span class="campus-pop-t">' + s.name + '</span>'
+        + '<span class="campus-pop-d">' + s.date + ' · ' + s.confidence + '</span>'
+        + '</span></div>';
+      spotPopup.hidden = false;
+      openSpotName = s.name;
+      currentPin = pinEl;
+      setTimeout(function(){ positionSpot(pinEl); }, 60);
+    }
+    function hideSpotPopup(){ spotPopup.hidden = true; openSpotName = null; }
+    spotPopup.addEventListener('click', function(ev){
+      if (ev.target.classList && ev.target.classList.contains('campus-pop-x')) hideSpotPopup();
+    });
+    map.on('click', hideSpotPopup);          /* 点击地图空白处关闭 */
+    map.on('moveend', function(){            /* 运镜结束后卡片跟随标记重新定位 */
+      if (openSpotName && currentPin) positionSpot(currentPin);
+    });
+
     CAMERA_SPOTS.forEach(function (s) {
       var pinEl = document.createElement('div');
       pinEl.className = 'campus-pin' + (s.landmark ? ' is-landmark' : '');
@@ -1182,30 +1222,14 @@
       pinEl.setAttribute('aria-label', s.name);
       pinEl.innerHTML = '<i></i>';
 
-      var popup = new maplibregl.Popup({ offset: 16, maxWidth: '260px', closeButton: true, focusAfterOpen: false })
-        .setHTML(
-          '<div class="campus-pop">'
-          + '<img src="images/thumbs/' + s.img + '" alt="' + s.name + '" width="96" loading="lazy">'
-          + '<span class="campus-pop-txt">'
-          + '<span class="campus-pop-t">' + s.name + '</span>'
-          + '<span class="campus-pop-d">' + s.date + ' · ' + s.confidence + '</span>'
-          + '</span></div>'
-        )
-        .setLngLat([s.lng, s.lat]);
-
-      var marker = new maplibregl.Marker({ element: pinEl, anchor: 'center' })
+      new maplibregl.Marker({ element: pinEl, anchor: 'center' })
         .setLngLat([s.lng, s.lat])
         .addTo(map);
 
-      pinEl.addEventListener('click', function () {
-        if (openPopup === popup) {           /* 再点同一个 → 关闭 */
-          popup.remove();
-          openPopup = null;
-        } else {                              /* 点新的 → 关旧开新 */
-          if (openPopup) openPopup.remove();
-          popup.addTo(map);
-          openPopup = popup;
-        }
+      pinEl.addEventListener('click', function (ev) {
+        ev.stopPropagation();
+        if (openSpotName === s.name) { hideSpotPopup(); }
+        else { showSpot(s, pinEl); }
         if (!reduceMotion) {
           map.flyTo({ center: [s.lng, s.lat], zoom: 17.6, pitch: 62, bearing: -24, duration: 1800, essential: true });
         }
