@@ -188,16 +188,10 @@
   /* 画廊卡片交错入场：visible 后按 --i 延迟上浮 */
   .gallery-grid .ph{transition-delay:calc(var(--i, 0) * 70ms)}
 
-  /* 水塔深色区视差 */
-  .landmark{overflow:hidden}
-  .landmark .duo .ph-img img{will-change:transform}
 
   /* ============ Oryzo 式电影感层 ============ */
   #dustCanvas{position:fixed;inset:0;pointer-events:none;z-index:3}
   @media (prefers-reduced-motion: reduce){#dustCanvas{display:none}}
-  /* 0) 水塔深色区视差容器 */
-  .landmark{overflow:hidden}
-  .landmark .duo .ph-img img{will-change:transform}
 
   /* 1) 章节大标题渐显上浮（惯性缓动，挂在现有 .reveal 上加深一层） */
   .sec-head h2{opacity:0;transform:translateY(34px);
@@ -431,7 +425,6 @@
     .hero-figure img{transform:none!important}
     .t-fill{display:none}
     .gallery-grid .ph{transition-delay:0ms}
-    .landmark .duo .ph-img img{transform:none!important}
     .sec-head h2{opacity:1;transform:none;transition:none}
     .ph-img img{transform:none!important}
     .ph:hover .ph-img img{transform:none}
@@ -881,14 +874,16 @@
     <p class="sign reveal">—— 2025届毕业生</p>
   </section>
 
-  <!-- ===================== 留言墙（暗场 · 暗河流沙） ===================== -->
-    <style>
-    /* ============ 柒 · WALL 留言墙（亮色 · 暗河流沙粒子适配） ============ */
-    .wall-bright{position:relative}
+  <!-- ===================== 留言墙（与全站统一容器） ===================== -->
+  <style>
+    /* 柒 · WALL 留言墙：标准 section.block 容器（与全站统一），sandCanvas 绝对定位铺满 */
+    .wall{position:relative}
     #sandCanvas{position:absolute;inset:0;pointer-events:none;z-index:1}
+    .wall > *:not(#sandCanvas){position:relative;z-index:2}
 
+    /* B站风留言卡片（亮色） */
     .bili-comments{background:var(--paper);border:1px solid var(--line);border-radius:12px;
-      padding:24px 32px;margin-top:24px;position:relative;z-index:2}
+      padding:24px 32px;margin-top:24px}
     .bili-editor-row{display:flex;gap:14px;align-items:flex-start}
     .bili-avatar{width:40px;height:40px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;
       color:#FAF9F5;font-weight:700;font-size:17px;user-select:none;cursor:pointer;overflow:hidden;position:relative;
@@ -926,9 +921,6 @@
     .bili-notice b{color:var(--terra-deep)}
     #cmtLoading{text-align:center;color:var(--muted);font-size:13px;padding:30px 0}
 
-    /* 暗河流沙粒子：亮色语境（深色微粒在米白底上） */
-    #sandCanvas{position:absolute;inset:0;pointer-events:none;z-index:1}
-
     @media (max-width:640px){
       .bili-comments{padding:16px 14px}
       .bili-editor-row{gap:10px}
@@ -941,10 +933,9 @@
     }
   </style>
 
-  <section class="wall wall-bright" id="wall">
+  <section class="block wall" id="wall">
     <canvas id="sandCanvas" aria-hidden="true"></canvas>
-    <div class="wrap">
-      <div class="sec-head reveal"><span class="sec-index">柒 · WALL</span><h2>留言墙</h2></div>
+    <div class="sec-head reveal"><span class="sec-index">柒 · WALL</span><h2>留言墙</h2></div>
       <hr class="sec-rule reveal">
       <p class="sec-lede reveal">纪念册不该只有一个人的声音。写一句那年的话——无需登录，发布后经站长审核即会展示。</p>
       <div class="bili-comments reveal">
@@ -960,11 +951,11 @@
             </div>
           </div>
         </div>
-        <div id="cmtNotice" class="bili-notice" hidden></div>
-        <div class="bili-list-head">全部留言<span id="cmtTotal">0</span></div>
-        <div id="cmtLoading">加载中……</div>
-        <div id="cmtList"></div>
-        <div id="cmtEmpty" class="bili-empty" hidden>还没有留言，来做第一个吧。</div>
+    <div id="cmtNotice" class="bili-notice" hidden></div>
+    <div class="bili-list-head">全部留言<span id="cmtTotal">0</span></div>
+    <div id="cmtLoading">加载中……</div>
+    <div id="cmtList"></div>
+    <div id="cmtEmpty" class="bili-empty" hidden>还没有留言，来做第一个吧。</div>
       </div>
     </div>
   </section>
@@ -1625,24 +1616,6 @@
   })();
 
 
-  /* ---------- 水塔深色区视差 ---------- */
-  (function(){
-    if (reduceMotion) return;
-    var imgs = document.querySelectorAll('.landmark .duo .ph-img img');
-    if (!imgs.length) return;
-    imgs.forEach(function(img){ img.style.transform = 'scale(1.12)'; });
-    updaters.push(function(){
-      var sec = document.querySelector('.landmark');
-      var r = sec.getBoundingClientRect();
-      var vh = window.innerHeight;
-      if (r.bottom < 0 || r.top > vh) return;
-      var p = (vh - r.top) / (vh + r.height) - .5;   /* -0.5 ~ 0.5 */
-      imgs.forEach(function(img, i){
-        var dir = i % 2 === 0 ? 1 : -1;              /* 两图反向微移 */
-        img.style.transform = 'scale(1.12) translateY(' + (p * 34 * dir).toFixed(1) + 'px)';
-      });
-    });
-  })();
 
   /* ---------- 灯箱 ---------- */
   var figures = Array.prototype.slice.call(document.querySelectorAll('.ph'));
