@@ -1033,6 +1033,7 @@
     myAvatar.addEventListener('click',function(){fileInput.click();});
   /* ---------- 暗河流沙（留言墙粒子：伪流场 + 鼠标斥力增亮） ---------- */
   (function(){
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduceMotion) return;
     var cv = document.getElementById('sandCanvas');
     if (!cv || !cv.getContext) return;
