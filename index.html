@@ -177,6 +177,24 @@
   .scroll-hint::after{content:"";flex:1;height:1px;background:var(--line)}
   @keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
 
+  /* 标题逐行揭示：每行套 .line-mask，内部 .line 上滑 */
+  .line-mask{display:block;overflow:hidden}
+  .hero h1 .line{display:block;transform:translateY(105%);animation:lineUp 1s cubic-bezier(.16,.84,.28,1) forwards}
+  .hero h1 .line:nth-child(2){animation-delay:.14s}
+  @keyframes lineUp{to{transform:none}}
+  @media (prefers-reduced-motion: reduce){
+    .hero h1 .line{transform:none;animation:none}
+  }
+
+  /* 画廊卡片交错入场：visible 后按 --i 延迟上浮 */
+  .gallery-grid .ph{transition-delay:calc(var(--i, 0) * 70ms)}
+
+  /* 水塔深色区视差 */
+  .landmark{overflow:hidden}
+  .landmark .ph-img{height:100%}
+  .landmark .duo .ph{height:100%}
+  .landmark .duo .ph-img img{will-change:transform}
+
   /* ============ 通用区块 ============ */
   section.block{max-width:1200px;margin:0 auto;padding:96px 28px 30px}
   .sec-head{display:flex;align-items:baseline;gap:18px;margin-bottom:14px}
@@ -386,11 +404,13 @@
   @media (prefers-reduced-motion: reduce){
     html{scroll-behavior:auto}
     .reveal{opacity:1;transform:none;transition:none}
-    .hero-emblem,.hero .eyebrow,.hero h1,.hero .sub,.hero .stats,.hero-figure,.scroll-hint{animation:none}
+    .hero-emblem,.hero .eyebrow,.hero .sub,.hero .stats,.hero-figure,.scroll-hint{animation:none}
     .ph{transition:none}
     .ph-img img{transition:none}
     .hero-figure img{transform:none!important}
     .t-fill{display:none}
+    .gallery-grid .ph{transition-delay:0ms}
+    .landmark .duo .ph-img img{transform:none!important}
   }
 
   /* ============ 响应式 ============ */
@@ -448,7 +468,7 @@
     <canvas id="leafCanvas" aria-hidden="true"></canvas>
     <img class="hero-emblem" src="images/emblem-320.png" alt="南昌市第十五中学校徽">
     <p class="eyebrow">NANCHANG NO. 15 MIDDLE SCHOOL · EST. 1958</p>
-    <h1>青山湖畔，<br>红砖楼与<em>香樟</em>记得。</h1>
+    <h1><span class="line-mask"><span class="line">青山湖畔，</span></span><span class="line-mask"><span class="line">红砖楼与<em>香樟</em>记得。</span></span></h1>
     <p class="sub">这是一座校园的私人纪念册——南昌市第十五中学，江西省重点中学，创建于1958年。2022年至2025年，熊鑫晨用手机镜头记下这里的操场、走廊、晚霞与雪。</p>
     <div class="stats">
       <div class="stat"><b><span class="stat-n" data-count="1958">1958</span></b><span>建校年份</span></div>
@@ -546,19 +566,19 @@
     <div class="group-head reveal"><span class="g-no">其一</span><h3>门与广场</h3><span class="g-note">入门第一眼，是校门、旗杆与空阔的广场</span></div>
     <p class="group-desc reveal">粉砖门柱上「南昌十五中」五个大字，是三年里进出千百次的坐标；暑假的广场空无一人，办公楼前的月牙雕塑仍指向天空。</p>
     <div class="gallery-grid">
-      <figure class="ph reveal" data-cap="校门铭牌 · 黄昏时分" data-date="2025年4月">
+      <figure class="ph reveal" style="--i:0" data-cap="校门铭牌 · 黄昏时分" data-date="2025年4月">
         <a href="images/full/01-gate.jpg" target="_blank" rel="noopener">
           <span class="ph-img"><img src="images/thumbs/01-gate.jpg" width="1200" height="1600" alt="黄昏光线里，粉砖门柱上「南昌十五中」五个银色大字" loading="lazy" decoding="async"></span>
         </a>
         <figcaption><span class="cap-t">校门铭牌 · 黄昏时分</span><span class="cap-d">2025.04</span></figcaption>
       </figure>
-      <figure class="ph reveal" data-cap="暑假的广场 · 办公楼与月牙雕塑" data-date="2025年8月23日">
+      <figure class="ph reveal" style="--i:1" data-cap="暑假的广场 · 办公楼与月牙雕塑" data-date="2025年8月23日">
         <a href="images/full/18-plaza-summer.jpg" target="_blank" rel="noopener">
           <span class="ph-img"><img src="images/thumbs/18-plaza-summer.jpg" width="1600" height="1200" alt="暑假空旷的广场，办公楼前的月牙雕塑" loading="lazy" decoding="async"></span>
         </a>
         <figcaption><span class="cap-t">暑假的广场 · 办公楼与月牙雕塑</span><span class="cap-d">2025.08.23</span></figcaption>
       </figure>
-      <figure class="ph reveal" data-cap="广场电子屏与雪松" data-date="2025年8月23日">
+      <figure class="ph reveal" style="--i:2" data-cap="广场电子屏与雪松" data-date="2025年8月23日">
         <a href="images/full/20-plaza-screen.jpg" target="_blank" rel="noopener">
           <span class="ph-img"><img src="images/thumbs/20-plaza-screen.jpg" width="1600" height="1200" alt="广场一侧的LED电子屏与高大的雪松" loading="lazy" decoding="async"></span>
         </a>
@@ -570,37 +590,37 @@
     <div class="group-head reveal"><span class="g-no">其二</span><h3>楼与教室</h3><span class="g-note">知识发生的地方</span></div>
     <p class="group-desc reveal">红砖与白窗带的教学楼、悬着校训的教室、贴着「高一年级组」门牌的走廊——还有毕业前最后一个月，那间洒满阳光的开放学习空间。</p>
     <div class="gallery-grid">
-      <figure class="ph reveal" data-cap="冬日黄昏的教学楼" data-date="2022年12月19日">
+      <figure class="ph reveal" style="--i:3" data-cap="冬日黄昏的教学楼" data-date="2022年12月19日">
         <a href="images/full/04-teaching-building-winter-dusk.jpg" target="_blank" rel="noopener">
           <span class="ph-img"><img src="images/thumbs/04-teaching-building-winter-dusk.jpg" width="1600" height="1200" alt="冬日黄昏里的红砖教学楼与玻璃楼梯间" loading="lazy" decoding="async"></span>
         </a>
         <figcaption><span class="cap-t">冬日黄昏的教学楼</span><span class="cap-d">2022.12.19</span></figcaption>
       </figure>
-      <figure class="ph reveal" data-cap="教室 · 黑板、多媒体与校训" data-date="2022–2023学年">
+      <figure class="ph reveal" style="--i:4" data-cap="教室 · 黑板、多媒体与校训" data-date="2022–2023学年">
         <a href="images/full/03-classroom.jpg" target="_blank" rel="noopener">
           <span class="ph-img"><img src="images/thumbs/03-classroom.jpg" width="1600" height="900" alt="教室内景：黑板、多媒体屏幕，前墙悬着「敬业以立德，笃学以修身」校训" loading="lazy" decoding="async"></span>
         </a>
         <figcaption><span class="cap-t">教室 · 黑板、多媒体与校训</span><span class="cap-d">2022–2023学年</span></figcaption>
       </figure>
-      <figure class="ph reveal" data-cap="高一年级组所在的走廊" data-date="2023年2月17日">
+      <figure class="ph reveal" style="--i:5" data-cap="高一年级组所在的走廊" data-date="2023年2月17日">
         <a href="images/full/05-corridor-grade1.jpg" target="_blank" rel="noopener">
           <span class="ph-img"><img src="images/thumbs/05-corridor-grade1.jpg" width="1200" height="1600" alt="白瓷砖走廊，两侧门牌写着高一年级组、英语组" loading="lazy" decoding="async"></span>
         </a>
         <figcaption><span class="cap-t">高一年级组所在的走廊</span><span class="cap-d">2023.02.17</span></figcaption>
       </figure>
-      <figure class="ph reveal" data-cap="走廊尽头的城市天际线" data-date="2023年3月7日">
+      <figure class="ph reveal" style="--i:6" data-cap="走廊尽头的城市天际线" data-date="2023年3月7日">
         <a href="images/full/06-corridor-sunset.jpg" target="_blank" rel="noopener">
           <span class="ph-img"><img src="images/thumbs/06-corridor-sunset.jpg" width="1200" height="1600" alt="黄昏的走廊，窗外是南昌城的高楼与晚霞" loading="lazy" decoding="async"></span>
         </a>
         <figcaption><span class="cap-t">走廊尽头的城市天际线</span><span class="cap-d">2023.03.07</span></figcaption>
       </figure>
-      <figure class="ph reveal" data-cap="仰拍综合楼 · 蓝天积云" data-date="2025年8月23日">
+      <figure class="ph reveal" style="--i:7" data-cap="仰拍综合楼 · 蓝天积云" data-date="2025年8月23日">
         <a href="images/full/19-library-building-sky.jpg" target="_blank" rel="noopener">
           <span class="ph-img"><img src="images/thumbs/19-library-building-sky.jpg" width="1600" height="1200" alt="仰拍综合楼，蓝天上大朵积云" loading="lazy" decoding="async"></span>
         </a>
         <figcaption><span class="cap-t">仰拍综合楼 · 蓝天积云</span><span class="cap-d">2025.08.23</span></figcaption>
       </figure>
-      <figure class="ph reveal" data-cap="开放学习空间" data-date="2025年5月30日">
+      <figure class="ph reveal" style="--i:8" data-cap="开放学习空间" data-date="2025年5月30日">
         <a href="images/full/17-study-lounge.jpg" target="_blank" rel="noopener">
           <span class="ph-img"><img src="images/thumbs/17-study-lounge.jpg" width="1600" height="1200" alt="洒满阳光的开放学习空间，六角桌与窗外的操场" loading="lazy" decoding="async"></span>
         </a>
@@ -612,55 +632,55 @@
     <div class="group-head reveal"><span class="g-no">其三</span><h3>四季 · 草木与天光</h3><span class="g-note">春樟 · 夏霞 · 秋暮 · 冬雪</span></div>
     <p class="group-desc reveal">香樟在春分抽出红绿交织的新叶；六月晚霞把水塔染成剪影；深秋的路灯次第亮起；而2024年1月22日那场大雪，压弯了雪松，也压住了整个校园的喧哗。</p>
     <div class="gallery-grid">
-      <figure class="ph reveal" data-cap="春分 · 香樟新叶与车棚" data-date="2023年3月22日">
+      <figure class="ph reveal" style="--i:0" data-cap="春分 · 香樟新叶与车棚" data-date="2023年3月22日">
         <a href="images/full/07-camphor-spring.jpg" target="_blank" rel="noopener">
           <span class="ph-img"><img src="images/thumbs/07-camphor-spring.jpg" width="1200" height="1600" alt="春天的香樟新叶红绿交织，树下是覆着雨衣的电动车" loading="lazy" decoding="async"></span>
         </a>
         <figcaption><span class="cap-t">春分 · 香樟新叶与车棚</span><span class="cap-d">2023.03.22</span></figcaption>
       </figure>
-      <figure class="ph reveal" data-cap="香樟林与老教学楼" data-date="2023年3月22日">
+      <figure class="ph reveal" style="--i:1" data-cap="香樟林与老教学楼" data-date="2023年3月22日">
         <a href="images/full/09-camphor-grove.jpg" target="_blank" rel="noopener">
           <span class="ph-img"><img src="images/thumbs/09-camphor-grove.jpg" width="1600" height="1200" alt="俯瞰香樟林、老教学楼与停满电动车的车棚" loading="lazy" decoding="async"></span>
         </a>
         <figcaption><span class="cap-t">香樟林与老教学楼</span><span class="cap-d">2023.03.22</span></figcaption>
       </figure>
-      <figure class="ph reveal" data-cap="老水塔（夏）" data-date="2023年6月28日">
+      <figure class="ph reveal" style="--i:2" data-cap="老水塔（夏）" data-date="2023年6月28日">
         <a href="images/full/11-water-tower.jpg" target="_blank" rel="noopener">
           <span class="ph-img"><img src="images/thumbs/11-water-tower.jpg" width="1600" height="1200" alt="绿树环抱中的老水塔，蓝天白云" loading="lazy" decoding="async"></span>
         </a>
         <figcaption><span class="cap-t">老水塔（夏）</span><span class="cap-d">2023.06.28</span></figcaption>
       </figure>
-      <figure class="ph reveal" data-cap="晚霞 · 教学楼与旗杆" data-date="2023年6月">
+      <figure class="ph reveal" style="--i:3" data-cap="晚霞 · 教学楼与旗杆" data-date="2023年6月">
         <a href="images/full/12-sunset-building-flag.jpg" target="_blank" rel="noopener">
           <span class="ph-img"><img src="images/thumbs/12-sunset-building-flag.jpg" width="1440" height="1080" alt="粉金色晚霞下的红砖教学楼与国旗" loading="lazy" decoding="async"></span>
         </a>
         <figcaption><span class="cap-t">晚霞 · 教学楼与旗杆</span><span class="cap-d">2023.06</span></figcaption>
       </figure>
-      <figure class="ph reveal" data-cap="深秋黄昏的楼群" data-date="2023年11月2日">
+      <figure class="ph reveal" style="--i:4" data-cap="深秋黄昏的楼群" data-date="2023年11月2日">
         <a href="images/full/14-autumn-dusk.jpg" target="_blank" rel="noopener">
           <span class="ph-img"><img src="images/thumbs/14-autumn-dusk.jpg" width="1600" height="1200" alt="深秋黄昏，教学楼剪影与初亮的路灯" loading="lazy" decoding="async"></span>
         </a>
         <figcaption><span class="cap-t">深秋黄昏的楼群</span><span class="cap-d">2023.11.02</span></figcaption>
       </figure>
-      <figure class="ph reveal" data-cap="晚霞 · 水塔剪影" data-date="2023年6月">
+      <figure class="ph reveal" style="--i:5" data-cap="晚霞 · 水塔剪影" data-date="2023年6月">
         <a href="images/full/13-sunset-water-tower.jpg" target="_blank" rel="noopener">
           <span class="ph-img"><img src="images/thumbs/13-sunset-water-tower.jpg" width="1440" height="1080" alt="晚霞中的老水塔与居民楼剪影" loading="lazy" decoding="async"></span>
         </a>
         <figcaption><span class="cap-t">晚霞 · 水塔剪影</span><span class="cap-d">2023.06</span></figcaption>
       </figure>
-      <figure class="ph reveal" data-cap="大雪压松" data-date="2024年1月22日">
+      <figure class="ph reveal" style="--i:6" data-cap="大雪压松" data-date="2024年1月22日">
         <a href="images/full/15-snow.jpg" target="_blank" rel="noopener">
           <span class="ph-img"><img src="images/thumbs/15-snow.jpg" width="1600" height="1200" alt="大雪覆盖的雪松与教学楼，红色标语牌立在雪中" loading="lazy" decoding="async"></span>
         </a>
         <figcaption><span class="cap-t">大雪压松</span><span class="cap-d">2024.01.22</span></figcaption>
       </figure>
-      <figure class="ph reveal" data-cap="围墙外 · 老屋与新城" data-date="2025年8月23日">
+      <figure class="ph reveal" style="--i:7" data-cap="围墙外 · 老屋与新城" data-date="2025年8月23日">
         <a href="images/full/21-old-new-city.jpg" target="_blank" rel="noopener">
           <span class="ph-img"><img src="images/thumbs/21-old-new-city.jpg" width="1600" height="1200" alt="校园围墙外的老平房与远处拔地而起的高层住宅" loading="lazy" decoding="async"></span>
         </a>
         <figcaption><span class="cap-t">围墙外 · 老屋与新城</span><span class="cap-d">2025.08.23</span></figcaption>
       </figure>
-      <figure class="ph reveal" data-cap="廊架与绿荫一隅" data-date="2025年8月23日">
+      <figure class="ph reveal" style="--i:8" data-cap="廊架与绿荫一隅" data-date="2025年8月23日">
         <a href="images/full/24-pergola-corner.jpg" target="_blank" rel="noopener">
           <span class="ph-img"><img src="images/thumbs/24-pergola-corner.jpg" width="1600" height="1200" alt="校园一隅的木廊架、绿围挡与参天大树" loading="lazy" decoding="async"></span>
         </a>
@@ -672,19 +692,19 @@
     <div class="group-head reveal"><span class="g-no">其四</span><h3>操场</h3><span class="g-note">青春的赤陶色</span></div>
     <p class="group-desc reveal">2022年8月31日早晨七点十八分，红色跑道迎来一个新高一学生的第一张照片；此后三年，篮球场、网球场与旗杆广场，收藏了所有课间与黄昏。</p>
     <div class="gallery-grid">
-      <figure class="ph reveal" data-cap="开学第一天的操场" data-date="2022年8月31日 07:18">
+      <figure class="ph reveal" style="--i:0" data-cap="开学第一天的操场" data-date="2022年8月31日 07:18">
         <a href="images/full/02-playground-firstday.jpg" target="_blank" rel="noopener">
           <span class="ph-img"><img src="images/thumbs/02-playground-firstday.jpg" width="1600" height="900" alt="2022年8月31日清晨的操场：红色跑道、绿色球场与旗杆广场" loading="lazy" decoding="async"></span>
         </a>
         <figcaption><span class="cap-t">开学第一天的操场</span><span class="cap-d">2022.08.31 07:18</span></figcaption>
       </figure>
-      <figure class="ph reveal" data-cap="俯瞰网球场" data-date="2023年3月22日">
+      <figure class="ph reveal" style="--i:1" data-cap="俯瞰网球场" data-date="2023年3月22日">
         <a href="images/full/08-tennis-court.jpg" target="_blank" rel="noopener">
           <span class="ph-img"><img src="images/thumbs/08-tennis-court.jpg" width="1600" height="1200" alt="从高处俯瞰绿红相间的网球场" loading="lazy" decoding="async"></span>
         </a>
         <figcaption><span class="cap-t">俯瞰网球场</span><span class="cap-d">2023.03.22</span></figcaption>
       </figure>
-      <figure class="ph reveal" data-cap="毕业季清晨的红旗" data-date="2025年5月30日">
+      <figure class="ph reveal" style="--i:2" data-cap="毕业季清晨的红旗" data-date="2025年5月30日">
         <a href="images/full/16-morning-flag.jpg" target="_blank" rel="noopener">
           <span class="ph-img"><img src="images/thumbs/16-morning-flag.jpg" width="1600" height="1200" alt="毕业季前的清晨，红旗在蓝天下飘扬，教学群楼静立" loading="lazy" decoding="async"></span>
         </a>
@@ -696,19 +716,19 @@
     <div class="group-head reveal"><span class="g-no">其五</span><h3>校园文化艺术节</h3><span class="g-note">青春筑梦 · 激扬人生</span></div>
     <p class="group-desc reveal">2023年5月8日，「青春筑梦 激扬人生」校园文化艺术节启幕：签到处立在广场上，校训、师训与办学理念印上背板。</p>
     <div class="gallery-grid">
-      <figure class="ph reveal" data-cap="文化艺术节主题背板 · 校园文化上墙" data-date="2023年5月8日">
+      <figure class="ph reveal" style="--i:3" data-cap="文化艺术节主题背板 · 校园文化上墙" data-date="2023年5月8日">
         <a href="images/full/28-festival-backdrop.jpg" target="_blank" rel="noopener">
           <span class="ph-img"><img src="images/thumbs/28-festival-backdrop.jpg" width="1600" height="1200" alt="校园文化艺术节背板：校训「敬业以立德，笃学以修身」、师训与办学理念印在背板上" loading="lazy" decoding="async"></span>
         </a>
         <figcaption><span class="cap-t">文化艺术节主题背板 · 校园文化上墙</span><span class="cap-d">2023.05.08</span></figcaption>
       </figure>
-      <figure class="ph reveal" data-cap="文化艺术节节目单封面" data-date="2023年5月8日">
+      <figure class="ph reveal" style="--i:4" data-cap="文化艺术节节目单封面" data-date="2023年5月8日">
         <a href="images/full/27-festival-program.jpg" target="_blank" rel="noopener">
           <span class="ph-img"><img src="images/thumbs/27-festival-program.jpg" width="1280" height="905" alt="「青春筑梦 激扬人生」校园文化艺术节节目单封面" loading="lazy" decoding="async"></span>
         </a>
         <figcaption><span class="cap-t">文化艺术节节目单封面</span><span class="cap-d">2023.05.08</span></figcaption>
       </figure>
-      <figure class="ph reveal" data-cap="签到处" data-date="2023年5月8日">
+      <figure class="ph reveal" style="--i:5" data-cap="签到处" data-date="2023年5月8日">
         <a href="images/full/29-festival-arch.jpg" target="_blank" rel="noopener">
           <span class="ph-img"><img src="images/thumbs/29-festival-arch.jpg" width="1600" height="1200" alt="傍晚的艺术节签到处，红色拱门旁远眺老水塔" loading="lazy" decoding="async"></span>
         </a>
@@ -720,7 +740,7 @@
     <div class="group-head reveal"><span class="g-no">其六</span><h3>高考签名墙</h3><span class="g-note">高考前夕 · 告别的方式</span></div>
     <p class="group-desc reveal">2025年6月6日，高考前一天——广场上立起签名墙，一面墙的名字，是三年最热闹的告别。</p>
     <div class="gallery-grid">
-      <figure class="ph reveal" data-cap="高考签名墙 · I❤十五中" data-date="2025年6月6日">
+      <figure class="ph reveal" style="--i:6" data-cap="高考签名墙 · I❤十五中" data-date="2025年6月6日">
         <a href="images/full/26-festival-signin.jpg" target="_blank" rel="noopener">
           <span class="ph-img"><img src="images/thumbs/26-festival-signin.jpg" width="1600" height="1200" alt="高考签名墙与「I❤十五中」雕塑，底座刻着校训，远处是老水塔" loading="lazy" decoding="async"></span>
         </a>
@@ -736,13 +756,13 @@
       <hr class="sec-rule reveal">
       <p class="sec-lede reveal">每座老校园都有一件比所有教学楼都年长的构筑物。在十五中，是这座立在树梢之上的老水塔。</p>
       <div class="duo">
-        <figure class="ph reveal" data-cap="老水塔 · 白日" data-date="2023年6月28日">
+        <figure class="ph reveal" style="--i:7" data-cap="老水塔 · 白日" data-date="2023年6月28日">
           <a href="images/full/11-water-tower.jpg" target="_blank" rel="noopener">
             <span class="ph-img"><img src="images/thumbs/11-water-tower.jpg" width="1600" height="1200" alt="白日蓝天下的老水塔，绿树环绕" loading="lazy" decoding="async"></span>
           </a>
           <figcaption><span class="cap-t">老水塔 · 白日</span><span class="cap-d">2023.06.28</span></figcaption>
         </figure>
-        <figure class="ph reveal" data-cap="老水塔 · 晚霞" data-date="2023年6月">
+        <figure class="ph reveal" style="--i:8" data-cap="老水塔 · 晚霞" data-date="2023年6月">
           <a href="images/full/13-sunset-water-tower.jpg" target="_blank" rel="noopener">
             <span class="ph-img"><img src="images/thumbs/13-sunset-water-tower.jpg" width="1440" height="1080" alt="晚霞中的老水塔剪影" loading="lazy" decoding="async"></span>
           </a>
@@ -777,12 +797,29 @@
       box-shadow:0 0 0 1px rgba(217,119,87,.6),0 0 0 6px rgba(217,119,87,.28),0 3px 10px rgba(0,0,0,.5);
     }
 
+    /* 地名标注：机位中文小标签（高倍缩放显示）+ 周边地标名 */
+    #campusMap .campus-label{font-size:12px;font-weight:600;color:#fff;white-space:nowrap;
+      text-shadow:0 0 3px rgba(0,0,0,.95),0 1px 3px rgba(0,0,0,.85);
+      pointer-events:none;opacity:0;transition:opacity .3s}
+    #campusMap.labels-on .campus-label{opacity:1}
+    #campusMap .place-label{font-size:12px;font-weight:600;color:#fff;white-space:nowrap;
+      letter-spacing:.18em;text-shadow:0 0 4px rgba(0,0,0,.95),0 1px 3px rgba(0,0,0,.85);
+      pointer-events:none;opacity:.95}
+    #campusMap .place-label.major{font-size:14px;letter-spacing:.3em}
+
     /* 照片卡片（自绘弹窗，同时只保留一个） */
-    .campus-spotpop{position:absolute;z-index:5;width:238px;background:#FAF9F5;border:1px solid #E4DFD3;
-      border-radius:10px;box-shadow:0 12px 32px rgba(0,0,0,.45);padding:10px 12px}
-    .campus-pop-x{position:absolute;top:2px;right:6px;background:none;border:none;color:#6E6A5E;
-      font-size:16px;line-height:1;cursor:pointer;padding:2px}
-    .campus-pop-x:hover{color:#C15F3C}
+    .campus-spotpop{position:absolute;z-index:5;width:252px;background:#FAF9F5;border:1px solid #E4DFD3;
+      border-radius:10px;box-shadow:0 12px 32px rgba(0,0,0,.45);padding:8px 8px 10px}
+    .campus-pop-fig{border-radius:7px;overflow:hidden;margin:0 0 10px}
+    .campus-pop-fig img{width:100%;display:block;cursor:zoom-in}
+    .campus-pop-x{position:absolute;top:6px;right:8px;background:rgba(20,19,18,.55);border:none;color:#FAF9F5;
+      width:24px;height:24px;border-radius:50%;font-size:13px;line-height:1;cursor:pointer}
+    .campus-pop-x:hover{background:rgba(193,95,60,.9)}
+    .campus-pop-t{font-family:var(--serif);font-size:16px;font-weight:700;color:#1F1E1D;letter-spacing:.02em}
+    .campus-pop-d{font-size:12px;color:#6E6A5E;margin:3px 0 10px;letter-spacing:.04em}
+    .campus-pop-view{width:100%;background:#C15F3C;color:#FAF9F5;border:none;border-radius:6px;
+      padding:8px 0;font:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:background .2s}
+    .campus-pop-view:hover{background:#D97757}
     .campus-pop{display:flex;align-items:center;gap:12px}
     .campus-pop img{width:96px;border-radius:6px;display:block;flex:none}
     .campus-pop-txt{display:flex;flex-direction:column;gap:3px}
@@ -1133,15 +1170,22 @@
             tileSize: 256, maxzoom: 19,
             attribution: '影像 © Esri, Maxar, Earthstar Geographics'
           },
+          esriRef: {
+            type: 'raster',
+            tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}'],
+            tileSize: 256, maxzoom: 19
+          },
           dem: {
             type: 'raster-dem',
             tiles: ['https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png'],
             encoding: 'terrarium', tileSize: 256, maxzoom: 15
           }
         },
+        glyphs: 'https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf',
         layers: [
           { id: 'bg', type: 'background', paint: { 'background-color': '#EDEAE0' } },
-          { id: 'sat', type: 'raster', source: 'esri' }
+          { id: 'sat', type: 'raster', source: 'esri' },
+          { id: 'sat-labels', type: 'raster', source: 'esriRef', paint: { 'raster-opacity': 0.92 } }
         ]
       },
       center: [115.93216, 28.72078],
@@ -1174,55 +1218,85 @@
       }, 600);
     }
 
-    /* 机位标记：点击显示照片卡片（自绘弹窗，同时只保留一个）+ 运镜飞过去 */
+    /* 机位标记 + 常显中文标签；点击显示照片卡片 + 运镜飞过去 */
     var bounds = [];
-    var openSpotName = null, currentPin = null;
+    var openSpotName = null, currentPin = null, currentSpot = null;
     var spotPopup = document.createElement('div');
     spotPopup.className = 'campus-spotpop';
     spotPopup.hidden = true;
     spotPopup.setAttribute('role', 'dialog');
     el.parentElement.appendChild(spotPopup);
 
+    var FULL_IMG = { '01-gate.jpg': '01-gate.jpg', '02-playground-firstday.jpg': '02-playground-firstday.jpg', '04-teaching-building-winter-dusk.jpg': '04-teaching-building-winter-dusk.jpg', '09-camphor-grove.jpg': '09-camphor-grove.jpg', '11-water-tower.jpg': '11-water-tower.jpg', '08-tennis-court.jpg': '08-tennis-court.jpg', '18-plaza-summer.jpg': '18-plaza-summer.jpg', '19-library-building-sky.jpg': '19-library-building-sky.jpg' };
+
     function positionSpot(pinEl){
       var shellR = el.parentElement.getBoundingClientRect();
       var pinR = pinEl.getBoundingClientRect();
-      var left = pinR.left - shellR.left - 100;
-      left = Math.max(10, Math.min(left, shellR.width - 252));
-      var top = Math.max(10, pinR.top - shellR.top - 132);
+      var left = pinR.left - shellR.left - 120;
+      left = Math.max(10, Math.min(left, shellR.width - 266));
+      var top = Math.max(10, pinR.top - shellR.top - 152);
       spotPopup.style.left = left + 'px';
       spotPopup.style.top = top + 'px';
     }
     function showSpot(s, pinEl){
       spotPopup.innerHTML =
         '<button class="campus-pop-x" aria-label="关闭">×</button>'
-        + '<div class="campus-pop">'
-        + '<img src="images/thumbs/' + s.img + '" alt="' + s.name + '" width="96" loading="lazy">'
-        + '<span class="campus-pop-txt">'
-        + '<span class="campus-pop-t">' + s.name + '</span>'
-        + '<span class="campus-pop-d">' + s.date + ' · ' + s.confidence + '</span>'
-        + '</span></div>';
+        + '<figure class="campus-pop-fig"><img src="images/thumbs/' + s.img + '" alt="' + s.name + '" loading="lazy"></figure>'
+        + '<div class="campus-pop-t">' + s.name + '</div>'
+        + '<div class="campus-pop-d">' + s.date + ' 摄于该处 · 机位精度：' + s.confidence + '</div>'
+        + '<button class="campus-pop-view" data-img="images/full/' + (FULL_IMG[s.img] || s.img) + '" data-cap="' + s.name + '" data-date="' + s.date + '">🔍 查看大图</button>';
       spotPopup.hidden = false;
       openSpotName = s.name;
       currentPin = pinEl;
+      currentSpot = s;
       setTimeout(function(){ positionSpot(pinEl); }, 60);
     }
     function hideSpotPopup(){ spotPopup.hidden = true; openSpotName = null; }
     spotPopup.addEventListener('click', function(ev){
-      if (ev.target.classList && ev.target.classList.contains('campus-pop-x')) hideSpotPopup();
+      if (ev.target.classList && ev.target.classList.contains('campus-pop-x')) { hideSpotPopup(); return; }
+      var btn = ev.target.closest && ev.target.closest('.campus-pop-view');
+      if (btn) {
+        /* 接入全站灯箱：找画廊里同图的那张，触发它的打开逻辑 */
+        var fig = document.querySelector('.ph[data-cap] a[href$="' + btn.getAttribute('data-img').split('/').pop() + '"]');
+        if (fig) { fig.click(); hideSpotPopup(); }
+      }
     });
-    map.on('click', hideSpotPopup);          /* 点击地图空白处关闭 */
-    map.on('moveend', function(){            /* 运镜结束后卡片跟随标记重新定位 */
+    map.on('click', hideSpotPopup);
+    map.on('moveend', function(){
       if (openSpotName && currentPin) positionSpot(currentPin);
     });
 
+    /* 地标地名（ major 级：更大字距） */
+    var PLACES = [
+      { name: '青山湖', lng: 115.946, lat: 28.714, major: true },
+      { name: '塘山街', lng: 115.9355, lat: 28.7228 },
+      { name: '丹霞路', lng: 115.9290, lat: 28.7255 },
+      { name: '江纺住宅区', lng: 115.9395, lat: 28.7245 }
+    ];
+    PLACES.forEach(function(p){
+      var d = document.createElement('div');
+      d.className = 'place-label' + (p.major ? ' major' : '');
+      d.textContent = p.name;
+      new maplibregl.Marker({ element: d, anchor: 'center' })
+        .setLngLat([p.lng, p.lat])
+        .addTo(map);
+    });
+
     CAMERA_SPOTS.forEach(function (s) {
+      var pinWrap = document.createElement('div');
+      pinWrap.style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:3px';
       var pinEl = document.createElement('div');
       pinEl.className = 'campus-pin' + (s.landmark ? ' is-landmark' : '');
       pinEl.setAttribute('role', 'button');
       pinEl.setAttribute('aria-label', s.name);
       pinEl.innerHTML = '<i></i>';
+      var lbl = document.createElement('span');
+      lbl.className = 'campus-label';
+      lbl.textContent = s.name;
+      pinWrap.appendChild(pinEl);
+      pinWrap.appendChild(lbl);
 
-      new maplibregl.Marker({ element: pinEl, anchor: 'center' })
+      new maplibregl.Marker({ element: pinWrap, anchor: 'bottom' })
         .setLngLat([s.lng, s.lat])
         .addTo(map);
 
@@ -1237,6 +1311,11 @@
 
       bounds.push([s.lng, s.lat]);
     });
+
+    /* 缩放到 16 级以上才显示机位中文标签，避免低空拥挤 */
+    function syncLabels(){ el.classList.toggle('labels-on', map.getZoom() >= 15.4); }
+    map.on('zoom', syncLabels);
+    map.on('load', syncLabels);
 
     /* 视野定位：容器尺寸未就绪时自动重试（applyView 防御） */
     var initialBounds = bounds.length >= 2
@@ -1500,6 +1579,25 @@
       fill.style.height = h.toFixed(1) + 'px';
       items.forEach(function(item){
         item.classList.toggle('lit', item.offsetTop + 13 <= h + 8);
+      });
+    });
+  })();
+
+  /* ---------- 水塔深色区视差 ---------- */
+  (function(){
+    if (reduceMotion) return;
+    var imgs = document.querySelectorAll('.landmark .duo .ph-img img');
+    if (!imgs.length) return;
+    imgs.forEach(function(img){ img.style.transform = 'scale(1.12)'; });
+    updaters.push(function(){
+      var sec = document.querySelector('.landmark');
+      var r = sec.getBoundingClientRect();
+      var vh = window.innerHeight;
+      if (r.bottom < 0 || r.top > vh) return;
+      var p = (vh - r.top) / (vh + r.height) - .5;   /* -0.5 ~ 0.5 */
+      imgs.forEach(function(img, i){
+        var dir = i % 2 === 0 ? 1 : -1;              /* 两图反向微移 */
+        img.style.transform = 'scale(1.12) translateY(' + (p * 34 * dir).toFixed(1) + 'px)';
       });
     });
   })();
