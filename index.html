@@ -1575,20 +1575,68 @@
     nums.forEach(function(el){ el.textContent = '0'; nio.observe(el); });
   })();
 
-  /* ---------- Hero 大图视差 ---------- */
+  /* ---------- Hero 大图视差 + 光标惯性视差（Oryzo 式景深响应） ---------- */
   (function(){
     if (reduceMotion) return;
     var fig = document.querySelector('.hero-figure');
     var img = fig ? fig.querySelector('img') : null;
     if (!img) return;
+    var finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    var mx = 0, my = 0, cmx = 0, cmy = 0;   /* 光标目标/当前（惯性跟随） */
+    if (finePointer){
+      window.addEventListener('mousemove', function(ev){
+        mx = (ev.clientX / window.innerWidth - .5) * 16;
+        my = (ev.clientY / window.innerHeight - .5) * 10;
+        requestTick();
+      });
+    }
     updaters.push(function(){
+      cmx += (mx - cmx) * .08;
+      cmy += (my - cmy) * .08;
       var r = fig.getBoundingClientRect();
       var vh = window.innerHeight;
       if (r.bottom < -80 || r.top > vh + 80) return;
       var p = (vh - r.top) / (vh + r.height);
       p = Math.max(0, Math.min(1, p));
-      img.style.transform = 'translateY(' + ((p - .5) * 52).toFixed(1) + 'px) scale(1.09)';
+      img.style.transform = 'translate(' + cmx.toFixed(1) + 'px,' + ((p - .5) * 52 + cmy).toFixed(1) + 'px) scale(1.09)';
     });
+  })();
+
+  /* ---------- 惯性平滑滚动（Oryzo/Lusion 手感核心） ----------
+     桌面滚轮 → 惯性插值滚动；触屏/地图/输入框/灯箱开启时不劫持 */
+  (function(){
+    if (reduceMotion) return;
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+    var target = window.scrollY, current = window.scrollY, raf = null;
+    var MAX_STEP = 240;   /* 单次滚轮冲量上限，防飞掠 */
+    function clamp(v, lo, hi){ return Math.max(lo, Math.min(hi, v)); }
+    function maxScroll(){ return document.documentElement.scrollHeight - window.innerHeight; }
+    function loop(){
+      current += (target - current) * .12;             /* 惯性插值 */
+      if (Math.abs(target - current) < .6){
+        current = target;
+        window.scrollTo({top: current, behavior: 'instant'});
+        raf = null;
+        return;
+      }
+      window.scrollTo({top: Math.round(current), behavior: 'instant'});
+      raf = requestAnimationFrame(loop);
+    }
+    function kick(){ if (!raf) raf = requestAnimationFrame(loop); }
+    window.addEventListener('wheel', function(ev){
+      if (ev.ctrlKey) return;                          /* 缩放手势不劫持 */
+      if (document.body.classList.contains('lb-lock')) return;   /* 灯箱开启时交给灯箱 */
+      if (ev.target.closest('#campusMap, .maplibregl-canvas, textarea, input, .atk-editor')) return;
+      ev.preventDefault();
+      var max = maxScroll();
+      target = clamp(target + clamp(ev.deltaY, -MAX_STEP, MAX_STEP), 0, max);
+      current = clamp(current, 0, max);
+      kick();
+    }, {passive:false});
+    /* 锚点跳转 / 键盘 / 拖动滚动条（无 rAF 在跑时）→ 同步目标 */
+    window.addEventListener('scroll', function(){
+      if (!raf){ target = window.scrollY; current = window.scrollY; }
+    }, {passive:true});
   })();
 
   /* ---------- 时间线生长 ---------- */
