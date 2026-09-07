@@ -72,7 +72,13 @@
     }
   }
   var fileInput = document.getElementById('cmtAvatarInput');
+  myAvatar.setAttribute('role', 'button');
+  myAvatar.setAttribute('tabindex', '0');
+  myAvatar.setAttribute('aria-label', '上传自定义头像');
   myAvatar.addEventListener('click', function () { fileInput.click(); });
+  myAvatar.addEventListener('keydown', function (ev) {
+    if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); fileInput.click(); }
+  });
   fileInput.addEventListener('change', function () {
     var f = fileInput.files && fileInput.files[0];
     fileInput.value = '';

@@ -17,7 +17,7 @@
 
 <br>
 
-This is a memorial page for Nanchang No. 15 Middle School: **27 photographs of the campus**, a **photo tour with a clickable Chinese-labeled location map (MapLibre GL)**, a **login-free anonymous guestbook**, and a full set of interactions polished for reading — reading progress bar, section-aware navigation, count-up numbers, a growing timeline, and a zoom-and-pan lightbox.
+This is a memorial page for Nanchang No. 15 Middle School: **25 photographs of the campus**, a **photo tour with a clickable Chinese-labeled location map (MapLibre GL)**, a **login-free anonymous guestbook**, and a full set of interactions polished for reading — reading progress bar, section-aware navigation, count-up numbers, a growing timeline, and a zoom-and-pan lightbox.
 
 Pure HTML / CSS / vanilla JS with structure, style and behavior separated (`index.html` + `assets/`) — zero frameworks, no build step.
 

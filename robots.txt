@@ -1,0 +1,6 @@
+# robots.txt · 青山湖畔的纪念册（xxc2007.me）
+# 说明：Cloudflare 托管的 content-signal 版本在其上层生效；本文件声明站点地图。
+Sitemap: https://xxc2007.me/sitemap.xml
+
+User-agent: *
+Allow: /

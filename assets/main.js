@@ -331,7 +331,14 @@
   })();
 
   /* ---------- 灯箱 ---------- */
-  var figures = Array.prototype.slice.call(document.querySelectorAll('.ph'));
+  /* 图集按文件去重：水塔区两张与画廊重复，去重后计数与全站「25 张实景照片」口径一致；
+     重复图卡点击时打开画廊原卡（同一文件） */
+  var figures = [];
+  var figIndex = new Map();
+  document.querySelectorAll('.ph').forEach(function (fig) {
+    var href = fig.querySelector('a').getAttribute('href');
+    if (!figIndex.has(href)) { figIndex.set(href, figures.length); figures.push(fig); }
+  });
   var box = document.getElementById('lightbox');
   var lbImg = document.getElementById('lbImg');
   var lbCount = document.getElementById('lbCount');
@@ -403,11 +410,12 @@
     if (lastFocus) lastFocus.focus();
   }
 
-  figures.forEach(function (fig, i) {
+  document.querySelectorAll('.ph').forEach(function (fig) {
     var link = fig.querySelector('a');
+    var idx = figIndex.get(link.getAttribute('href'));
     link.addEventListener('click', function (ev) {
       ev.preventDefault();
-      open(i);
+      open(idx);
     });
   });
 
