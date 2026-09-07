@@ -168,7 +168,7 @@
     window.addEventListener('wheel', function (ev) {
       if (ev.ctrlKey) return;                          /* 缩放手势不劫持 */
       if (document.body.classList.contains('lb-lock')) return;   /* 灯箱开启时交给灯箱 */
-      if (ev.target.closest('#campusMap, .maplibregl-canvas, textarea, input, .atk-editor')) return;
+      if (ev.target.closest('#campusMap, .maplibregl-canvas, textarea, input')) return;
       ev.preventDefault();
       var max = maxScroll();
       target = clamp(target + clamp(ev.deltaY, -MAX_STEP, MAX_STEP), 0, max);
@@ -391,6 +391,16 @@
     if (ev.key === 'Escape') close();
     else if (ev.key === 'ArrowLeft') show(cur - 1);
     else if (ev.key === 'ArrowRight') show(cur + 1);
+    else if (ev.key === 'Tab') {
+      /* 焦点陷阱：aria-modal 对话框内 Tab 循环（关闭/上一张/下一张），不漏到背景页 */
+      var focusables = [document.getElementById('lbClose'), document.getElementById('lbPrev'), document.getElementById('lbNext')];
+      var idx = focusables.indexOf(document.activeElement);
+      var next;
+      if (ev.shiftKey) next = idx <= 0 ? focusables.length - 1 : idx - 1;
+      else next = (idx === -1 || idx === focusables.length - 1) ? 0 : idx + 1;
+      ev.preventDefault();
+      focusables[next].focus();
+    }
   });
 
   /* 触摸滑动翻页（缩放/平移手势时让位） */

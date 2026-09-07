@@ -304,7 +304,6 @@ section.block{max-width:1200px;margin:0 auto;padding:96px 28px 30px}
 .words .sign{
   text-align:right;color:var(--muted);font-size:15px;font-family:var(--serif);letter-spacing:.12em;margin-top:6px;
 }
-.words .sign b{font-family:var(--serif);font-size:17px;color:var(--ink);letter-spacing:.08em}
 
 /* ============ 页脚 ============ */
 footer{border-top:1px solid var(--line);margin-top:90px}
@@ -328,6 +327,7 @@ footer{border-top:1px solid var(--line);margin-top:90px}
   opacity:0;pointer-events:none;transition:opacity .28s;
 }
 .lightbox.open{opacity:1;pointer-events:auto}
+.lightbox[hidden]{display:none}   /* UA 的 [hidden]{display:none} 会被上面的 display:flex 覆盖——补上，隐藏时彻底移出渲染与可访问性树 */
 .lb-top{
   display:flex;justify-content:space-between;align-items:center;
   padding:18px 26px;color:#B8B2A4;font-size:14px;letter-spacing:.1em;
@@ -438,7 +438,6 @@ body.lb-lock{overflow:hidden}
   font-size:10px;font-weight:400;display:flex;align-items:center;justify-content:center}
 .bili-item .bili-avatar{cursor:default}
 .bili-item .bili-avatar:hover::after{content:none}
-#cmtAvatarInput{display:none}
 .bili-editor-box{flex:1;background:#fff;border:1px solid var(--line);border-radius:8px;transition:border-color .2s}
 .bili-editor-box:focus-within{border-color:#D97757}
 #cmtInput{display:block;width:100%;min-height:88px;resize:vertical;border:none;background:transparent;

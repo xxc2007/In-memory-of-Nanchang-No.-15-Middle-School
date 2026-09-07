@@ -19,20 +19,44 @@
   ];
   function hash(s) { var h = 0; for (var i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0; return h; }
   function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  /* fetch + 超时兜底：网络挂起时由 AbortController 中断，避免按钮永久卡在等待态 */
+  function fetchJSON(url, opts, timeoutMs) {
+    var ctrl = new AbortController();
+    var timer = setTimeout(function () { ctrl.abort(); }, timeoutMs || 15000);
+    opts = opts || {};
+    opts.signal = ctrl.signal;
+    return fetch(url, opts).then(function (r) {
+      clearTimeout(timer);
+      return r.json();
+    }, function (err) {
+      clearTimeout(timer);
+      throw err;
+    });
+  }
   function randToken() {
     /* 匿名邮箱唯一化：crypto 随机，无 Math.random */
     var bytes = new Uint8Array(8);
-    (window.crypto || window.msCrypto).getRandomValues(bytes);
+    window.crypto.getRandomValues(bytes);
     var out = '';
     for (var i = 0; i < bytes.length; i++) out += ('0' + bytes[i].toString(16)).slice(-2);
     return out;
   }
   function fmtTime(s) { var m = /^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})/.exec(s || ''); return m ? (m[1] + '年' + (+m[2]) + '月' + (+m[3]) + '日 ' + m[4] + ':' + m[5]) : (s || ''); }
+  /* 头像只放行本站 Artalk 上传资源（相对路径或同源绝对 URL）——
+     子串匹配会漏进「恰好含该路径的外链」，让访客浏览器向外部发请求（泄露 IP/可追踪） */
+  function avatarImgSrc(link) {
+    if (typeof link !== 'string' || link.indexOf('/static/images/') === -1) return '';
+    if (link.indexOf(location.origin + '/comment/') === 0) return link.slice(location.origin.length);
+    if (link.indexOf('/comment/') === 0) return link;
+    if (link.indexOf('/static/images/') === 0) return '/comment' + link;
+    return '';
+  }
   function avatarEl(nick, link) {
     var d = document.createElement('div'); d.className = 'bili-avatar';
-    if (link && link.indexOf('/static/images/') !== -1) {
+    var src = avatarImgSrc(link);
+    if (src) {
       var img = document.createElement('img');
-      img.src = link.indexOf('http') === 0 ? link : '/comment' + link;
+      img.src = src;
       img.alt = (nick || '访客') + '的头像';
       d.appendChild(img);
       return d;
@@ -63,10 +87,11 @@
   try { avatarURL = localStorage.getItem('wallAvatar') || ''; } catch (e) { }
   function applyMyAvatar() {
     syncMyAvatar();
-    if (avatarURL) {
+    var src = avatarImgSrc(avatarURL);
+    if (src) {
       myAvatar.innerHTML = '';
       var img = document.createElement('img');
-      img.src = '/comment' + avatarURL;
+      img.src = src;
       img.alt = '我的头像';
       myAvatar.appendChild(img);
     }
@@ -96,8 +121,7 @@
           if (!blob) { showNotice('头像处理失败，请换一张图片。'); return; }
           var fd = new FormData();
           fd.append('file', blob, 'avatar.jpg');
-          fetch(API + '/upload', { method: 'POST', body: fd })
-            .then(function (r) { return r.json(); })
+          fetchJSON(API + '/upload', { method: 'POST', body: fd })
             .then(function (d) {
               if (d.public_url) {
                 avatarURL = d.public_url;
@@ -108,7 +132,7 @@
                 showNotice('头像上传失败：' + esc(d.msg || '未知错误'));
               }
             })
-            .catch(function () { showNotice('头像上传失败，请稍后重试。'); });
+            .catch(function (err) { showNotice(err && err.name === 'AbortError' ? '头像上传超时，请检查网络后重试。' : '头像上传失败，请稍后重试。'); });
         }, 'image/jpeg', 0.85);
       };
       img.onerror = function () { showNotice('图片读取失败，请换一张图片。'); };
@@ -124,7 +148,7 @@
   var notice = document.getElementById('cmtNotice');
   function showNotice(html) { notice.innerHTML = html; notice.hidden = false; }
 
-  function render(list) {
+  function render(list, total) {
     var wrap = document.getElementById('cmtList');
     wrap.innerHTML = '';
     list.forEach(function (cm) {
@@ -146,15 +170,16 @@
       wrap.appendChild(row);
     });
     document.getElementById('cmtEmpty').hidden = list.length > 0;
-    document.getElementById('cmtTotal').textContent = list.length;
+    document.getElementById('cmtTotal').textContent = (typeof total === 'number' && total >= list.length) ? total : list.length;
   }
 
+  /* limit=100 为单次拉取上限，超出后老留言暂不做分页（纪念册体量足够）；
+     total 为服务端真实计数，有则优先显示，防止「全部留言」口径失真 */
   function load() {
-    fetch(API + '/comments?page_key=' + encodeURIComponent(PAGE) + '&site_name=' + encodeURIComponent(SITE) + '&limit=100')
-      .then(function (r) { return r.json(); })
+    fetchJSON(API + '/comments?page_key=' + encodeURIComponent(PAGE) + '&site_name=' + encodeURIComponent(SITE) + '&limit=100')
       .then(function (d) {
         document.getElementById('cmtLoading').hidden = true;
-        render(d.comments || []);
+        render(d.comments || [], d.total);
       })
       .catch(function () {
         var el = document.getElementById('cmtLoading');
@@ -186,11 +211,10 @@
     var email = nick
       ? ('anon-' + hash(name).toString(36) + '@local.xxc2007.me')
       : ('anon-' + randToken() + '@local.xxc2007.me');
-    fetch(API + '/comments', {
+    fetchJSON(API + '/comments', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ page_key: PAGE, page_title: '留言墙', site_name: SITE, name: name, email: email, link: avatarURL ? ('https://xxc2007.me/comment' + avatarURL) : '', content: text })
+      body: JSON.stringify({ page_key: PAGE, page_title: '留言墙', site_name: SITE, name: name, email: email, link: avatarURL ? (location.origin + '/comment' + avatarURL) : '', content: text })
     })
-      .then(function (r) { return r.json(); })
       .then(function (d) {
         submitting = false;
         document.getElementById('cmtSubmit').disabled = false;
@@ -202,10 +226,10 @@
           showNotice('发布失败：' + esc(d.msg || '未知错误'));
         }
       })
-      .catch(function () {
+      .catch(function (err) {
         submitting = false;
         document.getElementById('cmtSubmit').disabled = false;
-        showNotice('网络异常，发布失败，请稍后重试。');
+        showNotice(err && err.name === 'AbortError' ? '发布超时，请检查网络后重试。' : '网络异常，发布失败，请稍后重试。');
       });
   });
 

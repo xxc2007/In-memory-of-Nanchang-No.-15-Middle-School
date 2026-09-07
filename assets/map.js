@@ -93,7 +93,6 @@
           attribution: '底图 © OpenStreetMap 贡献者'
         }
       },
-      glyphs: 'https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf',
       layers: [
         { id: 'bg', type: 'background', paint: { 'background-color': '#EDEAE0' } },
         { id: 'osm', type: 'raster', source: 'osm' }

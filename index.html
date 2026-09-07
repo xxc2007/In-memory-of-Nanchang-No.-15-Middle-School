@@ -17,8 +17,8 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/png" href="images/emblem-64.png">
 <link rel="apple-touch-icon" href="images/emblem-180.png">
-<link rel="stylesheet" href="maplibre/maplibre-gl.css?v=20260907e">
-<link rel="stylesheet" href="assets/style.css?v=20260907e">
+<link rel="stylesheet" href="maplibre/maplibre-gl.css?v=20260907f">
+<link rel="stylesheet" href="assets/style.css?v=20260907f">
 <link rel="preload" as="image" href="images/full/18-plaza-summer.jpg" fetchpriority="high">
 <script type="application/ld+json">
 {
@@ -54,10 +54,10 @@ window.addEventListener('DOMContentLoaded', function () {
     if (entries.some(function (e) { return e.isIntersecting; })) {
       io.disconnect();
       var s = document.createElement('script');
-      s.src = 'maplibre/maplibre-gl.js?v=20260907e';
+      s.src = 'maplibre/maplibre-gl.js?v=20260907f';
       s.onload = function () {
         var m = document.createElement('script');
-        m.src = 'assets/map.js?v=20260907e';
+        m.src = 'assets/map.js?v=20260907f';
         document.body.appendChild(m);
       };
       document.body.appendChild(s);
@@ -419,7 +419,7 @@ window.addEventListener('DOMContentLoaded', function () {
     <div class="minimap reveal">
       <div id="campusMap" role="region" aria-label="南昌市第十五中学青山湖校区定位图，标注八个照片拍摄位置"></div>
     </div>
-    <p class="map-note reveal">底图 © OpenStreetMap 贡献者（矢量渲染含中文地名）</p>
+    <p class="map-note reveal">底图 © OpenStreetMap 贡献者（栅格瓦片含中文地名）</p>
   </section>
 
   <!-- ===================== 寄语 ===================== -->
@@ -487,7 +487,7 @@ window.addEventListener('DOMContentLoaded', function () {
     <button class="lb-nav lb-prev" id="lbPrev" aria-label="上一张（←）">
       <svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
-    <img id="lbImg" src="" alt="">
+    <img id="lbImg" alt="">
     <button class="lb-nav lb-next" id="lbNext" aria-label="下一张（→）">
       <svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
@@ -498,8 +498,8 @@ window.addEventListener('DOMContentLoaded', function () {
   </div>
 </div>
 
-<script src="assets/main.js?v=20260907e" defer></script>
-<script src="assets/wall.js?v=20260907e" defer></script>
+<script src="assets/main.js?v=20260907f" defer></script>
+<script src="assets/wall.js?v=20260907f" defer></script>
 <!-- 定位图（map.js）由 head 内的惰性初始化器在滚动临近时按需加载 maplibre-gl.js -->
 </body>
 </html>

@@ -116,6 +116,13 @@ python -m http.server 8000   # or any static server; open http://localhost:8000
 
 > The guestbook needs the self-hosted Artalk service (`/comment/`); locally that area shows a load-failure notice while everything else works. Opening `index.html` directly via `file://` also works for browsing; only the map tiles and the guestbook need network.
 
+## 📝 Design notes
+
+- **Visual direction**: Claude / Anthropic visual language (cream paper + terracotta + serif), specified by the site owner at the very beginning; every iteration grows within this direction. The background stays a pure cream paper surface with no decorative layers — motion always yields to content.
+- **Desktop inertial scrolling is intentional**: the wheel is driven through inertial interpolation (Oryzo/Lusion feel), enabled only on fine-pointer devices; browser zoom (Ctrl+wheel), the map canvas, inputs and the lightbox are never hijacked, and touch devices / `prefers-reduced-motion` users keep native scrolling. Not a bug.
+- **Browser support matrix**: modern evergreen browsers only (Chrome / Edge / Firefox / Safari, last two years). IE and Legacy Edge are explicitly unsupported; no polyfills.
+- **Guestbook fetch cap**: at most 100 comments per request (plenty for a memorial page); the counter prefers the server-side total. All network requests carry a 15-second timeout fallback.
+
 ## 📄 License
 
 [MIT](LICENSE) © 2026 Xiong Xinchen (熊鑫晨) · Campus photographs © Xiong Xinchen
