@@ -17,8 +17,8 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/png" href="images/emblem-64.png">
 <link rel="apple-touch-icon" href="images/emblem-180.png">
-<link rel="stylesheet" href="maplibre/maplibre-gl.css?v=20260907c">
-<link rel="stylesheet" href="assets/style.css?v=20260907c">
+<link rel="stylesheet" href="maplibre/maplibre-gl.css?v=20260907d">
+<link rel="stylesheet" href="assets/style.css?v=20260907d">
 <link rel="preload" as="image" href="images/full/18-plaza-summer.jpg" fetchpriority="high">
 <script type="application/ld+json">
 {
@@ -54,10 +54,10 @@ window.addEventListener('DOMContentLoaded', function () {
     if (entries.some(function (e) { return e.isIntersecting; })) {
       io.disconnect();
       var s = document.createElement('script');
-      s.src = 'maplibre/maplibre-gl.js?v=20260907c';
+      s.src = 'maplibre/maplibre-gl.js?v=20260907d';
       s.onload = function () {
         var m = document.createElement('script');
-        m.src = 'assets/map.js?v=20260907c';
+        m.src = 'assets/map.js?v=20260907d';
         document.body.appendChild(m);
       };
       document.body.appendChild(s);
@@ -435,7 +435,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
   <!-- ===================== 留言墙 ===================== -->
   <section class="block wall" id="wall">
-    <div class="sec-head reveal"><span class="sec-index">柒 · WALL</span><h2>留言墙</h2></div>
+    <div class="sec-head reveal"><span class="sec-index">柒 · WALL</span><h2>留言墙</h2><a id="wallAdmin" class="wall-admin" href="/comment/sidebar/" target="_blank" rel="noopener" title="前往 Artalk 管理后台" hidden>管理留言</a></div>
     <hr class="sec-rule reveal">
     <p class="sec-lede reveal">纪念册不该只有一个人的声音。写一句那年的话——无需登录，发布后经站长审核即会展示。</p>
     <div class="bili-comments reveal">
@@ -498,8 +498,8 @@ window.addEventListener('DOMContentLoaded', function () {
   </div>
 </div>
 
-<script src="assets/main.js?v=20260907c" defer></script>
-<script src="assets/wall.js?v=20260907c" defer></script>
+<script src="assets/main.js?v=20260907d" defer></script>
+<script src="assets/wall.js?v=20260907d" defer></script>
 <!-- 定位图（map.js）由 head 内的惰性初始化器在滚动临近时按需加载 maplibre-gl.js -->
 </body>
 </html>
