@@ -21,7 +21,7 @@ This is a memorial page for Nanchang No. 15 Middle School: **25 photographs of t
 
 Pure HTML / CSS / vanilla JS with structure, style and behavior separated (`index.html` + `assets/`) — zero frameworks, no build step.
 
-[Live Site](https://xxc2007.me) · [Structure](#-site-structure) · [Highlights](#-highlights) · [Tech Stack](#️-tech-stack) · [Run Locally](#-run-locally)
+[Live Site](https://xxc2007.me) · [Structure](#-site-structure) · [Highlights](#-highlights) · [Tech Stack](#️-tech-stack) · [Run Locally](#-run-locally) · [Migration guide](docs/MIGRATION.en.md)
 
 </div>
 
@@ -91,7 +91,7 @@ site/
 │   ├── thumbs/         # Matching thumbnails
 │   └── emblem-*.png    # School emblem (top bar / hero / footer / favicon)
 ├── maplibre/           # Self-hosted MapLibre GL v5 (no CDN dependency)
-└── docs/               # Screenshots used by this README
+└── docs/               # README screenshots + [migration guide](docs/MIGRATION.en.md)
 ```
 
 ## ⚙️ Tech stack
