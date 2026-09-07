@@ -17,8 +17,8 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/png" href="images/emblem-64.png">
 <link rel="apple-touch-icon" href="images/emblem-180.png">
-<link rel="stylesheet" href="maplibre/maplibre-gl.css?v=20260907b">
-<link rel="stylesheet" href="assets/style.css?v=20260907b">
+<link rel="stylesheet" href="maplibre/maplibre-gl.css?v=20260907c">
+<link rel="stylesheet" href="assets/style.css?v=20260907c">
 <link rel="preload" as="image" href="images/full/18-plaza-summer.jpg" fetchpriority="high">
 <script type="application/ld+json">
 {
@@ -54,10 +54,10 @@ window.addEventListener('DOMContentLoaded', function () {
     if (entries.some(function (e) { return e.isIntersecting; })) {
       io.disconnect();
       var s = document.createElement('script');
-      s.src = 'maplibre/maplibre-gl.js?v=20260907b';
+      s.src = 'maplibre/maplibre-gl.js?v=20260907c';
       s.onload = function () {
         var m = document.createElement('script');
-        m.src = 'assets/map.js?v=20260907b';
+        m.src = 'assets/map.js?v=20260907c';
         document.body.appendChild(m);
       };
       document.body.appendChild(s);
@@ -70,7 +70,6 @@ window.addEventListener('DOMContentLoaded', function () {
 <body>
 <span id="top" aria-hidden="true"></span>
 <a class="skip-link" href="#main">跳到正文</a>
-<canvas id="dustCanvas" aria-hidden="true"></canvas>
 
 <!-- ===================== 顶栏 ===================== -->
 <header class="topbar" id="topbar">
@@ -499,8 +498,8 @@ window.addEventListener('DOMContentLoaded', function () {
   </div>
 </div>
 
-<script src="assets/main.js?v=20260907b" defer></script>
-<script src="assets/wall.js?v=20260907b" defer></script>
+<script src="assets/main.js?v=20260907c" defer></script>
+<script src="assets/wall.js?v=20260907c" defer></script>
 <!-- 定位图（map.js）由 head 内的惰性初始化器在滚动临近时按需加载 maplibre-gl.js -->
 </body>
 </html>

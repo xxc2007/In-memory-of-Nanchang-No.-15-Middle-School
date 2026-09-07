@@ -72,7 +72,6 @@ Pure HTML / CSS / vanilla JS with structure, style and behavior separated (`inde
 | Hero parallax | The hero image drifts at half scroll speed, `scale(1.09)` hides the edges |
 | Growing timeline | The history line draws itself downward; year nodes light up as it passes |
 | Lightbox | Cursor-centered wheel zoom 1–4×, double-click zoom, drag pan, pinch, clamped edges — coexists safely with swipe navigation |
-| Light dust | A full-page canvas of breathing dust motes with gentle cursor repulsion; the guestbook adds its own "dark river" flow-field particles |
 | Gallery fade & tilt | Images fade in as they load; desktop cards tilt subtly with the cursor |
 
 All animations share a single rAF-driven scroll loop and degrade gracefully when the system asks for reduced motion.
@@ -84,7 +83,7 @@ site/
 ├── index.html          # Semantic markup (no inline styles or scripts)
 ├── assets/
 │   ├── style.css       # Site-wide styles (tokens, components, breakpoints, fallbacks)
-│   ├── main.js         # Main interactions: progress, scrollspy, parallax, inertia, particles, lightbox
+│   ├── main.js         # Main interactions: progress, scrollspy, parallax, inertia, lightbox
 │   ├── map.js          # Photo tour + location map (lazy-loaded MapLibre)
 │   └── wall.js         # Guestbook (talks to self-hosted Artalk)
 ├── images/

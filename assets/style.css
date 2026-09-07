@@ -138,13 +138,8 @@ nav.toc a.active{color:var(--terra-deep);background:rgba(217,119,87,.12)}
 
 
 /* ============ Oryzo 式电影感层 ============ */
-/* 点阵纸纹：z-1 垫在内容之下、米白底之上，像稿纸底纹；内容主体提到 z-2 盖住卡片区点阵 */
-main{position:relative;z-index:2}
 /* #top：页顶零高锚点（回到顶部用），抵消 scroll-padding 的 76px */
 #top{position:absolute;top:0;left:0;width:0;height:0}
-#dustCanvas{position:fixed;inset:0;pointer-events:none;z-index:1;opacity:0;transition:opacity 1.2s ease .15s}
-#dustCanvas.on{opacity:1}
-@media (prefers-reduced-motion: reduce){#dustCanvas{display:none}}
 
 /* 1) 章节大标题渐显上浮（惯性缓动，挂在现有 .reveal 上加深一层） */
 .sec-head h2{opacity:0;transform:translateY(34px);
@@ -312,7 +307,7 @@ section.block{max-width:1200px;margin:0 auto;padding:96px 28px 30px}
 .words .sign b{font-family:var(--serif);font-size:17px;color:var(--ink);letter-spacing:.08em}
 
 /* ============ 页脚 ============ */
-footer{border-top:1px solid var(--line);margin-top:90px;position:relative;z-index:2}
+footer{border-top:1px solid var(--line);margin-top:90px}
 .footer-inner{
   max-width:1200px;margin:0 auto;padding:48px 28px 60px;
   display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;
@@ -415,7 +410,6 @@ body.lb-lock{overflow:hidden}
 .map-note{font-size:12.5px;color:var(--muted);margin-top:10px;font-variant-numeric:tabular-nums}
 
 /* ============ 柒 · WALL 留言墙 ============ */
-/* 全站点阵纸纹已覆盖留言墙（方案二 · Ledger Dots），独立画布已移除 */
 .wall{position:relative}
 
 /* B站风留言卡片（亮色） */
