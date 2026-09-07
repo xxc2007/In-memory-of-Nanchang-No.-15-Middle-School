@@ -17,8 +17,8 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/png" href="images/emblem-64.png">
 <link rel="apple-touch-icon" href="images/emblem-180.png">
-<link rel="stylesheet" href="maplibre/maplibre-gl.css?v=20260906c">
-<link rel="stylesheet" href="assets/style.css?v=20260906c">
+<link rel="stylesheet" href="maplibre/maplibre-gl.css?v=20260907">
+<link rel="stylesheet" href="assets/style.css?v=20260907">
 <link rel="preload" as="image" href="images/full/18-plaza-summer.jpg" fetchpriority="high">
 <script type="application/ld+json">
 {
@@ -54,10 +54,10 @@ window.addEventListener('DOMContentLoaded', function () {
     if (entries.some(function (e) { return e.isIntersecting; })) {
       io.disconnect();
       var s = document.createElement('script');
-      s.src = 'maplibre/maplibre-gl.js?v=20260906c';
+      s.src = 'maplibre/maplibre-gl.js?v=20260907';
       s.onload = function () {
         var m = document.createElement('script');
-        m.src = 'assets/map.js?v=20260906c';
+        m.src = 'assets/map.js?v=20260907';
         document.body.appendChild(m);
       };
       document.body.appendChild(s);
@@ -68,6 +68,7 @@ window.addEventListener('DOMContentLoaded', function () {
 </script>
 </head>
 <body>
+<span id="top" aria-hidden="true"></span>
 <a class="skip-link" href="#main">跳到正文</a>
 <canvas id="dustCanvas" aria-hidden="true"></canvas>
 
@@ -471,7 +472,7 @@ window.addEventListener('DOMContentLoaded', function () {
     <div class="right">
       <div class="f-coord">28.7208° N, 115.9322° E · 青山湖畔</div>
       <div>xxc2007.me · 2026</div>
-      <div><a href="#topbar">回到顶部 ↑</a></div>
+      <div><a href="#top">回到顶部 ↑</a></div>
     </div>
   </div>
 </footer>
@@ -498,8 +499,8 @@ window.addEventListener('DOMContentLoaded', function () {
   </div>
 </div>
 
-<script src="assets/main.js?v=20260906c" defer></script>
-<script src="assets/wall.js?v=20260906c" defer></script>
+<script src="assets/main.js?v=20260907" defer></script>
+<script src="assets/wall.js?v=20260907" defer></script>
 <!-- 定位图（map.js）由 head 内的惰性初始化器在滚动临近时按需加载 maplibre-gl.js -->
 </body>
 </html>

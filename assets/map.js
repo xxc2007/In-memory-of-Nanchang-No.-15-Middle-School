@@ -69,6 +69,7 @@
   if (prevBtn) prevBtn.addEventListener('click', function () { go(cur - 1); });
   if (nextBtn) nextBtn.addEventListener('click', function () { go(cur + 1); });
   document.addEventListener('keydown', function (ev) {
+    if (document.body.classList.contains('lb-lock')) return;   /* 灯箱开启时让位 */
     var tag = (ev.target && ev.target.tagName) || '';
     if (tag === 'TEXTAREA' || tag === 'INPUT' || (ev.target && ev.target.isContentEditable)) return;
     if (ev.key === 'ArrowLeft') go(cur - 1);

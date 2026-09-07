@@ -205,7 +205,9 @@
 
   /* ---------- 点阵纸纹（全站背景，方案二 · Ledger Dots） ----------
      研究来源：React Bits DotField（点阵+光标隆起+速度追踪）+ Uiverse 呼吸律
-     隐喻：方格稿纸底纹，光标掠过处如抚过纸面；8% 赤陶/橄榄"注记点" */
+     隐喻：方格稿纸底纹，光标掠过处如抚过纸面；8% 赤陶/橄榄"注记点"
+     时序：内容先呈现——页面 load（或 2.2s 兜底）后画布才淡入起画；
+     手机端：间距放宽降密度，resize 仅在宽度变化时重建（地址栏伸缩不重建） */
   (function () {
     if (reduceMotion) return;
     var cv = document.getElementById('dustCanvas');
@@ -214,23 +216,31 @@
     var DPR = Math.min(window.devicePixelRatio || 1, 2);
     var W = 0, H = 0;
 
-    var SPACING = 26;                 /* 点间距 26px：纸感宜疏 */
+    var MOBILE = function () {
+      return (window.matchMedia && window.matchMedia('(hover: none)').matches) || window.innerWidth < 640;
+    };
     var INK = '31,30,29', TERRA = '150,72,45', OLIVE = '96,112,66';
     var CURSOR_R = 280, CURSOR_F = .055;   /* 大半径小力度（律令 4） */
     var cols = 0, rows = 0, dots = [];
     var mouse = { x: -9999, y: -9999, px: -9999, py: -9999, speed: 0 };
+    var lastW = -1, lastS = 0;
 
     function size() {
       W = window.innerWidth; H = window.innerHeight;
       cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
       ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-      cols = Math.ceil(W / SPACING) + 1; rows = Math.ceil(H / SPACING) + 1;
+      var sp = MOBILE() ? 34 : 26;        /* 点间距：纸感宜疏，小屏更疏降密度 */
+      /* 行数多铺 160px 余量：手机地址栏收起视口变高时底部不留空带 */
+      var nCols = Math.ceil(W / sp) + 1, nRows = Math.ceil((H + 160) / sp) + 1;
+      if (W === lastW && sp === lastS) return;   /* 手机地址栏伸缩只改高度，不重建点阵 */
+      lastW = W; lastS = sp;
+      cols = nCols; rows = nRows;
       dots = [];
       for (var r = 0; r < rows; r++) {
         for (var c = 0; c < cols; c++) {
           var special = Math.random() < .08;   /* 注记点：方格稿纸上的墨点 */
           dots.push({
-            bx: c * SPACING, by: r * SPACING,
+            bx: c * sp, by: r * sp,
             r: special ? 1.4 : .9,
             c: special ? (Math.random() < .5 ? TERRA : OLIVE) : INK,
             base: special ? .34 : .15,
@@ -240,8 +250,6 @@
         }
       }
     }
-    size();
-    window.addEventListener('resize', size);
 
     window.addEventListener('mousemove', function (ev) {
       mouse.px = mouse.x; mouse.py = mouse.y;
@@ -250,6 +258,19 @@
       var sp = Math.sqrt(dx * dx + dy * dy);
       mouse.speed = mouse.speed * .8 + sp * .2;   /* 快抚幅度更大 */
     }, { passive: true });
+    /* 触屏同步：手指划过同样隆起，抬手复位 */
+    window.addEventListener('touchmove', function (ev) {
+      var t = ev.touches[0];
+      if (!t) return;
+      mouse.px = mouse.x; mouse.py = mouse.y;
+      mouse.x = t.clientX; mouse.y = t.clientY;
+      var dx = t.clientX - mouse.px, dy = t.clientY - mouse.py;
+      var sp = Math.sqrt(dx * dx + dy * dy);
+      mouse.speed = mouse.speed * .8 + sp * .2;
+    }, { passive: true });
+    function touchReset() { mouse.x = -9999; mouse.y = -9999; mouse.speed = 0; }
+    window.addEventListener('touchend', touchReset, { passive: true });
+    window.addEventListener('touchcancel', touchReset, { passive: true });
     document.addEventListener('mouseleave', function () { mouse.x = -9999; mouse.y = -9999; mouse.speed = 0; });
 
     var raf3 = null, t0 = null;
@@ -277,10 +298,36 @@
       mouse.speed *= .92;                        /* 速度自然衰减 */
       raf3 = requestAnimationFrame(frame);
     }
-    function start() { if (!raf3) raf3 = requestAnimationFrame(frame); }
+    function start() {
+      if (raf3) return;
+      size();
+      raf3 = requestAnimationFrame(frame);
+      cv.classList.add('on');                    /* 1.2s CSS 淡入 */
+    }
     function stop() { if (raf3) { cancelAnimationFrame(raf3); raf3 = null; } }
-    document.addEventListener('visibilitychange', function () { document.hidden ? stop() : start(); });
-    start();
+
+    /* 内容优先：load 后再起画（load 卡住则 DOMContentLoaded+2.2s 兜底） */
+    var begun = false;
+    function begin() {
+      if (begun) return;
+      begun = true;
+      setTimeout(start, 250);                    /* 缓一拍，让首屏内容先落定 */
+    }
+    if (document.readyState === 'complete') begin();
+    else {
+      window.addEventListener('load', begin);
+      var kicked = false;
+      function domKick() {
+        if (kicked) return;
+        kicked = true;
+        setTimeout(begin, 2200);
+      }
+      if (document.readyState === 'interactive') domKick();
+      else document.addEventListener('DOMContentLoaded', domKick);
+    }
+
+    window.addEventListener('resize', function () { if (raf3) size(); });
+    document.addEventListener('visibilitychange', function () { document.hidden ? stop() : (begun && start()); });
   })();
 
   /* ---------- 灯箱 ---------- */
