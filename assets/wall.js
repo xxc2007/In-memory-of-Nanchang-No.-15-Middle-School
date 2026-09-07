@@ -211,37 +211,3 @@
 
   load();
 })();
-
-/* ---------- 站长管理入口 ----------
-   两种唤出：①URL 带 ?admin=1（本次会话有效，localStorage 记住 12 小时）
-   ②在「柒 · WALL」章节标题上 1.5 秒内连点三下（任何设备可用）
-   入口是新开 Artalk 管理后台（/comment/sidebar/）；对普通访客完全不可见 */
-(function () {
-  'use strict';
-  var link = document.getElementById('wallAdmin');
-  if (!link) return;
-  var KEY = 'wallAdminUntil';
-
-  function reveal() {
-    link.hidden = false;
-    try { localStorage.setItem(KEY, String(Date.now() + 12 * 3600 * 1000)); } catch (e) { }
-  }
-  try {
-    if (Date.now() < parseInt(localStorage.getItem(KEY) || '0', 10)) link.hidden = false;
-  } catch (e) { }
-  try {
-    if (new URLSearchParams(location.search).get('admin') === '1') reveal();
-  } catch (e) { }
-
-  var taps = 0, timer = null;
-  var head = link.closest('.sec-head');
-  if (!head) return;
-  head.addEventListener('click', function (ev) {
-    if (ev.target.closest('a')) return;   /* 点链接本身不算连点 */
-    if (link.hidden === false) return;    /* 已显示则无需再唤 */
-    taps++;
-    clearTimeout(timer);
-    timer = setTimeout(function () { taps = 0; }, 1500);
-    if (taps >= 3) { taps = 0; clearTimeout(timer); reveal(); }
-  });
-})();
