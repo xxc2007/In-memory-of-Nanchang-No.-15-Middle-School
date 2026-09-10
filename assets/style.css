@@ -13,7 +13,7 @@
   --terra-deep:#C15F3C;
   --line:#E4DFD3;       /* 发丝线 */
   --dark:#1F1E1D;       /* 深色区 */
-  --serif:Georgia,"Times New Roman","Songti SC","STSong","Noto Serif CJK SC","SimSun",serif;
+  --serif:'Noto Serif SC Variable','Noto Serif SC',Georgia,"Times New Roman","Songti SC","STSong","Noto Serif CJK SC","SimSun",serif;
   --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
 }
 *{margin:0;padding:0;box-sizing:border-box}
@@ -86,7 +86,7 @@ nav.toc a.active{color:var(--terra-deep);background:rgba(217,119,87,.12)}
 }
 .hero .eyebrow::before{content:"";width:44px;height:1px;background:var(--terra)}
 .hero h1{
-  font-family:var(--serif);font-weight:700;
+  font-family:var(--serif);font-weight:900;
   font-size:clamp(46px,8vw,96px);line-height:1.18;letter-spacing:.02em;
   margin:22px 0 10px;
   animation:rise .8s .15s both;
@@ -166,7 +166,7 @@ section.block{max-width:1200px;margin:0 auto;padding:96px 28px 30px}
   letter-spacing:.18em;white-space:nowrap;
 }
 .sec-head h2{
-  font-family:var(--serif);font-weight:700;
+  font-family:var(--serif);font-weight:900;
   font-size:clamp(30px,4.4vw,46px);letter-spacing:.03em;line-height:1.3;
 }
 .sec-rule{border:none;border-top:1px solid var(--line);margin:10px 0 34px}
