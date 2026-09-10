@@ -91,7 +91,7 @@ nav.toc a.active{color:var(--terra-deep);background:rgba(217,119,87,.12)}
   margin:22px 0 10px;
   animation:rise .8s .15s both;
 }
-.hero h1 em{font-style:normal;color:var(--terra)}
+.hero h1 em{font-style:normal;color:inherit}
 .hero .sub{
   font-size:clamp(16px,2.2vw,21px);color:var(--muted);max-width:34em;
   animation:rise .8s .25s both;
