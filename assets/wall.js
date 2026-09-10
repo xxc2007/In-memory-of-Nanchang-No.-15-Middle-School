@@ -42,14 +42,20 @@
     return out;
   }
   function fmtTime(s) { var m = /^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})/.exec(s || ''); return m ? (m[1] + '年' + (+m[2]) + '月' + (+m[3]) + '日 ' + m[4] + ':' + m[5]) : (s || ''); }
-  /* 头像只放行本站 Artalk 上传资源（相对路径或同源绝对 URL）——
-     子串匹配会漏进「恰好含该路径的外链」，让访客浏览器向外部发请求（泄露 IP/可追踪） */
+  /* 头像只放行本站 Artalk 上传资源——最终一律归一化为以 /comment/ 开头的同源相对路径，
+     与页面协议/域名无关（http/https、apex/www 均可渲染）；
+     即使 link 含外部域名，截取后仍是本站路径，不会向外部发请求（防泄露 IP/可追踪） */
   function avatarImgSrc(link) {
     if (typeof link !== 'string' || link.indexOf('/static/images/') === -1) return '';
-    if (link.indexOf(location.origin + '/comment/') === 0) return link.slice(location.origin.length);
-    if (link.indexOf('/comment/') === 0) return link;
+    var i = link.indexOf('/comment/');
+    if (i !== -1) return link.slice(i);
     if (link.indexOf('/static/images/') === 0) return '/comment' + link;
     return '';
+  }
+  /* 入库归一化：头像 link 存同源相对路径（不带协议/域名），任何入口打开都能渲染 */
+  function toLink(u) {
+    var src = avatarImgSrc(u);
+    return src || '';
   }
   function avatarEl(nick, link) {
     var d = document.createElement('div'); d.className = 'bili-avatar';
@@ -213,7 +219,7 @@
       : ('anon-' + randToken() + '@local.xxc2007.me');
     fetchJSON(API + '/comments', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ page_key: PAGE, page_title: '留言墙', site_name: SITE, name: name, email: email, link: avatarURL ? (location.origin + '/comment' + avatarURL) : '', content: text })
+      body: JSON.stringify({ page_key: PAGE, page_title: '留言墙', site_name: SITE, name: name, email: email, link: toLink(avatarURL), content: text })
     })
       .then(function (d) {
         submitting = false;
