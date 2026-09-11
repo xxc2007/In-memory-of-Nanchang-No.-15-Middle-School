@@ -52,10 +52,12 @@
     if (link.indexOf('/static/images/') === 0) return '/comment' + link;
     return '';
   }
-  /* 入库归一化：头像 link 存同源相对路径（不带协议/域名），任何入口打开都能渲染 */
+  /* 入库归一化：Artalk 服务端要求 link 为合法绝对 URL（相对路径会被拒：「无效的链接」）。
+     用「当前 origin + 同源相对路径」拼回绝对地址提交；渲染端 avatarImgSrc 会再做
+     与 origin 无关的宽容归一化，因此 http/https、apex/www 打开都能正常显示头像 */
   function toLink(u) {
-    var src = avatarImgSrc(u);
-    return src || '';
+    var rel = avatarImgSrc(u);
+    return rel ? (location.origin + rel) : '';
   }
   function avatarEl(nick, link) {
     var d = document.createElement('div'); d.className = 'bili-avatar';

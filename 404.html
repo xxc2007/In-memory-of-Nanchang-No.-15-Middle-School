@@ -3,41 +3,122 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>页面未找到 · 南昌市第十五中学 · 青山湖畔的纪念册</title>
+<title>这一页还空着 · 南昌市第十五中学 · 纪念册</title>
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#F0EEE6">
 <link rel="icon" type="image/png" href="/images/emblem-64.png">
-<link rel="stylesheet" href="/assets/fonts/noto-serif-sc/wght.css">
-<link rel="stylesheet" href="/assets/style.css?v=20260910e">
+<link rel="apple-touch-icon" href="/images/emblem-180.png">
 <style>
-  /* 404 专用：居中纸面，复用全站令牌 */
-  .nf{max-width:640px;margin:0 auto;padding:130px 28px 90px;text-align:center}
-  .nf img{width:64px;height:64px;border-radius:50%;box-shadow:0 3px 10px rgba(31,30,29,.16);margin-bottom:26px}
-  .nf .eyebrow{color:var(--muted);font-size:12px;letter-spacing:.28em;margin-bottom:18px}
-  .nf h1{font-family:var(--serif);font-weight:900;font-size:clamp(30px,5vw,44px);color:var(--ink);letter-spacing:.02em;margin-bottom:16px}
-  .nf p{color:var(--muted);font-size:15.5px;line-height:2;max-width:30em;margin:0 auto 34px}
-  .nf a.home{
-    display:inline-flex;align-items:center;gap:8px;
-    background:var(--terra-deep);color:#FAF9F5;text-decoration:none;
-    border-radius:8px;padding:11px 30px;font-size:14.5px;font-weight:600;
-    transition:background .2s;
-  }
-  .nf a.home:hover{background:var(--terra)}
-  .nf .toc-line{margin-top:36px;font-size:13px;color:var(--muted);letter-spacing:.06em}
-  .nf .toc-line a{color:var(--muted);text-decoration:none;padding:0 6px}
-  .nf .toc-line a:hover{color:var(--terra)}
+/* =========================================================
+   404 · 这一页还空着
+   自包含单文件：全部样式内联、零外部依赖（任何路径/协议/缓存状态都可完整渲染）
+   设计：Claude 纸墨风（米白纸感 + 赤陶橙 + 墨色衬线），与主站视觉一体
+   视觉母题：「空」——地平线上的一枚时间线节点（2022.8.31 空旷操场）
+   ========================================================= */
+:root{
+  --cream:#F0EEE6; --paper:#FAF9F5; --ink:#1F1E1D; --muted:#6E6A5E;
+  --terra:#D97757; --terra-deep:#C15F3C; --line:#E4DFD3;
+  --serif:'Noto Serif SC Variable','Noto Serif SC',Georgia,'Times New Roman','Songti SC','STSong','SimSun',serif;
+  --sans:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--sans);background:var(--cream);color:var(--ink);
+  font-size:16px;line-height:1.9;-webkit-font-smoothing:antialiased;
+  min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;
+}
+::selection{background:var(--terra);color:#fff}
+:focus-visible{outline:2px solid var(--terra);outline-offset:3px;border-radius:2px}
+
+/* ---- 顶栏（与主站同构的迷你版） ---- */
+.topbar{
+  display:flex;align-items:center;gap:10px;
+  padding:18px 28px;border-bottom:1px solid var(--line);
+}
+.topbar img{width:28px;height:28px;border-radius:50%;box-shadow:0 2px 8px rgba(31,30,29,.15)}
+.topbar b{font-family:var(--serif);font-weight:700;font-size:17px;color:var(--ink);letter-spacing:.04em}
+.topbar span{font-size:12.5px;color:var(--muted);margin-left:2px}
+
+/* ---- 主体：天空区 ---- */
+.sky{flex:1;display:flex;align-items:center;justify-content:center;padding:56px 24px 0}
+.nf{max-width:620px;text-align:center}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:12px;
+  font-size:12px;letter-spacing:.3em;color:var(--muted);
+}
+.eyebrow b{color:var(--terra);font-weight:700}
+.eyebrow::before,.eyebrow::after{content:"";width:36px;height:1px;background:var(--line)}
+.nf h1{
+  font-family:var(--serif);font-weight:900;
+  font-size:clamp(38px,7vw,64px);line-height:1.25;letter-spacing:.01em;
+  color:var(--ink);margin:20px 0 18px;
+}
+.nf .copy{color:var(--muted);font-size:15.5px;line-height:2.1;max-width:28em;margin:0 auto 38px}
+.nf .copy em{font-style:normal;color:var(--ink)}
+.nf a.home{
+  display:inline-flex;align-items:center;gap:9px;text-decoration:none;
+  background:var(--terra-deep);color:#FAF9F5;border-radius:8px;
+  padding:12px 34px;font-size:14.5px;font-weight:600;letter-spacing:.06em;
+  transition:background .25s, transform .25s;
+}
+.nf a.home:hover{background:var(--terra);transform:translateY(-1px)}
+.nf a.home svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* ---- 地平线：母题——线上停一枚时间线节点 ---- */
+.horizon{position:relative;height:1px;background:var(--line);margin:64px auto 0;max-width:820px}
+.horizon .node{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:11px;height:11px;border-radius:50%;
+  background:var(--cream);border:2px solid var(--terra);
+}
+
+/* ---- 地面：坐标 + 章节导航 + 域名签名 ---- */
+.ground{max-width:820px;margin:0 auto;padding:20px 24px 40px;
+  display:flex;justify-content:space-between;align-items:baseline;gap:14px;flex-wrap:wrap;
+  font-size:12.5px;color:var(--muted)}
+.ground .coord{font-variant-numeric:tabular-nums;letter-spacing:.06em}
+.ground nav a{color:var(--muted);text-decoration:none;padding:0 7px;transition:color .2s}
+.ground nav a:hover{color:var(--terra)}
+.ground .sig{letter-spacing:.08em}
+@media (max-width:640px){
+  .topbar{padding:14px 18px}
+  .sky{padding:44px 18px 0}
+  .ground{flex-direction:column;align-items:center;text-align:center;gap:8px}
+}
+@media (prefers-reduced-motion: reduce){
+  *{transition:none!important;animation:none!important}
+}
 </style>
 </head>
 <body>
-<main class="nf">
-  <img src="/images/emblem-64.png" alt="南昌市第十五中学校徽" width="64" height="64">
-  <p class="eyebrow">404 · PAGE NOT FOUND</p>
-  <h1>这一页还空着</h1>
-  <p>你要找的地址，像 2022 年 8 月 31 日清晨的操场——<br>那时只有跑道、旗杆，和一个还没开始拍照的人。</p>
-  <a class="home" href="/">回到纪念册</a>
-  <p class="toc-line">
-    <a href="/#about">概况</a>·<a href="/#history">沿革</a>·<a href="/#gallery">光影</a>·<a href="/#landmark">水塔</a>·<a href="/#map">寻踪</a>·<a href="/#words">寄语</a>·<a href="/#wall">留言</a>
-  </p>
+
+<header class="topbar">
+  <img src="/images/emblem-64.png" alt="南昌市第十五中学校徽" width="28" height="28">
+  <b>南昌市第十五中学</b><span>纪念册 · 2022–2025</span>
+</header>
+
+<main class="sky">
+  <div class="nf">
+    <p class="eyebrow"><b>404</b> PAGE NOT FOUND</p>
+    <h1>这一页还空着</h1>
+    <p class="copy">你要找的地址，像 2022 年 8 月 31 日清晨的操场——<br>那时只有跑道、旗杆，和<em>一个还没开始拍照的人</em>。</p>
+    <a class="home" href="/">
+      回到纪念册
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+    </a>
+  </div>
 </main>
+
+<div class="horizon" aria-hidden="true"><span class="node"></span></div>
+
+<footer class="ground">
+  <span class="coord">28.7208° N, 115.9322° E</span>
+  <nav aria-label="纪念册章节">
+    <a href="/#about">概况</a>·<a href="/#history">沿革</a>·<a href="/#gallery">光影</a>·<a href="/#landmark">水塔</a>·<a href="/#map">寻踪</a>·<a href="/#words">寄语</a>·<a href="/#wall">留言</a>
+  </nav>
+  <span class="sig">xxc2007.me · 2026</span>
+</footer>
+
 </body>
 </html>
