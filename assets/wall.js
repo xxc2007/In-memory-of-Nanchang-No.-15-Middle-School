@@ -182,9 +182,26 @@
 
   function actionsRow(cm, targetNick) {
     var bar = document.createElement('div'); bar.className = 'bili-actions';
-    var like = document.createElement('span'); like.className = 'bili-like';
+    var like = document.createElement('button');
+    like.type = 'button'; like.className = 'bili-like';
+    like.setAttribute('aria-label', '赞同这条留言');
     like.innerHTML = THUMB_SVG + '<span>' + (cm.vote_up || 0) + '</span>';
-    like.setAttribute('aria-label', '赞同数');
+    like.addEventListener('click', function () {
+      if (like.dataset.busy) return;
+      like.dataset.busy = '1';
+      like.classList.add('voting');
+      /* Artalk 投票为切换语义：同访客重复点击=取消赞；响应携带最新计数与状态 */
+      fetchJSON(API + '/votes/comment/' + cm.id + '/up', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}'
+      })
+        .then(function (d) {
+          delete like.dataset.busy;
+          like.classList.remove('voting');
+          like.querySelector('span').textContent = d.up || 0;
+          like.classList.toggle('voted', !!d.is_up);
+        })
+        .catch(function () { delete like.dataset.busy; like.classList.remove('voting'); });
+    });
     bar.appendChild(like);
     var rep = document.createElement('button');
     rep.type = 'button'; rep.className = 'bili-reply-btn'; rep.textContent = '回复';
