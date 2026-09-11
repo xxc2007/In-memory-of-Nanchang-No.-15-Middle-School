@@ -69,16 +69,20 @@
     reveals.forEach(function (el) { el.classList.add('visible'); });
   }
 
-  /* ---------- 画廊图片加载渐显 ---------- */
+  /* ---------- 画廊图片加载渐显 + 失败占位 ---------- */
   (function () {
-    var imgs = document.querySelectorAll('.ph-img img');
+    var imgs = document.querySelectorAll('.ph-img img, .hero-img-wrap img');
+    function markFailed(img) {
+      var wrap = img.closest('.ph-img, .hero-img-wrap');
+      img.classList.add('ld', 'img-err');
+      if (wrap) wrap.classList.add('load-failed');
+    }
     imgs.forEach(function (img) {
+      if (img.complete && img.naturalWidth > 0) { img.classList.add('ld'); return; }
+      if (img.complete && img.naturalWidth === 0) { markFailed(img); return; }
       if (reduceMotion) { img.classList.add('ld'); return; }
-      if (img.complete && img.naturalWidth > 0) { img.classList.add('ld'); }
-      else {
-        img.addEventListener('load', function () { img.classList.add('ld'); });
-        img.addEventListener('error', function () { img.classList.add('ld'); });
-      }
+      img.addEventListener('load', function () { img.classList.add('ld'); });
+      img.addEventListener('error', function () { markFailed(img); });
     });
   })();
 
@@ -259,6 +263,11 @@
     resetZoom();
     lbImg.onload = function () {
       requestAnimationFrame(function () { lbImg.classList.add('show'); });
+    };
+    lbImg.onerror = function () {
+      /* 加载失败：不显示破图图标，图注给出提示 */
+      lbCapT.textContent = (fig.getAttribute('data-cap') || '') + ' · 图像加载失败，请检查网络后重试';
+      lbCapD.textContent = fig.getAttribute('data-date') || '';
     };
     lbImg.src = full;
     lbImg.alt = thumb ? thumb.alt : '';

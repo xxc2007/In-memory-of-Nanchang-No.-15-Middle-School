@@ -269,6 +269,17 @@ section.block{max-width:1200px;margin:0 auto;padding:96px 28px 30px}
 .ph .cap-t{font-size:14px;font-weight:600;letter-spacing:.02em}
 .ph .cap-d{font-size:12px;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
 
+/* 图片加载失败：纸纹占位替代 alt 裸文本（img 隐藏、由包装层呈现提示） */
+.ph-img.load-failed,.hero-img-wrap.load-failed{
+  display:flex;align-items:center;justify-content:center;position:relative;
+  background:repeating-linear-gradient(45deg,#F0EEE6 0 14px,#EAE6DC 14px 28px);
+}
+.ph-img.load-failed::before,.hero-img-wrap.load-failed::before{
+  content:"图像暂缺 · 请稍后再试";
+  font-size:13px;color:var(--muted);letter-spacing:.14em;
+}
+.ph-img.load-failed img,.hero-img-wrap.load-failed img{opacity:0!important;visibility:hidden!important}
+
 /* 单张收束组（其六 · 高考签名墙）：升格为电影宽幅卡 */
 .gallery-grid.feature{grid-template-columns:1fr}
 .gallery-grid.feature .ph-img{aspect-ratio:21/9}
@@ -408,9 +419,10 @@ body.lb-lock{overflow:hidden}
 .mm-head span{font-size:12px;color:var(--muted)}
 .minimap{position:relative;border:1px solid var(--line);border-radius:12px;overflow:hidden;height:280px}
 #campusMap{height:280px;font-family:var(--sans)}
-#campusMap .mm-pin{width:13px;height:13px;border-radius:50%;background:rgba(250,249,245,.88);
-  border:1px solid rgba(0,0,0,.4);cursor:pointer;transition:all .25s;box-sizing:border-box}
-#campusMap .mm-pin.on{width:21px;height:21px;background:var(--terra);border:2.5px solid #FAF9F5;
+#campusMap .mm-pin{width:16px;height:16px;border-radius:50%;background:rgba(250,249,245,.88);
+  border:1px solid rgba(0,0,0,.4);cursor:pointer;transition:all .25s;box-sizing:border-box;position:relative}
+#campusMap .mm-pin::after{content:"";position:absolute;inset:-14px}  /* 触控扩展区：外扩至约 44px（移动端可点中） */
+#campusMap .mm-pin.on{width:24px;height:24px;background:var(--terra);border:2.5px solid #FAF9F5;
   box-shadow:0 0 0 4px rgba(217,119,87,.4),0 2px 8px rgba(0,0,0,.5)}
 #campusMap .maplibregl-ctrl-group{border-radius:8px}
 #campusMap .maplibregl-ctrl-attribution{background:rgba(20,19,18,.55);color:#B8B2A4;font-size:10px}

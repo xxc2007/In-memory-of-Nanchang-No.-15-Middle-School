@@ -29,6 +29,7 @@
       img.src = 'images/full/' + s.img;
       img.alt = s.name;
       img.loading = 'lazy';
+      img.addEventListener('error', function () { img.style.display = 'none'; });  /* 加载失败隐藏该帧，漫游跳到其他机位 */
       viewer.insertBefore(img, viewer.querySelector('.veil'));
     });
     slides = Array.prototype.slice.call(viewer.querySelectorAll('img.slide'));
@@ -52,7 +53,10 @@
     document.getElementById('tourTitle').textContent = SPOTS[cur].name;
     document.getElementById('tourDate').textContent = SPOTS[cur].date + ' · ' + SPOTS[cur].desc;
     document.getElementById('tourNum').textContent = (cur + 1) + ' / ' + SPOTS.length;
-    dots.forEach(function (d, i) { d.classList.toggle('on', i === cur); });
+    dots.forEach(function (d, i) {
+      d.classList.toggle('on', i === cur);
+      if (i === cur) d.setAttribute('aria-current', 'true'); else d.removeAttribute('aria-current');
+    });
     mmMarkers.forEach(function (mm, i) { mm.el.classList.toggle('on', i === cur); });
   }
   function go(i) {

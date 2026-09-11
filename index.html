@@ -19,7 +19,7 @@
 <link rel="apple-touch-icon" href="images/emblem-180.png">
 <link rel="stylesheet" href="maplibre/maplibre-gl.css?v=20260907f">
 <link rel="stylesheet" href="assets/fonts/noto-serif-sc/wght.css">
-<link rel="stylesheet" href="assets/style.css?v=20260910d">
+<link rel="stylesheet" href="assets/style.css?v=20260910e">
 <link rel="preload" as="image" href="images/full/18-plaza-summer.jpg" fetchpriority="high">
 <script type="application/ld+json">
 {
@@ -58,7 +58,7 @@ window.addEventListener('DOMContentLoaded', function () {
       s.src = 'maplibre/maplibre-gl.js?v=20260907f';
       s.onload = function () {
         var m = document.createElement('script');
-        m.src = 'assets/map.js?v=20260907f';
+        m.src = 'assets/map.js?v=20260910a';
         document.body.appendChild(m);
       };
       document.body.appendChild(s);
@@ -444,15 +444,15 @@ window.addEventListener('DOMContentLoaded', function () {
         <div class="bili-avatar" id="myAvatar" title="点击上传自定义头像">访</div>
         <input type="file" id="cmtAvatarInput" accept="image/*" hidden>
         <div class="bili-editor-box">
-          <textarea id="cmtInput" maxlength="500" placeholder="善语结善缘，写一句那年的话……"></textarea>
+          <textarea id="cmtInput" maxlength="500" aria-label="留言内容（匿名发布，审核后展示）" placeholder="善语结善缘，写一句那年的话……"></textarea>
           <div class="bili-editor-foot">
-            <span class="bili-nick-wrap">昵称 <input id="cmtNick" maxlength="20" placeholder="留空则显示「路过的同学」"></span>
+            <span class="bili-nick-wrap">昵称 <input id="cmtNick" maxlength="20" aria-label="昵称（可选，留空显示路过的同学）" placeholder="留空则显示「路过的同学」"></span>
             <span id="cmtCount">0 / 500</span>
             <button id="cmtSubmit">发布</button>
           </div>
         </div>
       </div>
-      <div id="cmtNotice" class="bili-notice" hidden></div>
+      <div id="cmtNotice" class="bili-notice" role="status" aria-live="polite" hidden></div>
       <div class="bili-list-head">全部留言<span id="cmtTotal">0</span></div>
       <div id="cmtLoading">加载中……</div>
       <div id="cmtList"></div>
@@ -510,7 +510,7 @@ window.addEventListener('DOMContentLoaded', function () {
   </div>
 </div>
 
-<script src="assets/main.js?v=20260907f" defer></script>
+<script src="assets/main.js?v=20260910a" defer></script>
 <script src="assets/wall.js?v=20260910b" defer></script>
 <!-- 定位图（map.js）由 head 内的惰性初始化器在滚动临近时按需加载 maplibre-gl.js -->
 </body>
