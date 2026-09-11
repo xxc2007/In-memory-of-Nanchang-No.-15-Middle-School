@@ -493,6 +493,9 @@ body.lb-lock{overflow:hidden}
 }
 .bili-like svg{width:14px;height:14px}
 .bili-like:hover,.bili-reply-btn:hover{color:var(--terra)}
+.bili-like.voting{opacity:.5;pointer-events:none}
+.bili-like.voted{color:var(--terra)}
+.bili-like.voted svg{fill:var(--terra)}
 .bili-replies{margin-top:14px;padding-left:14px;border-left:2px solid var(--line);
   display:flex;flex-direction:column;gap:16px}
 .bili-reply .bili-avatar{width:28px;height:28px;font-size:12px}
