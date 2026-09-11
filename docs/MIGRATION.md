@@ -42,11 +42,11 @@
 1. **DNS**：Cloudflare 添加新域名的 A 记录 → 同一台服务器 IP。
 2. **证书**：`sudo certbot --nginx -d 新域名 -d www.新域名 --expand`。
 3. **nginx**：`server_name` 加上新域名，`nginx -t && sudo systemctl reload nginx`。
-4. **改代码里的域名标识**（SEO/分享用，共 4 个文件 7 处，一条命令找全）：
+4. **改代码里的域名标识**（SEO/分享用，共 4 个文件 12 行，一条命令找全）：
    ```bash
    grep -rn "xxc2007.me" --include="*.html" --include="*.xml" --include="*.md" .
    ```
-   涉及：`index.html` 的 canonical / og:url / og:image / JSON-LD、`sitemap.xml`、双语 README 的徽章与链接。改完提交。
+   涉及：`index.html` 的 canonical / og:url / og:image / JSON-LD / 页脚「xxc2007.me · 2026」共 5 行、`sitemap.xml` 1 行、双语 README 各 3 行。改完提交。
 5. **替换旧留言里的头像链接**（存量数据存的是绝对 URL）：
    ```bash
    sudo python3 infra/replace-comment-domain.py https://旧域名 https://新域名 --apply
@@ -77,7 +77,7 @@
 | 坑 | 解法 |
 |---|---|
 | web root 属 `www-data`，直接 `cp` 报 Permission denied | 先 scp 到 `/home/xxc/`，再 `sudo cp` + `sudo chown -R www-data:www-data` |
-| deploy.sh 只同步 `index.html + assets/ + robots + sitemap` | 新增目录（如 `images/`、`maplibre/`）必须手动 `scp -r` + `sudo cp` |
+| deploy.sh 同步 `index.html + 404.html + assets/ + robots + sitemap` | 新增目录（如 `images/`、`maplibre/`）必须手动 `scp -r` + `sudo cp` |
 | 静态资源引用带 `?v=` 版本参数 | 改了 CSS/JS 忘了 bump 版本号 → CDN 缓存旧文件甚至 404 负响应 |
 | 外部 curl 测试被 Cloudflare 拦（403） | 带浏览器 UA：`curl -A "Mozilla/5.0 ... Chrome/126"` |
 | 服务器本机 curl Artalk API 404 | 必须带 `-H "Host: 你的域名"`，否则 nginx 按 Host 落到默认站点 |

@@ -39,11 +39,11 @@
 1. **DNS**: add the new domain's A record in Cloudflare → same server IP.
 2. **Certificate**: `sudo certbot --nginx -d new.domain -d www.new.domain --expand`.
 3. **nginx**: append the new domain to `server_name`, then `nginx -t && sudo systemctl reload nginx`.
-4. **Update domain identity in code** (SEO/sharing, 4 files): find them all with
+4. **Update domain identity in code** (SEO/sharing, 4 files / 12 lines): find them all with
    ```bash
    grep -rn "xxc2007.me" --include="*.html" --include="*.xml" --include="*.md" .
    ```
-   Covers canonical / og:url / og:image / JSON-LD in `index.html`, `sitemap.xml`, and README badges. Commit the changes.
+   Covers canonical / og:url / og:image / JSON-LD / footer「xxc2007.me · 2026」(5 lines) in `index.html`, 1 line in `sitemap.xml`, and 3 lines in each bilingual README. Commit the changes.
 5. **Rewrite avatar links stored in old comments** (legacy rows hold absolute URLs):
    ```bash
    sudo python3 infra/replace-comment-domain.py https://old.domain https://new.domain --apply
@@ -74,7 +74,7 @@ Each step is reversible; never change both sides at once.
 | Pitfall | Fix |
 |---|---|
 | Web root owned by `www-data`; plain `cp` fails | scp to `/home/xxc/` first, then `sudo cp` + `sudo chown -R www-data:www-data` |
-| `deploy.sh` syncs only `index.html + assets/ + robots + sitemap` | New directories (`images/`, `maplibre/`, …) need a manual `scp -r` + `sudo cp` |
+| `deploy.sh` syncs `index.html + 404.html + assets/ + robots + sitemap` | New directories (`images/`, `maplibre/`, …) need a manual `scp -r` + `sudo cp` |
 | Asset URLs carry a `?v=` cache-buster | Forgetting to bump it → CDN serves stale files (or a cached 404) |
 | External curl gets Cloudflare 403 | Send a browser UA: `curl -A "Mozilla/5.0 … Chrome/126"` |
 | Local curl to the Artalk API 404s on the server | Add `-H "Host: your.domain"` or nginx falls back to the default site |
