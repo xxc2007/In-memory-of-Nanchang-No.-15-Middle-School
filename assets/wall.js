@@ -156,10 +156,116 @@
   var notice = document.getElementById('cmtNotice');
   function showNotice(html) { notice.innerHTML = html; notice.hidden = false; }
 
+  var THUMB_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 10v12"/><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"/></svg>';
+
+  /* 线程化：rid=0 为根评论，rid=N 为对评论 N 的回复（回复的回复也归到同一根下，@ 指向被回复人） */
+  function buildThreads(list) {
+    var byId = {};
+    list.forEach(function (cm) { byId[cm.id] = cm; });
+    function rootId(cm, depth) {
+      if (!cm.rid || cm.rid === 0 || depth > 8) return cm.id;
+      var p = byId[cm.rid];
+      return p ? rootId(p, depth + 1) : cm.id;
+    }
+    var roots = [], repliesByRoot = {};
+    list.forEach(function (cm) {
+      if (!cm.rid || cm.rid === 0) { roots.push(cm); return; }
+      var r = rootId(cm, 0);
+      (repliesByRoot[r] = repliesByRoot[r] || []).push(cm);
+    });
+    roots.sort(function (a, b) { return a.date < b.date ? -1 : 1; });
+    Object.keys(repliesByRoot).forEach(function (k) {
+      repliesByRoot[k].sort(function (a, b) { return a.date < b.date ? -1 : 1; });
+    });
+    return { roots: roots, repliesByRoot: repliesByRoot, byId: byId };
+  }
+
+  function actionsRow(cm, targetNick) {
+    var bar = document.createElement('div'); bar.className = 'bili-actions';
+    var like = document.createElement('span'); like.className = 'bili-like';
+    like.innerHTML = THUMB_SVG + '<span>' + (cm.vote_up || 0) + '</span>';
+    like.setAttribute('aria-label', '赞同数');
+    bar.appendChild(like);
+    var rep = document.createElement('button');
+    rep.type = 'button'; rep.className = 'bili-reply-btn'; rep.textContent = '回复';
+    rep.setAttribute('aria-label', '回复 ' + (cm.nick || '路过的同学'));
+    rep.addEventListener('click', function () { toggleReplyEditor(cm, targetNick, bar); });
+    bar.appendChild(rep);
+    return bar;
+  }
+
+  /* 内联回复编辑器：出现在被回复条目的操作行下方，B站式迷你框 */
+  function toggleReplyEditor(cm, targetNick, anchorBar) {
+    var exist = anchorBar.parentNode.querySelector('.bili-reply-editor');
+    if (exist) { exist.remove(); return; }
+    var box = anchorBar.parentNode.querySelector('.bili-reply-editor-active');
+    if (box) box.remove();
+    var ed = document.createElement('div'); ed.className = 'bili-reply-editor bili-reply-editor-active';
+    var ta = document.createElement('textarea');
+    ta.rows = 2; ta.maxLength = 500;
+    ta.placeholder = '回复 @' + (targetNick || cm.nick || '路过的同学') + '：';
+    ta.setAttribute('aria-label', ta.placeholder);
+    var foot = document.createElement('div'); foot.className = 'bili-reply-foot';
+    var cnt = document.createElement('span'); cnt.className = 'bili-reply-cnt'; cnt.textContent = '0 / 500';
+    var cancel = document.createElement('button'); cancel.type = 'button'; cancel.className = 'bili-reply-cancel'; cancel.textContent = '取消';
+    var submit = document.createElement('button'); submit.type = 'button'; submit.className = 'bili-reply-submit'; submit.textContent = '发布';
+    foot.appendChild(cnt); foot.appendChild(cancel); foot.appendChild(submit);
+    ed.appendChild(ta); ed.appendChild(foot);
+    ta.addEventListener('input', function () { cnt.textContent = ta.value.length + ' / 500'; });
+    ta.addEventListener('keydown', function (ev) {
+      if (ev.key === 'Enter' && (ev.ctrlKey || ev.metaKey)) { ev.preventDefault(); submit.click(); }
+    });
+    cancel.addEventListener('click', function () { ed.remove(); });
+    submit.addEventListener('click', function () {
+      var text = ta.value.trim();
+      if (!text) { ta.focus(); return; }
+      submit.disabled = true;
+      var name = ((nickInput.value || '').trim()) || '路过的同学';
+      var email = (nickInput.value || '').trim()
+        ? ('anon-' + hash(name).toString(36) + '@local.xxc2007.me')
+        : ('anon-' + randToken() + '@local.xxc2007.me');
+      fetchJSON(API + '/comments', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ page_key: PAGE, page_title: '留言墙', site_name: SITE, name: name, email: email, link: toLink(avatarURL), content: text, rid: cm.id })
+      })
+        .then(function (d) {
+          if (d.id) { ed.remove(); showNotice('<b>回复已提交。</b>站长审核通过后就会出现在这里 ✦'); load(); }
+          else { submit.disabled = false; showNotice('回复失败：' + esc(d.msg || '未知错误')); }
+        })
+        .catch(function (err) {
+          submit.disabled = false;
+          showNotice(err && err.name === 'AbortError' ? '回复超时，请检查网络后重试。' : '网络异常，回复失败，请稍后重试。');
+        });
+    });
+    anchorBar.insertAdjacentElement('afterend', ed);
+    ta.focus();
+  }
+
+  function replyItem(cm, targetNick, byId) {
+    var row = document.createElement('div'); row.className = 'bili-item bili-reply';
+    row.appendChild(avatarEl(cm.nick, cm.link));
+    var col = document.createElement('div'); col.className = 'bili-c';
+    var head = document.createElement('div'); head.className = 'bili-c-head';
+    var at = '';
+    if (targetNick && targetNick !== cm.nick) at = '<span class="bili-reply-at">回复 @' + esc(targetNick) + '</span>';
+    head.innerHTML = '<span class="bili-nick">' + esc(cm.nick || '路过的同学') + '</span>' + at
+      + '<span class="bili-time">' + fmtTime(cm.date) + '</span>'
+      + (cm.ip_region ? '<span class="bili-ip">IP属地：' + esc(cm.ip_region) + '</span>' : '');
+    col.appendChild(head);
+    var body = document.createElement('div'); body.className = 'bili-content';
+    body.innerHTML = esc(cm.content).replace(/\n/g, '<br>');
+    col.appendChild(body);
+    var target = byId[cm.rid];
+    col.appendChild(actionsRow(cm, target ? target.nick : ''));
+    row.appendChild(col);
+    return row;
+  }
+
   function render(list, total) {
     var wrap = document.getElementById('cmtList');
     wrap.innerHTML = '';
-    list.forEach(function (cm) {
+    var t = buildThreads(list);
+    t.roots.forEach(function (cm) {
       var row = document.createElement('div'); row.className = 'bili-item';
       row.appendChild(avatarEl(cm.nick, cm.link));
       var col = document.createElement('div'); col.className = 'bili-c';
@@ -171,9 +277,16 @@
       var body = document.createElement('div'); body.className = 'bili-content';
       body.innerHTML = esc(cm.content).replace(/\n/g, '<br>');
       col.appendChild(body);
-      var like = document.createElement('div'); like.className = 'bili-like';
-      like.textContent = '赞同 ' + (cm.vote_up || 0);
-      col.appendChild(like);
+      var replies = t.repliesByRoot[cm.id] || [];
+      col.appendChild(actionsRow(cm, ''));
+      if (replies.length) {
+        var repWrap = document.createElement('div'); repWrap.className = 'bili-replies';
+        replies.forEach(function (rc) {
+          var target = t.byId[rc.rid];
+          repWrap.appendChild(replyItem(rc, target ? target.nick : '', t.byId));
+        });
+        col.appendChild(repWrap);
+      }
       row.appendChild(col);
       wrap.appendChild(row);
     });

@@ -483,7 +483,37 @@ body.lb-lock{overflow:hidden}
 .bili-time{font-size:12px;color:var(--muted)}
 .bili-ip{font-size:12px;color:var(--muted);background:#F0EEE6;border-radius:4px;padding:1px 7px}
 .bili-content{margin-top:5px;font-size:15px;line-height:1.85;color:var(--ink);word-break:break-word}
-.bili-like{margin-top:6px;font-size:12px;color:var(--muted);user-select:none}
+/* B站式回复：根评论操作行（赞同/回复）+ 缩进回复区（左发丝线）+ 内联回复编辑器 */
+.bili-actions{display:flex;align-items:center;gap:18px;margin-top:6px}
+.bili-like,.bili-reply-btn{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:12.5px;color:var(--muted);background:none;border:none;
+  cursor:pointer;font-family:inherit;padding:0;user-select:none;
+  transition:color .2s;
+}
+.bili-like svg{width:14px;height:14px}
+.bili-like:hover,.bili-reply-btn:hover{color:var(--terra)}
+.bili-replies{margin-top:14px;padding-left:14px;border-left:2px solid var(--line);
+  display:flex;flex-direction:column;gap:16px}
+.bili-reply .bili-avatar{width:28px;height:28px;font-size:12px}
+.bili-reply .bili-content{font-size:14px;line-height:1.8}
+.bili-reply .bili-c-head{gap:8px}
+.bili-reply-at{font-size:12.5px;color:var(--terra-deep);font-weight:600}
+.bili-reply-editor{margin-top:10px}
+.bili-reply-editor textarea{
+  width:100%;min-height:60px;resize:vertical;border:1px solid var(--line);
+  border-radius:8px;background:#fff;padding:10px 12px;font:inherit;font-size:13.5px;
+  line-height:1.7;color:var(--ink);outline:none;box-sizing:border-box;transition:border-color .2s;
+}
+.bili-reply-editor textarea:focus{border-color:#D97757}
+.bili-reply-foot{display:flex;align-items:center;gap:10px;margin-top:8px}
+.bili-reply-cnt{font-size:12px;color:#B8B2A4;margin-left:auto;font-variant-numeric:tabular-nums}
+.bili-reply-cancel{background:none;border:none;color:var(--muted);font:inherit;font-size:13px;cursor:pointer;padding:4px 8px}
+.bili-reply-cancel:hover{color:var(--ink)}
+.bili-reply-submit{background:var(--terra-deep);color:#FAF9F5;border:none;border-radius:6px;
+  padding:5px 18px;font:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:background .2s}
+.bili-reply-submit:hover{background:var(--terra)}
+.bili-reply-submit:disabled{background:#D8D2C4;cursor:wait}
 .bili-empty{text-align:center;color:var(--muted);font-size:14px;padding:44px 0 20px}
 .bili-notice{margin-top:16px;background:#F0EEE6;border:1px solid var(--line);border-radius:8px;
   padding:12px 18px;font-size:13.5px;color:var(--muted);line-height:1.8}
