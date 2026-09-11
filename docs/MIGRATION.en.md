@@ -39,11 +39,11 @@
 1. **DNS**: add the new domain's A record in Cloudflare → same server IP.
 2. **Certificate**: `sudo certbot --nginx -d new.domain -d www.new.domain --expand`.
 3. **nginx**: append the new domain to `server_name`, then `nginx -t && sudo systemctl reload nginx`.
-4. **Update domain identity in code** (SEO/sharing, 4 files / 12 lines): find them all with
+4. **Update domain identity in code** (SEO/sharing, 5 files / 13 lines): find them all with
    ```bash
    grep -rn "xxc2007.me" --include="*.html" --include="*.xml" --include="*.md" .
    ```
-   Covers canonical / og:url / og:image / JSON-LD / footer「xxc2007.me · 2026」(5 lines) in `index.html`, 1 line in `sitemap.xml`, and 3 lines in each bilingual README. Commit the changes.
+   Covers canonical / og:url / og:image / JSON-LD / footer「xxc2007.me · 2026」(5 lines) in `index.html`, 1 line in `sitemap.xml`, 1 line in the `404.html` footer, and 3 lines in each bilingual README. Commit the changes.
 5. **Rewrite avatar links stored in old comments** (legacy rows hold absolute URLs):
    ```bash
    sudo python3 infra/replace-comment-domain.py https://old.domain https://new.domain --apply

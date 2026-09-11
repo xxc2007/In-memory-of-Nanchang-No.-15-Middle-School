@@ -42,11 +42,11 @@
 1. **DNS**：Cloudflare 添加新域名的 A 记录 → 同一台服务器 IP。
 2. **证书**：`sudo certbot --nginx -d 新域名 -d www.新域名 --expand`。
 3. **nginx**：`server_name` 加上新域名，`nginx -t && sudo systemctl reload nginx`。
-4. **改代码里的域名标识**（SEO/分享用，共 4 个文件 12 行，一条命令找全）：
+4. **改代码里的域名标识**（SEO/分享用，共 5 个文件 13 行，一条命令找全）：
    ```bash
    grep -rn "xxc2007.me" --include="*.html" --include="*.xml" --include="*.md" .
    ```
-   涉及：`index.html` 的 canonical / og:url / og:image / JSON-LD / 页脚「xxc2007.me · 2026」共 5 行、`sitemap.xml` 1 行、双语 README 各 3 行。改完提交。
+   涉及：`index.html` 的 canonical / og:url / og:image / JSON-LD / 页脚「xxc2007.me · 2026」共 5 行、`sitemap.xml` 1 行、`404.html` 页脚签名 1 行、双语 README 各 3 行。改完提交。
 5. **替换旧留言里的头像链接**（存量数据存的是绝对 URL）：
    ```bash
    sudo python3 infra/replace-comment-domain.py https://旧域名 https://新域名 --apply
