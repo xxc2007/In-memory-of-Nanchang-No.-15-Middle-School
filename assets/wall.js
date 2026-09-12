@@ -8,13 +8,18 @@
   var API = '/comment/api/v2';   /* 相对路径：http/https、有无 www 均同源，手机端不会跨域 */
   var SITE = '青山湖畔的纪念册';
   var PAGE = '/guestbook';
-  var EN = (document.documentElement.lang || '').toLowerCase().indexOf('en') === 0;
+  var LOCALE = (document.documentElement.lang || '').toLowerCase();
+  var EN = LOCALE.indexOf('en') === 0;
+  var JA = LOCALE.indexOf('ja') === 0;
+  var ZHT = LOCALE.indexOf('zh-tw') === 0 || LOCALE.indexOf('zh-hant') === 0;
 
-  /* ---------- 双语字符串表（仅 JS 动态生成的部分；HTML 静态文案随页面走） ---------- */
+  /* ---------- 四语字符串表（仅 JS 动态生成的部分；HTML 静态文案随页面走） ---------- */
   var T = EN ? {
     guest: 'A passerby', guestChar: 'V',
     avatarAltOf: '’s avatar', myAvatarAlt: 'My avatar',
+    ariaAvatar: 'Upload a custom avatar',
     ariaLike: 'Upvote this message', ariaReplyTo: 'Reply to ',
+    replyLabel: 'Reply', cancelLabel: 'Cancel', postLabel: 'Post',
     ipLabel: 'IP: ',
     replyAtPrefix: 'Reply @',
     replyPlaceholderPrefix: 'Reply to @',
@@ -32,10 +37,58 @@
     avatarProcessFail: 'Avatar processing failed. Please try another image.',
     avatarAlt: 'avatar',
     months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+  } : JA ? {
+    guest: '通りすがり', guestChar: '通',
+    avatarAltOf: 'のアイコン', myAvatarAlt: '自分のアイコン',
+    ariaAvatar: 'アイコンをアップロード',
+    ariaLike: 'このメッセージに賛成', ariaReplyTo: '返信先：',
+    replyLabel: '返信', cancelLabel: 'キャンセル', postLabel: '送信',
+    ipLabel: 'IP地域：',
+    replyAtPrefix: '返信先 @',
+    replyPlaceholderPrefix: '返信先 @',
+    count: function (n) { return n + ' / 500'; },
+    submitted: '<b>送信しました。</b>管理者の承認後にここに表示されます ✦',
+    replySubmitted: '<b>返信を送信しました。</b>承認後にここに表示されます ✦',
+    postFail: '送信できませんでした：', replyFail: '返信できませんでした：',
+    netFail: 'ネットワークエラーです。しばらくしてからもう一度お試しください。',
+    timeout: 'タイムアウトしました。通信状況をご確認のうえ、もう一度お試しください。',
+    loadFail: 'メッセージを読み込めませんでした。クリックで再試行します。',
+    avatarUpdated: '<b>アイコンを更新しました。</b>次の投稿から表示されます ✦',
+    avatarFailPrefix: 'アイコンのアップロードに失敗しました：',
+    avatarNetFail: 'アイコンのアップロードに失敗しました。しばらくしてからお試しください。',
+    avatarReadFail: '画像を読み込めませんでした。別の画像をお試しください。',
+    avatarProcessFail: 'アイコンの処理に失敗しました。別の画像をお試しください。',
+    avatarAlt: 'のアイコン',
+    months: null   /* 日本語も「年月日」表記なので共通ブランチを使う */
+  } : ZHT ? {
+    guest: '路過的同學', guestChar: '訪',
+    avatarAltOf: '的頭像', myAvatarAlt: '我的頭像',
+    ariaAvatar: '上傳自訂頭像',
+    ariaLike: '贊同這條留言', ariaReplyTo: '回覆 ',
+    replyLabel: '回覆', cancelLabel: '取消', postLabel: '送出',
+    ipLabel: 'IP屬地：',
+    replyAtPrefix: '回覆 @',
+    replyPlaceholderPrefix: '回覆 @',
+    count: function (n) { return n + ' / 500'; },
+    submitted: '<b>留言已送出。</b>站長審核通過後就會出現在這裡，感謝你的聲音 ✦',
+    replySubmitted: '<b>回覆已送出。</b>站長審核通過後就會出現在這裡 ✦',
+    postFail: '張貼失敗：', replyFail: '回覆失敗：',
+    netFail: '網路異常，張貼失敗，請稍後重試。',
+    timeout: '連線逾時，請檢查網路後重試。',
+    loadFail: '留言載入失敗，點擊這裡重試。',
+    avatarUpdated: '<b>頭像已更新。</b>發布留言時將展示你的自訂頭像 ✦',
+    avatarFailPrefix: '頭像上傳失敗：',
+    avatarNetFail: '頭像上傳失敗，請稍後重試。',
+    avatarReadFail: '圖片讀取失敗，請換一張圖片。',
+    avatarProcessFail: '頭像處理失敗，請換一張圖片。',
+    avatarAlt: '的頭像',
+    months: null
   } : {
     guest: '路过的同学', guestChar: '访',
     avatarAltOf: '的头像', myAvatarAlt: '我的头像',
+    ariaAvatar: '上传自定义头像',
     ariaLike: '赞同这条留言', ariaReplyTo: '回复 ',
+    replyLabel: '回复', cancelLabel: '取消', postLabel: '发布',
     ipLabel: 'IP属地：',
     replyAtPrefix: '回复 @',
     replyPlaceholderPrefix: '回复 @',
@@ -52,7 +105,7 @@
     avatarReadFail: '图片读取失败，请换一张图片。',
     avatarProcessFail: '头像处理失败，请换一张图片。',
     avatarAlt: '的头像',
-    months: null   /* 中文走 fmtTime 的年月日分支 */
+    months: null
   };
 
   var AVATAR_GRADS = [
@@ -162,7 +215,7 @@
   var fileInput = document.getElementById('cmtAvatarInput');
   myAvatar.setAttribute('role', 'button');
   myAvatar.setAttribute('tabindex', '0');
-  myAvatar.setAttribute('aria-label', EN ? 'Upload a custom avatar' : '上传自定义头像');
+  myAvatar.setAttribute('aria-label', T.ariaAvatar);
   myAvatar.addEventListener('click', function () { fileInput.click(); });
   myAvatar.addEventListener('keydown', function (ev) {
     if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); fileInput.click(); }
@@ -262,7 +315,7 @@
     });
     bar.appendChild(like);
     var rep = document.createElement('button');
-    rep.type = 'button'; rep.className = 'bili-reply-btn'; rep.textContent = EN ? 'Reply' : '回复';
+    rep.type = 'button'; rep.className = 'bili-reply-btn'; rep.textContent = T.replyLabel;
     rep.setAttribute('aria-label', T.ariaReplyTo + (cm.nick || T.guest));
     rep.addEventListener('click', function () { toggleReplyEditor(cm, targetNick, bar); });
     bar.appendChild(rep);
@@ -282,8 +335,8 @@
     ta.setAttribute('aria-label', ta.placeholder);
     var foot = document.createElement('div'); foot.className = 'bili-reply-foot';
     var cnt = document.createElement('span'); cnt.className = 'bili-reply-cnt'; cnt.textContent = T.count(0);
-    var cancel = document.createElement('button'); cancel.type = 'button'; cancel.className = 'bili-reply-cancel'; cancel.textContent = EN ? 'Cancel' : '取消';
-    var submit = document.createElement('button'); submit.type = 'button'; submit.className = 'bili-reply-submit'; submit.textContent = EN ? 'Post' : '发布';
+    var cancel = document.createElement('button'); cancel.type = 'button'; cancel.className = 'bili-reply-cancel'; cancel.textContent = T.cancelLabel;
+    var submit = document.createElement('button'); submit.type = 'button'; submit.className = 'bili-reply-submit'; submit.textContent = T.postLabel;
     foot.appendChild(cnt); foot.appendChild(cancel); foot.appendChild(submit);
     ed.appendChild(ta); ed.appendChild(foot);
     ta.addEventListener('input', function () { cnt.textContent = T.count(ta.value.length); });
