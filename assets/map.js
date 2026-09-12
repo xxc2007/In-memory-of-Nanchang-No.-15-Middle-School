@@ -72,8 +72,13 @@
   var nextBtn = document.getElementById('tourNext');
   if (prevBtn) prevBtn.addEventListener('click', function () { go(cur - 1); });
   if (nextBtn) nextBtn.addEventListener('click', function () { go(cur + 1); });
+  /* 方向键仅在漫游区临近视口时接管，避免在页面其他位置误触不可见的漫游 */
+  var mapNear = false;
+  if ('IntersectionObserver' in window && viewer) {
+    new IntersectionObserver(function (entries) { mapNear = entries[0].isIntersecting; }, { rootMargin: '120px' }).observe(viewer);
+  }
   document.addEventListener('keydown', function (ev) {
-    if (document.body.classList.contains('lb-lock')) return;   /* 灯箱开启时让位 */
+    if (!mapNear || document.body.classList.contains('lb-lock')) return;   /* 灯箱开启或不在地图区时让位 */
     var tag = (ev.target && ev.target.tagName) || '';
     if (tag === 'TEXTAREA' || tag === 'INPUT' || (ev.target && ev.target.isContentEditable)) return;
     if (ev.key === 'ArrowLeft') go(cur - 1);
