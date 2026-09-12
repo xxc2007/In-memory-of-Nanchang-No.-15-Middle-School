@@ -39,11 +39,11 @@
 1. **DNS**: add the new domain's A record in Cloudflare → same server IP.
 2. **Certificate**: `sudo certbot --nginx -d new.domain -d www.new.domain --expand`.
 3. **nginx**: append the new domain to `server_name`, then `nginx -t && sudo systemctl reload nginx`.
-4. **Update domain identity in code** (8 files / 37 lines in total): find them all with
+4. **Update domain identity in code** (10 files / 77 lines in total): find them all with
    ```bash
    grep -rn "xxc2007.me" --include="*.html" --include="*.xml" --include="*.md" --include="*.js" --include="*.txt" .
    ```
-   Covers canonical / hreflang×3 / og:url / og:image / JSON-LD / footer signature (8 lines) in `index.html`, a mirrored 8 lines in `en/index.html`, 8 lines for both URLs and alternates in `sitemap.xml`, 3 lines in each bilingual README, 2 lines in `robots.txt` (including the Sitemap declaration — a functional line, must change), 1 line in the `404.html` footer, and 4 lines in `assets/wall.js` (the anonymous-email domain `local.xxc2007.me` — identity string only, never rendered; a miss breaks nothing, but fix it for tidiness). Commit the changes.
+   Covers 10 lines in each of the four language pages `index.html` / `zh-Hant/index.html` / `en/index.html` / `ja/index.html` (canonical + hreflang×5 + og:url + og:image + JSON-LD + footer signature), 24 lines for the four URLs and alternates in `sitemap.xml`, 3 lines in each bilingual README, 2 lines in `robots.txt` (including the Sitemap declaration — a functional line, must change), 1 line in the `404.html` footer, and 4 lines in `assets/wall.js` (the anonymous-email domain `local.xxc2007.me` — identity string only, never rendered; a miss breaks nothing, but fix it for tidiness). Commit the changes.
 5. **Rewrite avatar links stored in old comments** (legacy rows hold absolute URLs):
    ```bash
    sudo python3 infra/replace-comment-domain.py https://old.domain https://new.domain --apply
