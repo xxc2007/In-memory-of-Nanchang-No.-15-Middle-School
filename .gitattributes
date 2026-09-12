@@ -1,1 +1,16 @@
+# 换行符统一：仓库与部署一律 LF（2026-09-12 起）
+# 背景：Windows core.autocrlf=true 曾让工作区 CRLF 经 tar 部署到服务器，
+# 造成服务器文件与仓库 blob 字节不一致、md5 迁移核验出现假性差异。
+* text=auto eol=lf
+*.jpg binary
+*.jpeg binary
+*.png binary
+*.gif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.db binary
+*.xdb binary
+
+# 第三方库
 maplibre/maplibre-gl.js linguist-generated=true linguist-detectable=false
