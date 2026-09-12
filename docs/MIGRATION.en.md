@@ -39,11 +39,11 @@
 1. **DNS**: add the new domain's A record in Cloudflare → same server IP.
 2. **Certificate**: `sudo certbot --nginx -d new.domain -d www.new.domain --expand`.
 3. **nginx**: append the new domain to `server_name`, then `nginx -t && sudo systemctl reload nginx`.
-4. **Update domain identity in code** (SEO/sharing, 5 files / 13 lines): find them all with
+4. **Update domain identity in code** (7 files / 19 lines in total): find them all with
    ```bash
-   grep -rn "xxc2007.me" --include="*.html" --include="*.xml" --include="*.md" .
+   grep -rn "xxc2007.me" --include="*.html" --include="*.xml" --include="*.md" --include="*.js" --include="*.txt" .
    ```
-   Covers canonical / og:url / og:image / JSON-LD / footer「xxc2007.me · 2026」(5 lines) in `index.html`, 1 line in `sitemap.xml`, 1 line in the `404.html` footer, and 3 lines in each bilingual README. Commit the changes.
+   Covers canonical / og:url / og:image / JSON-LD / footer「xxc2007.me · 2026」(5 lines) in `index.html`, 1 line in `sitemap.xml`, 1 line in the `404.html` footer, 3 lines in each bilingual README, 2 lines in `robots.txt` (including the Sitemap declaration — a functional line, must change), and 4 lines in `assets/wall.js` (the anonymous-email domain `local.xxc2007.me` — identity string only, never rendered; a miss breaks nothing, but fix it for tidiness). Commit the changes.
 5. **Rewrite avatar links stored in old comments** (legacy rows hold absolute URLs):
    ```bash
    sudo python3 infra/replace-comment-domain.py https://old.domain https://new.domain --apply
