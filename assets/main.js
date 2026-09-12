@@ -6,7 +6,14 @@
 (function () {
   'use strict';
 
-  var EN = (document.documentElement.lang || '').toLowerCase().indexOf('en') === 0;
+  var LOCALE = (document.documentElement.lang || '').toLowerCase();
+  var EN = LOCALE.indexOf('en') === 0;
+  var JA = LOCALE.indexOf('ja') === 0;
+  var ZHT = LOCALE.indexOf('zh-tw') === 0 || LOCALE.indexOf('zh-hant') === 0;
+  var IMG_FAIL = EN ? ' · Image failed to load — check your connection and retry'
+    : JA ? ' · 画像を読み込めませんでした — 通信状況をご確認ください'
+    : ZHT ? ' · 圖片載入失敗，請檢查網路後重試'
+    : ' · 图像加载失败，请检查网络后重试';
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
@@ -267,8 +274,7 @@
     };
     lbImg.onerror = function () {
       /* 加载失败：不显示破图图标，图注给出提示 */
-      lbCapT.textContent = (fig.getAttribute('data-cap') || '')
-        + (EN ? ' · Image failed to load — check your connection and retry' : ' · 图像加载失败，请检查网络后重试');
+      lbCapT.textContent = (fig.getAttribute('data-cap') || '') + IMG_FAIL;
       lbCapD.textContent = fig.getAttribute('data-date') || '';
     };
     lbImg.src = full;
