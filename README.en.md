@@ -92,7 +92,7 @@ All animations share a single rAF-driven scroll loop and degrade gracefully when
 
 ```text
 site/
-├── index.html          # Simplified Chinese page (inline only the stagger indices and the map lazy-loader)
+├── index.html          # Simplified Chinese page (only three inline scripts: JSON-LD, stagger indices, map lazy-loader)
 ├── zh-Hant/index.html  # Traditional Chinese page (Taiwan usage: 暱稱/登入/載入/網路/郵遞區號)
 ├── en/index.html       # English page (assets shared via ../ relative paths, file:// friendly)
 ├── ja/index.html       # Japanese page (natural phrasing: おわりに, 通りすがり, メッセージウォール…)
@@ -107,7 +107,9 @@ site/
 │   ├── og-card.jpg     # 1200×630 social share card (text-free — works for all languages)
 │   └── emblem-*.png    # School emblem (top bar / hero / footer / favicon)
 ├── maplibre/           # Self-hosted MapLibre GL v5 (no CDN dependency)
-└── docs/               # README screenshots + [migration guide](docs/MIGRATION.en.md)
+├── docs/               # README screenshots + [migration guide](docs/MIGRATION.en.md)
+├── README.md / README.en.md   # Bilingual repository docs (this file and the Chinese original)
+├── robots.txt / sitemap.xml / LICENSE / .gitattributes / .gitignore
 ```
 
 ## ⚙️ Tech stack

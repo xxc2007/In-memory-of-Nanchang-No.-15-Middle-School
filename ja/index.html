@@ -91,11 +91,15 @@ window.addEventListener('DOMContentLoaded', function () {
       document.head.appendChild(l);
       var s = document.createElement('script');
       s.src = '../maplibre/maplibre-gl.js?v=20260907f';
-      s.onload = function () {
+      /* map.js 须在 maplibre 之后执行（定位图要用它），但绝不能只在 onload 里执行：
+         maplibre 被墙 / 404 时 onload 不触发，时光漫游会整段静默消失。onerror 也接上。 */
+      var loadMap = function () {
         var m = document.createElement('script');
         m.src = '../assets/map.js?v=20260912e';
         document.body.appendChild(m);
       };
+      s.onload = loadMap;
+      s.onerror = loadMap;
       document.body.appendChild(s);
     }
   }, { rootMargin: '600px 0px' });

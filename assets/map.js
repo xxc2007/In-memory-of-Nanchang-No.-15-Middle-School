@@ -10,8 +10,16 @@
   var EN = LOCALE.indexOf('en') === 0;
   var JA = LOCALE.indexOf('ja') === 0;
   var ZHT = LOCALE.indexOf('zh-tw') === 0 || LOCALE.indexOf('zh-hant') === 0;
-  /* 资源基路径：子目录语言页（/en/ /ja/ /zh-Hant/）需回上一层，根页（/）用当前目录 */
-  var BASE = location.pathname === '/' ? '' : '../';
+  /* 资源基路径：以本脚本自身的 URL 为锚反推站点根。
+     原先用 `location.pathname === '/' ? '' : '../'`，在 file:// 下打开根目录的
+     index.html 时 pathname 不是 '/'，会得到 '../' 从而把 8 张漫游大图全部指到
+     站点外（README 却写明 file:// 可浏览）。用 currentScript 反推则 http、
+     file://、子目录部署三种情形都对。取不到时退回原逻辑。 */
+  var BASE = (function () {
+    var src = document.currentScript && document.currentScript.src;
+    if (!src) return location.pathname === '/' ? '' : '../';
+    return src.replace(/assets\/map\.js.*$/, '');
+  })();
 
   /* ---------- 机位数据（维护者只改这里；name/desc 简体，Hant 繁體，En 英文，Ja 日文） ---------- */
   var SPOTS = [
@@ -149,6 +157,8 @@
   }
   document.addEventListener('keydown', function (ev) {
     if (!mapNear || document.body.classList.contains('lb-lock')) return;   /* 灯箱开启或不在地图区时让位 */
+    var langMenu = document.getElementById('langMenu');
+    if (langMenu && !langMenu.hidden) return;   /* 语言菜单展开时，←→ 归菜单用，不切漫游照片 */
     var tag = (ev.target && ev.target.tagName) || '';
     if (tag === 'TEXTAREA' || tag === 'INPUT' || (ev.target && ev.target.isContentEditable)) return;
     if (ev.key === 'ArrowLeft') go(cur - 1);
@@ -162,7 +172,8 @@
   paint();
 
   var el = document.getElementById('campusMap');
-  if (!el || el.getAttribute('data-map-ready') || typeof maplibregl === 'undefined') return;
+  if (!el || el.getAttribute('data-map-ready')) return;
+  if (typeof maplibregl === 'undefined') { el.setAttribute('data-map-failed', '1'); return; }
   el.setAttribute('data-map-ready', '1');
 
   var map;

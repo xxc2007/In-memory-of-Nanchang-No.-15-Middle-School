@@ -61,7 +61,7 @@ Each step is reversible; never change both sides at once.
 ## Post-migration checklist
 
 - [ ] `https://<domain>/` returns 200 (curl needs a browser UA or Cloudflare blocks it)
-- [ ] Scroll the full page: 32 static images + 8 tour slides load, zero broken (the lightbox pulls 27 full-size originals)
+- [ ] Scroll the full page: all 31 static images plus the 8 photo-tour frames load, zero broken (the lightbox counts 1 / 25 — 27 cards reuse 2 originals)
 - [ ] Guestbook: loads, post a test comment, moderate it in the admin (then delete it)
 - [ ] Location map tiles + 8-photo tour all render
 - [ ] `robots.txt` / `sitemap.xml` return 200
