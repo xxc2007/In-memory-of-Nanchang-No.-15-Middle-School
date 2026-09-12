@@ -31,7 +31,7 @@ Pure HTML / CSS / vanilla JS with structure, style and behavior separated (`inde
 ---
 
 <p align="center">
-  <img src="docs/screenshot-hero.png" alt="Hero section: emblem, serif headline and counting key numbers" width="100%">
+  <img src="docs/screenshot-hero-en.png" alt="English edition hero: emblem, serif headline “By Qingshan Lake, the red bricks and camphor trees remember.” and key numbers" width="100%">
 </p>
 
 ---
@@ -53,7 +53,14 @@ Pure HTML / CSS / vanilla JS with structure, style and behavior separated (`inde
 - MapLibre loads on demand as you scroll near the map section; all spots live in one `SPOTS` array in `assets/map.js` — easy to edit
 
 <p align="center">
-  <img src="docs/screenshot-map.png" alt="Campus map: eight camera-spot markers in 3D satellite view" width="86%">
+  <img src="docs/screenshot-tour-en.png" alt="English edition photo tour: full-frame slide of the old water tower with English caption, 5 / 8 counter and dots" width="86%">
+</p>
+<p align="center"><sub>
+  ▲ A Tour Through Time · The Old Water Tower spot (5 / 8) with Ken Burns push and English caption
+</sub></p>
+
+<p align="center">
+  <img src="docs/screenshot-map-en.png" alt="English edition location map: grayscale basemap with eight camera-spot markers, linked with the photo tour" width="86%">
 </p>
 
 ### 💬 Guestbook (self-hosted Artalk)
@@ -63,7 +70,7 @@ Pure HTML / CSS / vanilla JS with structure, style and behavior separated (`inde
 - Zero third-party dependency: the Artalk server runs on our own machine, the data stays ours
 
 <p align="center">
-  <img src="docs/screenshot-guestbook.png" alt="Guestbook: bilibili-style anonymous comments (avatar / IP region / Beijing time)" width="86%">
+  <img src="docs/screenshot-guestbook-en.png" alt="English edition guestbook: anonymous comments with avatar, IP region and localized UI" width="86%">
 </p>
 
 ### 🎬 Interactions (vanilla JS, zero dependencies)
