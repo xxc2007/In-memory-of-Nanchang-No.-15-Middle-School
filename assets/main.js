@@ -6,6 +6,7 @@
 (function () {
   'use strict';
 
+  var EN = (document.documentElement.lang || '').toLowerCase().indexOf('en') === 0;
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
@@ -266,7 +267,8 @@
     };
     lbImg.onerror = function () {
       /* 加载失败：不显示破图图标，图注给出提示 */
-      lbCapT.textContent = (fig.getAttribute('data-cap') || '') + ' · 图像加载失败，请检查网络后重试';
+      lbCapT.textContent = (fig.getAttribute('data-cap') || '')
+        + (EN ? ' · Image failed to load — check your connection and retry' : ' · 图像加载失败，请检查网络后重试');
       lbCapD.textContent = fig.getAttribute('data-date') || '';
     };
     lbImg.src = full;
