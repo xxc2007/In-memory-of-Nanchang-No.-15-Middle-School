@@ -74,12 +74,16 @@ nav.toc a{
 }
 nav.toc a:hover{color:var(--ink);background:rgba(217,119,87,.10)}
 nav.toc a.active{color:var(--terra-deep);background:rgba(217,119,87,.12)}
-/* 语言切换：与章节导航同构，但以描边药丸做出「这是开关」的区分 */
+/* 语言切换：四枚母语药丸（简/繁/En/日），当前语言实心高亮 */
+nav.toc .lang-group{display:flex;gap:4px;flex:none;margin-left:4px}
 nav.toc a.lang-switch{
-  color:var(--terra-deep);font-weight:600;letter-spacing:.08em;
+  color:var(--terra-deep);font-weight:600;letter-spacing:.04em;
   border:1px solid rgba(217,119,87,.45);
+  padding:5px 11px;
 }
 nav.toc a.lang-switch:hover{background:rgba(217,119,87,.12);color:var(--terra-deep)}
+nav.toc a.lang-switch[aria-current="true"]{background:var(--terra-deep);border-color:var(--terra-deep);color:#FAF9F5}
+nav.toc a.lang-switch[aria-current="true"]:hover{color:#FAF9F5;background:var(--terra-deep)}
 
 /* ============ Hero ============ */
 .hero{max-width:1200px;margin:0 auto;padding:150px 28px 0;position:relative}
@@ -286,6 +290,12 @@ section.block{max-width:1200px;margin:0 auto;padding:96px 28px 30px}
 .ph-img.load-failed img,.hero-img-wrap.load-failed img{opacity:0!important;visibility:hidden!important}
 html[lang^="en"] .ph-img.load-failed::before,
 html[lang^="en"] .hero-img-wrap.load-failed::before{content:"Image unavailable · please try again later"}
+html[lang^="ja"] .ph-img.load-failed::before,
+html[lang^="ja"] .hero-img-wrap.load-failed::before{content:"画像を読み込めません · 後ほど再度お試しください"}
+html[lang^="zh-Hant"] .ph-img.load-failed::before,
+html[lang^="zh-Hant"] .hero-img-wrap.load-failed::before{content:"圖片載入失敗 · 請稍後再試"}
+html[lang^="ja"] .bili-editor-row .bili-avatar:hover::after{content:"アイコン変更"}
+html[lang^="zh-Hant"] .bili-editor-row .bili-avatar:hover::after{content:"換頭像"}
 
 /* 单张收束组（其六 · 高考签名墙）：升格为电影宽幅卡 */
 .gallery-grid.feature{grid-template-columns:1fr}
