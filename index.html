@@ -7,8 +7,10 @@
 <meta name="description" content="纪念南昌市第十五中学——江西省重点中学，创建于1958年，坐落于南昌市青山湖畔。熊鑫晨镜头里的校园：红砖楼、香樟、老水塔与操场，25张校园实景摄影。">
 <meta name="theme-color" content="#F0EEE6">
 <link rel="canonical" href="https://xxc2007.me/">
-<link rel="alternate" hreflang="zh-CN" href="https://xxc2007.me/">
+<link rel="alternate" hreflang="zh-Hans" href="https://xxc2007.me/">
+<link rel="alternate" hreflang="zh-Hant" href="https://xxc2007.me/zh-Hant/">
 <link rel="alternate" hreflang="en" href="https://xxc2007.me/en/">
+<link rel="alternate" hreflang="ja" href="https://xxc2007.me/ja/">
 <link rel="alternate" hreflang="x-default" href="https://xxc2007.me/">
 <meta property="og:title" content="南昌市第十五中学 · 青山湖畔的纪念册">
 <meta property="og:description" content="红砖楼、香樟与老水塔——熊鑫晨镜头里的南昌十五中，25张校园实景摄影。">
@@ -20,12 +22,14 @@
 <meta property="og:image:alt" content="晚霞中的南昌十五中教学楼与旗杆">
 <meta property="og:site_name" content="青山湖畔的纪念册">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:locale:alternate" content="zh_TW">
 <meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="ja_JP">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/png" href="images/emblem-64.png">
 <link rel="apple-touch-icon" href="images/emblem-180.png">
 <link rel="stylesheet" href="assets/fonts/noto-serif-sc/wght.css">
-<link rel="stylesheet" href="assets/style.css?v=20260912b">
+<link rel="stylesheet" href="assets/style.css?v=20260912c">
 <link rel="preload" as="image" href="images/full/18-plaza-summer.jpg" fetchpriority="high">
 <noscript>
 <style>
@@ -79,7 +83,7 @@ window.addEventListener('DOMContentLoaded', function () {
       s.src = 'maplibre/maplibre-gl.js?v=20260907f';
       s.onload = function () {
         var m = document.createElement('script');
-        m.src = 'assets/map.js?v=20260912b';
+        m.src = 'assets/map.js?v=20260912c';
         document.body.appendChild(m);
       };
       document.body.appendChild(s);
@@ -108,7 +112,12 @@ window.addEventListener('DOMContentLoaded', function () {
       <a href="#map">寻踪</a>
       <a href="#words">寄语</a>
       <a href="#wall">留言</a>
-      <a class="lang-switch" lang="en" hreflang="en" rel="alternate" href="/en/">EN</a>
+      <span class="lang-group" role="group" aria-label="语言">
+        <a class="lang-switch" lang="zh-Hans" hreflang="zh-Hans" href="/" aria-current="true" title="简体中文">简</a>
+        <a class="lang-switch" lang="zh-Hant" hreflang="zh-Hant" href="/zh-Hant/" title="繁體中文">繁</a>
+        <a class="lang-switch" lang="en" hreflang="en" href="/en/" title="English">En</a>
+        <a class="lang-switch" lang="ja" hreflang="ja" href="/ja/" title="日本語">日</a>
+      </span>
     </nav>
   </div>
   <span class="progress" id="progress" aria-hidden="true"></span>
@@ -532,8 +541,8 @@ window.addEventListener('DOMContentLoaded', function () {
   </div>
 </div>
 
-<script src="assets/main.js?v=20260912b" defer></script>
-<script src="assets/wall.js?v=20260912b" defer></script>
+<script src="assets/main.js?v=20260912c" defer></script>
+<script src="assets/wall.js?v=20260912c" defer></script>
 <!-- 定位图（map.js）由 head 内的惰性初始化器在滚动临近时按需加载 maplibre-gl.js -->
 </body>
 </html>
