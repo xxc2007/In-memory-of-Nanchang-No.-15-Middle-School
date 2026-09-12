@@ -409,16 +409,20 @@ body.lb-lock{overflow:hidden}
   cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .25s;backdrop-filter:blur(3px);z-index:2}
 .tour-viewer .arr:hover{background:rgba(193,95,60,.85);border-color:transparent}
 .tour-viewer .arr.prev{left:22px}.tour-viewer .arr.next{right:22px}
-.tour-dots{display:flex;gap:9px;justify-content:center;margin:16px 0 30px}
-.tour-dots button{appearance:none;border:none;padding:0;width:7px;height:7px;border-radius:50%;background:#CFC8B8;cursor:pointer;transition:all .25s}
-.tour-dots button:hover{background:#B9B2A0}
-.tour-dots button.on{background:var(--terra-deep);width:22px;border-radius:99px}
+.tour-dots{display:flex;gap:0;justify-content:center;margin:16px 0 30px}
+/* 视觉仍是 7px 圆点，但按钮本体 22px——触控区达到移动端可用标准 */
+.tour-dots button{appearance:none;border:none;padding:0;width:22px;height:22px;border-radius:50%;background:transparent;cursor:pointer;position:relative}
+.tour-dots button::before{content:"";position:absolute;left:7.5px;top:7.5px;width:7px;height:7px;border-radius:99px;background:#CFC8B8;transition:background .25s,width .25s,left .25s}
+.tour-dots button:hover::before{background:#B9B2A0}
+.tour-dots button.on::before{background:var(--terra-deep);width:22px;height:7px;left:0}
 
 .mm-head{display:flex;align-items:baseline;gap:12px;margin:4px 0 10px}
 .mm-head b{font-family:var(--serif);font-size:17px;color:var(--ink)}
 .mm-head span{font-size:12px;color:var(--muted)}
 .minimap{position:relative;border:1px solid var(--line);border-radius:12px;overflow:hidden;height:280px}
 #campusMap{height:280px;font-family:var(--sans)}
+/* OSM 标准底图饱和度偏高，灰调滤镜让它退回到纸墨视觉语言里，突出赤陶橙机位钉 */
+#campusMap .maplibregl-canvas{filter:grayscale(.85) sepia(.12) contrast(.92) brightness(1.02)}
 #campusMap .mm-pin{width:16px;height:16px;border-radius:50%;background:rgba(250,249,245,.88);
   border:1px solid rgba(0,0,0,.4);cursor:pointer;transition:all .25s;box-sizing:border-box;position:relative}
 #campusMap .mm-pin::after{content:"";position:absolute;inset:-14px}  /* 触控扩展区：外扩至约 44px（移动端可点中） */
