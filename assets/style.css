@@ -11,6 +11,10 @@
   --muted:#6E6A5E;      /* 弱文字 */
   --terra:#D97757;      /* Claude 赤陶橙 */
   --terra-deep:#C15F3C;
+  /* 文字专用赤陶橙：--terra / --terra-deep 对米白底只有 2.69:1 / 3.64:1，
+     达不到 WCAG AA 的 4.5:1；本令牌色相不变但压暗到 4.95:1(cream) / 5.46:1(paper)。
+     只用于「当文字颜色」的场合；填充、描边、背景继续用上面两个亮色。 */
+  --terra-ink:#A8492A;
   --line:#E4DFD3;       /* 发丝线 */
   --dark:#1F1E1D;       /* 深色区 */
   --serif:'Noto Serif SC Variable','Noto Serif SC',Georgia,"Times New Roman","Songti SC","STSong","Noto Serif CJK SC","SimSun",serif;
@@ -28,8 +32,8 @@ body{
 }
 ::selection{background:var(--terra);color:#fff}
 img{display:block;max-width:100%;height:auto}
-a{color:var(--terra-deep);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;transition:color .2s}
-a:hover{color:var(--terra)}
+a{color:var(--terra-ink);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;transition:color .2s}
+a:hover{color:var(--terra-ink);text-decoration-thickness:2px}
 p{text-wrap:pretty}
 
 /* ============ 无障碍 ============ */
@@ -75,7 +79,7 @@ nav.toc a{
   transition:color .2s, background .2s;
 }
 nav.toc a:hover{color:var(--ink);background:rgba(217,119,87,.10)}
-nav.toc a.active{color:var(--terra-deep);background:rgba(217,119,87,.12)}
+nav.toc a.active{color:var(--terra-ink);background:rgba(217,119,87,.12)}
 
 /* ---------- 语言切换（AMD 式：地球图标按钮 + 下拉语言菜单） ----------
    旧实现是塞在 nav.toc 内的四枚单字药丸（简/繁/En/日）。两处结构性问题：
@@ -90,7 +94,7 @@ nav.toc a.active{color:var(--terra-deep);background:rgba(217,119,87,.12)}
 .lang-btn{
   display:inline-flex;align-items:center;gap:7px;
   font:inherit;font-size:13.5px;font-weight:600;letter-spacing:.02em;
-  color:var(--terra-deep);background:transparent;
+  color:var(--terra-ink);background:transparent;
   border:1px solid rgba(217,119,87,.45);border-radius:99px;
   padding:5px 12px 5px 11px;cursor:pointer;white-space:nowrap;
   transition:background .2s, color .2s, border-color .2s;
@@ -133,8 +137,8 @@ html[lang^="ja"] .lang-current-short::before{content:"日"}
   font-size:14px;line-height:1.5;color:var(--ink);text-decoration:none;
   transition:background .18s, color .18s;
 }
-.lang-item:hover{background:rgba(217,119,87,.12);color:var(--terra-deep)}
-.lang-item[aria-current="true"]{color:var(--terra-deep);font-weight:600;background:rgba(217,119,87,.09)}
+.lang-item:hover{background:rgba(217,119,87,.12);color:var(--terra-ink)}
+.lang-item[aria-current="true"]{color:var(--terra-ink);font-weight:600;background:rgba(217,119,87,.09)}
 .lang-item .lang-check{width:14px;height:14px;flex:none;opacity:0;
   stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .lang-item[aria-current="true"] .lang-check{opacity:1}
@@ -157,6 +161,7 @@ html[lang^="ja"] .lang-item[lang="ja"] .lang-native{font-family:"Hiragino Sans",
 }
 .hero .eyebrow::before{content:"";width:44px;height:1px;background:var(--terra)}
 .hero h1{
+  text-wrap:balance;
   font-family:var(--serif);font-weight:900;
   font-size:clamp(46px,8vw,96px);line-height:1.18;letter-spacing:.02em;
   margin:22px 0 10px;
@@ -232,10 +237,11 @@ html[lang^="ja"] .lang-item[lang="ja"] .lang-native{font-family:"Hiragino Sans",
 section.block{max-width:1200px;margin:0 auto;padding:96px 28px 30px}
 .sec-head{display:flex;align-items:baseline;gap:18px;margin-bottom:14px}
 .sec-index{
-  font-family:var(--serif);font-size:15px;color:var(--terra);
+  font-family:var(--serif);font-size:15px;color:var(--terra-ink);
   letter-spacing:.18em;white-space:nowrap;
 }
 .sec-head h2{
+  text-wrap:balance;
   font-family:var(--serif);font-weight:900;
   font-size:clamp(30px,4.4vw,46px);letter-spacing:.03em;line-height:1.3;
 }
@@ -268,7 +274,7 @@ section.block{max-width:1200px;margin:0 auto;padding:96px 28px 30px}
 .fact-row span{color:var(--muted);text-align:right}
 .honors{display:flex;gap:10px;flex-wrap:wrap;padding:18px 0 14px}
 .honors em{
-  font-style:normal;font-size:13px;color:var(--terra-deep);
+  font-style:normal;font-size:13px;color:var(--terra-ink);
   border:1px solid rgba(217,119,87,.45);border-radius:99px;padding:5px 14px;letter-spacing:.06em;
 }
 /* 校园文化条 */
@@ -278,10 +284,10 @@ section.block{max-width:1200px;margin:0 auto;padding:96px 28px 30px}
 }
 .culture-item{padding:24px 26px 0 0;margin-right:26px;border-right:1px solid var(--line)}
 .culture-item:last-child{border-right:none;margin-right:0}
-.culture-item h4{font-size:13px;letter-spacing:.22em;color:var(--terra-deep);font-weight:600;margin-bottom:8px}
+.culture-item h4{font-size:13px;letter-spacing:.22em;color:var(--terra-ink);font-weight:600;margin-bottom:8px}
 .culture-item p{font-family:var(--serif);font-size:1.0625rem;line-height:1.9;color:var(--ink)}
 .campus-info{margin-top:34px;border:1px solid var(--line);background:var(--paper);border-radius:12px;padding:26px 30px;max-width:640px}
-.campus-info h4{font-size:13px;letter-spacing:.22em;color:var(--terra-deep);font-weight:600;margin-bottom:10px}
+.campus-info h4{font-size:13px;letter-spacing:.22em;color:var(--terra-ink);font-weight:600;margin-bottom:10px}
 .campus-info p{font-size:.9375rem;line-height:2;color:var(--ink)}
 .campus-info p+p{color:var(--muted);font-size:.875rem}
 
@@ -305,7 +311,7 @@ section.block{max-width:1200px;margin:0 auto;padding:96px 28px 30px}
 .t-item p{color:var(--muted);margin-top:6px;max-width:38em}
 .t-item p strong{color:var(--ink);font-weight:600}
 .t-tag{
-  display:inline-block;font-size:12px;color:var(--terra-deep);
+  display:inline-block;font-size:12px;color:var(--terra-ink);
   border:1px solid rgba(217,119,87,.4);border-radius:99px;
   padding:2px 10px;margin-left:12px;letter-spacing:.1em;vertical-align:6px;
 }
@@ -313,7 +319,7 @@ section.block{max-width:1200px;margin:0 auto;padding:96px 28px 30px}
 /* ============ 画廊（统一网格） ============ */
 .group-head{display:flex;align-items:baseline;gap:14px;margin:58px 0 6px}
 .group-head:first-of-type{margin-top:26px}
-.group-head .g-no{font-family:var(--serif);font-size:14px;color:var(--terra);letter-spacing:.16em}
+.group-head .g-no{font-family:var(--serif);font-size:14px;color:var(--terra-ink);letter-spacing:.16em}
 .group-head h3{font-family:var(--serif);font-size:clamp(21px,2.8vw,27px);font-weight:700;letter-spacing:.04em}
 .group-head .g-note{font-size:13px;color:var(--muted);margin-left:auto;text-align:right}
 .group-desc{font-size:.875rem;color:var(--muted);margin:2px 0 22px;max-width:52em}
@@ -389,7 +395,7 @@ html[lang^="zh-Hant"] .bili-editor-row .bili-avatar:hover::after{content:"換頭
   font-size:clamp(1.3125rem,3vw,1.8125rem);line-height:2.1;letter-spacing:.02em;
   max-width:36em;margin:10px auto 26px;text-align:left;
 }
-.words blockquote em{font-style:normal;color:var(--terra)}
+.words blockquote em{font-style:normal;color:var(--terra-ink)}
 .words .sign{
   text-align:right;color:var(--muted);font-size:15px;font-family:var(--serif);letter-spacing:.12em;margin-top:6px;
 }
@@ -406,7 +412,7 @@ footer{border-top:1px solid var(--line);margin-top:90px}
 .footer-inner .right{text-align:right}
 .footer-inner .right .f-coord{font-variant-numeric:tabular-nums;letter-spacing:.06em}
 .footer-inner a{color:var(--muted);text-decoration:none}
-.footer-inner a:hover{color:var(--terra)}
+.footer-inner a:hover{color:var(--terra-ink)}
 .f-social{display:flex;justify-content:flex-end;gap:10px;margin:14px 0 16px}
 .f-social a{
   width:44px;height:44px;display:flex;align-items:center;justify-content:center;
@@ -414,7 +420,7 @@ footer{border-top:1px solid var(--line);margin-top:90px}
   transition:border-color .3s,color .3s;
 }
 .f-social a svg{width:16px;height:16px}
-.f-social a:hover{border-color:var(--terra);color:var(--terra)}
+.f-social a:hover{border-color:var(--terra);color:var(--terra-ink)}
 
 /* ============ 灯箱 ============ */
 .lightbox{
@@ -536,7 +542,7 @@ html[lang^="zh-Hant"] #campusMap[data-map-failed]::after{content:"定位圖需�
   transition:background .2s, color .2s, border-color .2s;
 }
 .wall-admin svg{opacity:.7}
-.wall-admin:hover{background:rgba(217,119,87,.12);color:var(--terra-deep);border-color:rgba(217,119,87,.45)}
+.wall-admin:hover{background:rgba(217,119,87,.12);color:var(--terra-ink);border-color:rgba(217,119,87,.45)}
 
 /* B站风留言卡片（亮色） */
 .bili-comments{background:var(--paper);border:1px solid var(--line);border-radius:12px;
@@ -584,16 +590,16 @@ html[lang^="zh-Hant"] #campusMap[data-map-failed]::after{content:"定位圖需�
   transition:color .2s;
 }
 .bili-like svg{width:14px;height:14px}
-.bili-like:hover,.bili-reply-btn:hover{color:var(--terra)}
+.bili-like:hover,.bili-reply-btn:hover{color:var(--terra-ink)}
 .bili-like.voting{opacity:.5;pointer-events:none}
-.bili-like.voted{color:var(--terra)}
+.bili-like.voted{color:var(--terra-ink)}
 .bili-like.voted svg{fill:var(--terra)}
 .bili-replies{margin-top:14px;padding-left:14px;border-left:2px solid var(--line);
   display:flex;flex-direction:column;gap:16px}
 .bili-reply .bili-avatar{width:28px;height:28px;font-size:12px}
 .bili-reply .bili-content{font-size:.875rem;line-height:1.8}
 .bili-reply .bili-c-head{gap:8px}
-.bili-reply-at{font-size:12.5px;color:var(--terra-deep);font-weight:600}
+.bili-reply-at{font-size:12.5px;color:var(--terra-ink);font-weight:600}
 .bili-reply-editor{margin-top:10px}
 .bili-reply-editor textarea{
   width:100%;min-height:60px;resize:vertical;border:1px solid var(--line);
@@ -612,7 +618,7 @@ html[lang^="zh-Hant"] #campusMap[data-map-failed]::after{content:"定位圖需�
 .bili-empty{text-align:center;color:var(--muted);font-size:14px;padding:44px 0 20px}
 .bili-notice{margin-top:16px;background:#F0EEE6;border:1px solid var(--line);border-radius:8px;
   padding:12px 18px;font-size:13.5px;color:var(--muted);line-height:1.8}
-.bili-notice b{color:var(--terra-deep)}
+.bili-notice b{color:var(--terra-ink)}
 #cmtLoading{text-align:center;color:var(--muted);font-size:13px;padding:30px 0}
 
 /* ============ 打印样式：纪念册可以直接装订成册 ============ */
