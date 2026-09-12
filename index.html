@@ -11,16 +11,29 @@
 <meta property="og:description" content="红砖楼、香樟与老水塔——熊鑫晨镜头里的南昌十五中，25张校园实景摄影。">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://xxc2007.me/">
-<meta property="og:image" content="https://xxc2007.me/images/full/12-sunset-building-flag.jpg">
+<meta property="og:image" content="https://xxc2007.me/images/og-card.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="晚霞中的南昌十五中教学楼与旗杆">
 <meta property="og:site_name" content="青山湖畔的纪念册">
 <meta property="og:locale" content="zh_CN">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/png" href="images/emblem-64.png">
 <link rel="apple-touch-icon" href="images/emblem-180.png">
-<link rel="stylesheet" href="maplibre/maplibre-gl.css?v=20260907f">
 <link rel="stylesheet" href="assets/fonts/noto-serif-sc/wght.css">
-<link rel="stylesheet" href="assets/style.css?v=20260910f">
+<link rel="stylesheet" href="assets/style.css?v=20260912a">
 <link rel="preload" as="image" href="images/full/18-plaza-summer.jpg" fetchpriority="high">
+<noscript>
+<style>
+/* JS 不可用时的保底：所有依赖 JS 揭示的内容直接可见 */
+.reveal,.sec-head h2{opacity:1!important;transform:none!important}
+.ph-img img{opacity:1!important;transform:none!important}
+#campusMap::after,.tour-viewer::after{content:"此区域需要开启 JavaScript 后显示";
+  display:flex;align-items:center;justify-content:center;height:100%;
+  color:#6E6A5E;font-size:13px;letter-spacing:.14em}
+#cmtLoading{display:none}
+</style>
+</noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -46,7 +59,7 @@
 }
 </script>
 <script>
-/* 惰性初始化定位图：滚动临近地图区才加载 MapLibre（省首屏 JS 主线程与瓦片流量） */
+/* 惰性初始化定位图：滚动临近地图区才加载 MapLibre 的 CSS 与 JS（省首屏渲染阻塞与瓦片流量） */
 window.addEventListener('DOMContentLoaded', function () {
   if (!('IntersectionObserver' in window)) return;
   var mapSection = document.getElementById('map');
@@ -54,11 +67,15 @@ window.addEventListener('DOMContentLoaded', function () {
   var io = new IntersectionObserver(function (entries) {
     if (entries.some(function (e) { return e.isIntersecting; })) {
       io.disconnect();
+      var l = document.createElement('link');
+      l.rel = 'stylesheet';
+      l.href = 'maplibre/maplibre-gl.css?v=20260907f';
+      document.head.appendChild(l);
       var s = document.createElement('script');
       s.src = 'maplibre/maplibre-gl.js?v=20260907f';
       s.onload = function () {
         var m = document.createElement('script');
-        m.src = 'assets/map.js?v=20260910a';
+        m.src = 'assets/map.js?v=20260912a';
         document.body.appendChild(m);
       };
       document.body.appendChild(s);
@@ -345,19 +362,19 @@ window.addEventListener('DOMContentLoaded', function () {
     <div class="group-head reveal"><span class="g-no">其五</span><h3>校园文化艺术节</h3><span class="g-note">青春筑梦 · 激扬人生</span></div>
     <p class="group-desc reveal">2023年5月8日，「青春筑梦 激扬人生」校园文化艺术节启幕：签到处立在广场上，校训、师训与办学理念印上背板。</p>
     <div class="gallery-grid">
-      <figure class="ph reveal" style="--i:3" data-cap="文化艺术节主题背板 · 校园文化上墙" data-date="2023年5月8日">
+      <figure class="ph reveal" style="--i:0" data-cap="文化艺术节主题背板 · 校园文化上墙" data-date="2023年5月8日">
         <a href="images/full/28-festival-backdrop.jpg" target="_blank" rel="noopener">
           <span class="ph-img"><img src="images/thumbs/28-festival-backdrop.jpg" width="1600" height="1200" alt="校园文化艺术节背板：校训「敬业以立德，笃学以修身」、师训与办学理念印在背板上" loading="lazy" decoding="async"></span>
         </a>
         <figcaption><span class="cap-t">文化艺术节主题背板 · 校园文化上墙</span><span class="cap-d">2023.05.08</span></figcaption>
       </figure>
-      <figure class="ph reveal" style="--i:4" data-cap="文化艺术节节目单封面" data-date="2023年5月8日">
+      <figure class="ph reveal" style="--i:1" data-cap="文化艺术节节目单封面" data-date="2023年5月8日">
         <a href="images/full/27-festival-program.jpg" target="_blank" rel="noopener">
           <span class="ph-img"><img src="images/thumbs/27-festival-program.jpg" width="1280" height="905" alt="「青春筑梦 激扬人生」校园文化艺术节节目单封面" loading="lazy" decoding="async"></span>
         </a>
         <figcaption><span class="cap-t">文化艺术节节目单封面</span><span class="cap-d">2023.05.08</span></figcaption>
       </figure>
-      <figure class="ph reveal" style="--i:5" data-cap="签到处" data-date="2023年5月8日">
+      <figure class="ph reveal" style="--i:2" data-cap="签到处" data-date="2023年5月8日">
         <a href="images/full/29-festival-arch.jpg" target="_blank" rel="noopener">
           <span class="ph-img"><img src="images/thumbs/29-festival-arch.jpg" width="1600" height="1200" alt="傍晚的艺术节签到处，红色拱门旁远眺老水塔" loading="lazy" decoding="async"></span>
         </a>
