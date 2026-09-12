@@ -1,12 +1,60 @@
 /* =========================================================
    青山湖畔的纪念册 · 留言墙
    依赖：自托管 Artalk（/comment/api/v2）
+   双语：按 <html lang> 切换动态文案（编辑器等静态文案在各页面 HTML 内）
    ========================================================= */
 (function () {
   'use strict';
   var API = '/comment/api/v2';   /* 相对路径：http/https、有无 www 均同源，手机端不会跨域 */
   var SITE = '青山湖畔的纪念册';
   var PAGE = '/guestbook';
+  var EN = (document.documentElement.lang || '').toLowerCase().indexOf('en') === 0;
+
+  /* ---------- 双语字符串表（仅 JS 动态生成的部分；HTML 静态文案随页面走） ---------- */
+  var T = EN ? {
+    guest: 'A passerby', guestChar: 'V',
+    avatarAltOf: '’s avatar', myAvatarAlt: 'My avatar',
+    ariaLike: 'Upvote this message', ariaReplyTo: 'Reply to ',
+    ipLabel: 'IP: ',
+    replyAtPrefix: 'Reply @',
+    replyPlaceholderPrefix: 'Reply to @',
+    count: function (n) { return n + ' / 500'; },
+    submitted: '<b>Posted.</b> Your message will appear here once the webmaster approves it ✦',
+    replySubmitted: '<b>Reply posted.</b> It will appear here once approved ✦',
+    postFail: 'Post failed: ', replyFail: 'Reply failed: ',
+    netFail: 'Network error. Please try again later.',
+    timeout: 'Timed out — please check your connection and try again.',
+    loadFail: 'Failed to load messages. Click here to retry.',
+    avatarUpdated: '<b>Avatar updated.</b> It will show with your next message ✦',
+    avatarFailPrefix: 'Avatar upload failed: ',
+    avatarNetFail: 'Avatar upload failed. Please try again later.',
+    avatarReadFail: 'Could not read that image. Please try another one.',
+    avatarProcessFail: 'Avatar processing failed. Please try another image.',
+    avatarAlt: 'avatar',
+    months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+  } : {
+    guest: '路过的同学', guestChar: '访',
+    avatarAltOf: '的头像', myAvatarAlt: '我的头像',
+    ariaLike: '赞同这条留言', ariaReplyTo: '回复 ',
+    ipLabel: 'IP属地：',
+    replyAtPrefix: '回复 @',
+    replyPlaceholderPrefix: '回复 @',
+    count: function (n) { return n + ' / 500'; },
+    submitted: '<b>留言已提交。</b>站长审核通过后就会出现在这里，感谢你的声音 ✦',
+    replySubmitted: '<b>回复已提交。</b>站长审核通过后就会出现在这里 ✦',
+    postFail: '发布失败：', replyFail: '回复失败：',
+    netFail: '网络异常，发布失败，请稍后重试。',
+    timeout: '发布超时，请检查网络后重试。',
+    loadFail: '留言加载失败，点击这里重试。',
+    avatarUpdated: '<b>头像已更新。</b>发布留言时将展示你的自定义头像 ✦',
+    avatarFailPrefix: '头像上传失败：',
+    avatarNetFail: '头像上传失败，请稍后重试。',
+    avatarReadFail: '图片读取失败，请换一张图片。',
+    avatarProcessFail: '头像处理失败，请换一张图片。',
+    avatarAlt: '的头像',
+    months: null   /* 中文走 fmtTime 的年月日分支 */
+  };
+
   var AVATAR_GRADS = [
     'linear-gradient(135deg,#D97757,#B05633)',
     'linear-gradient(135deg,#5B8A72,#3D6A54)',
@@ -41,7 +89,13 @@
     for (var i = 0; i < bytes.length; i++) out += ('0' + bytes[i].toString(16)).slice(-2);
     return out;
   }
-  function fmtTime(s) { var m = /^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})/.exec(s || ''); return m ? (m[1] + '年' + (+m[2]) + '月' + (+m[3]) + '日 ' + m[4] + ':' + m[5]) : (s || ''); }
+  /* 服务端 date 形如 "2026-09-06 07:18"；中文给「2026年9月6日 07:18」，英文给 "Sep 6, 2026 07:18" */
+  function fmtTime(s) {
+    var m = /^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})/.exec(s || '');
+    if (!m) return s || '';
+    if (EN && T.months) return T.months[+m[2] - 1] + ' ' + (+m[3]) + ', ' + m[1] + ' ' + m[4] + ':' + m[5];
+    return m[1] + '年' + (+m[2]) + '月' + (+m[3]) + '日 ' + m[4] + ':' + m[5];
+  }
   /* 头像只放行本站 Artalk 上传资源——最终一律归一化为以 /comment/ 开头的同源相对路径，
      与页面协议/域名无关（http/https、apex/www 均可渲染）；
      即使 link 含外部域名，截取后仍是本站路径，不会向外部发请求（防泄露 IP/可追踪） */
@@ -59,30 +113,31 @@
     var rel = avatarImgSrc(u);
     return rel ? (location.origin + rel) : '';
   }
+  function guestName(nick) { return (nick || '').trim() || T.guest; }
   function avatarEl(nick, link) {
     var d = document.createElement('div'); d.className = 'bili-avatar';
     var src = avatarImgSrc(link);
     if (src) {
       var img = document.createElement('img');
       img.src = src;
-      img.alt = (nick || '访客') + '的头像';
+      img.alt = (nick || T.guest) + T.avatarAltOf;
       d.appendChild(img);
       return d;
     }
-    var ch = (nick || '访').trim().charAt(0).toUpperCase() || '访';
+    var ch = (nick || T.guest).trim().charAt(0).toUpperCase() || T.guestChar;
     d.textContent = ch;
-    d.style.background = AVATAR_GRADS[hash(nick || '访') % AVATAR_GRADS.length]; return d;
+    d.style.background = AVATAR_GRADS[hash(nick || T.guestChar) % AVATAR_GRADS.length]; return d;
   }
 
-  /* 昵称：可自定义，本地记忆，头像首字随动 */
+  /* 昵称：可自定义，本地记忆，头像首字随动（中英版本共用同一 localStorage——同一位访客） */
   var nickInput = document.getElementById('cmtNick');
   var myAvatar = document.getElementById('myAvatar');
   try { nickInput.value = localStorage.getItem('wallNick') || ''; } catch (e) { }
   function syncMyAvatar() {
     var n = (nickInput.value || '').trim();
-    var ch = n ? n.charAt(0).toUpperCase() : '访';
-    myAvatar.textContent = ch;
-    myAvatar.style.background = AVATAR_GRADS[hash(n || '访') % AVATAR_GRADS.length];
+    var name = guestName(n);
+    myAvatar.textContent = n ? n.charAt(0).toUpperCase() : T.guestChar;
+    myAvatar.style.background = AVATAR_GRADS[hash(name) % AVATAR_GRADS.length];
   }
   nickInput.addEventListener('input', function () {
     syncMyAvatar();
@@ -100,14 +155,14 @@
       myAvatar.innerHTML = '';
       var img = document.createElement('img');
       img.src = src;
-      img.alt = '我的头像';
+      img.alt = T.myAvatarAlt;
       myAvatar.appendChild(img);
     }
   }
   var fileInput = document.getElementById('cmtAvatarInput');
   myAvatar.setAttribute('role', 'button');
   myAvatar.setAttribute('tabindex', '0');
-  myAvatar.setAttribute('aria-label', '上传自定义头像');
+  myAvatar.setAttribute('aria-label', EN ? 'Upload a custom avatar' : '上传自定义头像');
   myAvatar.addEventListener('click', function () { fileInput.click(); });
   myAvatar.addEventListener('keydown', function (ev) {
     if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); fileInput.click(); }
@@ -126,7 +181,7 @@
         var side = Math.min(img.width, img.height);
         ctx.drawImage(img, (img.width - side) / 2, (img.height - side) / 2, side, side, 0, 0, 128, 128);
         cv.toBlob(function (blob) {
-          if (!blob) { showNotice('头像处理失败，请换一张图片。'); return; }
+          if (!blob) { showNotice(T.avatarProcessFail); return; }
           var fd = new FormData();
           fd.append('file', blob, 'avatar.jpg');
           fetchJSON(API + '/upload', { method: 'POST', body: fd })
@@ -135,15 +190,15 @@
                 avatarURL = d.public_url;
                 try { localStorage.setItem('wallAvatar', avatarURL); } catch (e) { }
                 applyMyAvatar();
-                showNotice('<b>头像已更新。</b>发布留言时将展示你的自定义头像 ✦');
+                showNotice(T.avatarUpdated);
               } else {
-                showNotice('头像上传失败：' + esc(d.msg || '未知错误'));
+                showNotice(T.avatarFailPrefix + esc(d.msg || ''));
               }
             })
-            .catch(function (err) { showNotice(err && err.name === 'AbortError' ? '头像上传超时，请检查网络后重试。' : '头像上传失败，请稍后重试。'); });
+            .catch(function () { showNotice(T.avatarNetFail); });
         }, 'image/jpeg', 0.85);
       };
-      img.onerror = function () { showNotice('图片读取失败，请换一张图片。'); };
+      img.onerror = function () { showNotice(T.avatarReadFail); };
       img.src = reader.result;
     };
     reader.readAsDataURL(f);
@@ -151,7 +206,7 @@
   applyMyAvatar();
 
   var ta = document.getElementById('cmtInput'), count = document.getElementById('cmtCount');
-  ta.addEventListener('input', function () { count.textContent = ta.value.length + ' / 500'; });
+  ta.addEventListener('input', function () { count.textContent = T.count(ta.value.length); });
 
   var notice = document.getElementById('cmtNotice');
   function showNotice(html) { notice.innerHTML = html; notice.hidden = false; }
@@ -184,7 +239,9 @@
     var bar = document.createElement('div'); bar.className = 'bili-actions';
     var like = document.createElement('button');
     like.type = 'button'; like.className = 'bili-like';
-    like.setAttribute('aria-label', '赞同这条留言');
+    like.setAttribute('aria-label', T.ariaLike);
+    like.setAttribute('aria-pressed', cm.is_up ? 'true' : 'false');   /* 初始态：列表接口若带 is_up 则如实呈现 */
+    if (cm.is_up) like.classList.add('voted');
     like.innerHTML = THUMB_SVG + '<span>' + (cm.vote_up || 0) + '</span>';
     like.addEventListener('click', function () {
       if (like.dataset.busy) return;
@@ -199,13 +256,14 @@
           like.classList.remove('voting');
           like.querySelector('span').textContent = d.up || 0;
           like.classList.toggle('voted', !!d.is_up);
+          like.setAttribute('aria-pressed', d.is_up ? 'true' : 'false');
         })
         .catch(function () { delete like.dataset.busy; like.classList.remove('voting'); });
     });
     bar.appendChild(like);
     var rep = document.createElement('button');
-    rep.type = 'button'; rep.className = 'bili-reply-btn'; rep.textContent = '回复';
-    rep.setAttribute('aria-label', '回复 ' + (cm.nick || '路过的同学'));
+    rep.type = 'button'; rep.className = 'bili-reply-btn'; rep.textContent = EN ? 'Reply' : '回复';
+    rep.setAttribute('aria-label', T.ariaReplyTo + (cm.nick || T.guest));
     rep.addEventListener('click', function () { toggleReplyEditor(cm, targetNick, bar); });
     bar.appendChild(rep);
     return bar;
@@ -220,15 +278,15 @@
     var ed = document.createElement('div'); ed.className = 'bili-reply-editor bili-reply-editor-active';
     var ta = document.createElement('textarea');
     ta.rows = 2; ta.maxLength = 500;
-    ta.placeholder = '回复 @' + (targetNick || cm.nick || '路过的同学') + '：';
+    ta.placeholder = T.replyPlaceholderPrefix + (targetNick || cm.nick || T.guest) + '：';
     ta.setAttribute('aria-label', ta.placeholder);
     var foot = document.createElement('div'); foot.className = 'bili-reply-foot';
-    var cnt = document.createElement('span'); cnt.className = 'bili-reply-cnt'; cnt.textContent = '0 / 500';
-    var cancel = document.createElement('button'); cancel.type = 'button'; cancel.className = 'bili-reply-cancel'; cancel.textContent = '取消';
-    var submit = document.createElement('button'); submit.type = 'button'; submit.className = 'bili-reply-submit'; submit.textContent = '发布';
+    var cnt = document.createElement('span'); cnt.className = 'bili-reply-cnt'; cnt.textContent = T.count(0);
+    var cancel = document.createElement('button'); cancel.type = 'button'; cancel.className = 'bili-reply-cancel'; cancel.textContent = EN ? 'Cancel' : '取消';
+    var submit = document.createElement('button'); submit.type = 'button'; submit.className = 'bili-reply-submit'; submit.textContent = EN ? 'Post' : '发布';
     foot.appendChild(cnt); foot.appendChild(cancel); foot.appendChild(submit);
     ed.appendChild(ta); ed.appendChild(foot);
-    ta.addEventListener('input', function () { cnt.textContent = ta.value.length + ' / 500'; });
+    ta.addEventListener('input', function () { cnt.textContent = T.count(ta.value.length); });
     ta.addEventListener('keydown', function (ev) {
       if (ev.key === 'Enter' && (ev.ctrlKey || ev.metaKey)) { ev.preventDefault(); submit.click(); }
     });
@@ -237,7 +295,7 @@
       var text = ta.value.trim();
       if (!text) { ta.focus(); return; }
       submit.disabled = true;
-      var name = ((nickInput.value || '').trim()) || '路过的同学';
+      var name = guestName(nickInput.value);
       var email = (nickInput.value || '').trim()
         ? ('anon-' + hash(name).toString(36) + '@local.xxc2007.me')
         : ('anon-' + randToken() + '@local.xxc2007.me');
@@ -246,12 +304,12 @@
         body: JSON.stringify({ page_key: PAGE, page_title: '留言墙', site_name: SITE, name: name, email: email, link: toLink(avatarURL), content: text, rid: cm.id })
       })
         .then(function (d) {
-          if (d.id) { ed.remove(); showNotice('<b>回复已提交。</b>站长审核通过后就会出现在这里 ✦'); load(); }
-          else { submit.disabled = false; showNotice('回复失败：' + esc(d.msg || '未知错误')); }
+          if (d.id) { ed.remove(); showNotice(T.replySubmitted); load(); }
+          else { submit.disabled = false; showNotice(T.replyFail + esc(d.msg || '')); }
         })
         .catch(function (err) {
           submit.disabled = false;
-          showNotice(err && err.name === 'AbortError' ? '回复超时，请检查网络后重试。' : '网络异常，回复失败，请稍后重试。');
+          showNotice(err && err.name === 'AbortError' ? T.timeout : T.netFail);
         });
     });
     anchorBar.insertAdjacentElement('afterend', ed);
@@ -264,10 +322,10 @@
     var col = document.createElement('div'); col.className = 'bili-c';
     var head = document.createElement('div'); head.className = 'bili-c-head';
     var at = '';
-    if (targetNick && targetNick !== cm.nick) at = '<span class="bili-reply-at">回复 @' + esc(targetNick) + '</span>';
-    head.innerHTML = '<span class="bili-nick">' + esc(cm.nick || '路过的同学') + '</span>' + at
+    if (targetNick && targetNick !== cm.nick) at = '<span class="bili-reply-at">' + T.replyAtPrefix + esc(targetNick) + '</span>';
+    head.innerHTML = '<span class="bili-nick">' + esc(cm.nick || T.guest) + '</span>' + at
       + '<span class="bili-time">' + fmtTime(cm.date) + '</span>'
-      + (cm.ip_region ? '<span class="bili-ip">IP属地：' + esc(cm.ip_region) + '</span>' : '');
+      + (cm.ip_region ? '<span class="bili-ip">' + T.ipLabel + esc(cm.ip_region) + '</span>' : '');
     col.appendChild(head);
     var body = document.createElement('div'); body.className = 'bili-content';
     body.innerHTML = esc(cm.content).replace(/\n/g, '<br>');
@@ -287,9 +345,9 @@
       row.appendChild(avatarEl(cm.nick, cm.link));
       var col = document.createElement('div'); col.className = 'bili-c';
       var head = document.createElement('div'); head.className = 'bili-c-head';
-      head.innerHTML = '<span class="bili-nick">' + esc(cm.nick || '路过的同学') + '</span>'
+      head.innerHTML = '<span class="bili-nick">' + esc(cm.nick || T.guest) + '</span>'
         + '<span class="bili-time">' + fmtTime(cm.date) + '</span>'
-        + (cm.ip_region ? '<span class="bili-ip">IP属地：' + esc(cm.ip_region) + '</span>' : '');
+        + (cm.ip_region ? '<span class="bili-ip">' + T.ipLabel + esc(cm.ip_region) + '</span>' : '');
       col.appendChild(head);
       var body = document.createElement('div'); body.className = 'bili-content';
       body.innerHTML = esc(cm.content).replace(/\n/g, '<br>');
@@ -324,13 +382,12 @@
         el.hidden = false;
         el.setAttribute('data-failed', '1');
         el.style.cursor = 'pointer';
-        el.textContent = '留言加载失败，点击这里重试。';
+        el.textContent = T.loadFail;
       });
   }
   document.getElementById('cmtLoading').addEventListener('click', function () {
     if (this.getAttribute('data-failed') === '1') {
       this.removeAttribute('data-failed');
-      this.textContent = '加载中……';
       this.style.cursor = 'default';
       load();
     }
@@ -344,9 +401,8 @@
     if (!text) { ta.focus(); return; }
     submitting = true;
     document.getElementById('cmtSubmit').disabled = true;
-    var nick = (nickInput.value || '').trim();
-    var name = nick || '路过的同学';
-    var email = nick
+    var name = guestName(nickInput.value);
+    var email = (nickInput.value || '').trim()
       ? ('anon-' + hash(name).toString(36) + '@local.xxc2007.me')
       : ('anon-' + randToken() + '@local.xxc2007.me');
     fetchJSON(API + '/comments', {
@@ -357,17 +413,17 @@
         submitting = false;
         document.getElementById('cmtSubmit').disabled = false;
         if (d.id) {
-          ta.value = ''; count.textContent = '0 / 500';
-          showNotice('<b>留言已提交。</b>站长审核通过后就会出现在这里，感谢你的声音 ✦');
+          ta.value = ''; count.textContent = T.count(0);
+          showNotice(T.submitted);
           load();
         } else {
-          showNotice('发布失败：' + esc(d.msg || '未知错误'));
+          showNotice(T.postFail + esc(d.msg || ''));
         }
       })
       .catch(function (err) {
         submitting = false;
         document.getElementById('cmtSubmit').disabled = false;
-        showNotice(err && err.name === 'AbortError' ? '发布超时，请检查网络后重试。' : '网络异常，发布失败，请稍后重试。');
+        showNotice(err && err.name === 'AbortError' ? T.timeout : T.netFail);
       });
   });
 
