@@ -10,6 +10,8 @@
   var EN = LOCALE.indexOf('en') === 0;
   var JA = LOCALE.indexOf('ja') === 0;
   var ZHT = LOCALE.indexOf('zh-tw') === 0 || LOCALE.indexOf('zh-hant') === 0;
+  /* 资源基路径：子目录语言页（/en/ /ja/ /zh-Hant/）需回上一层，根页（/）用当前目录 */
+  var BASE = location.pathname === '/' ? '' : '../';
 
   /* ---------- 机位数据（维护者只改这里；name/desc 简体，Hant 繁體，En 英文，Ja 日文） ---------- */
   var SPOTS = [
@@ -91,7 +93,7 @@
     SPOTS.forEach(function (s) {
       var img = document.createElement('img');
       img.className = 'slide';
-      img.src = 'images/full/' + s.img;
+      img.src = BASE + 'images/full/' + s.img;
       img.alt = spotName(s);
       img.loading = 'lazy';
       img.addEventListener('error', function () { img.style.display = 'none'; });  /* 加载失败隐藏该帧，漫游跳到其他机位 */
