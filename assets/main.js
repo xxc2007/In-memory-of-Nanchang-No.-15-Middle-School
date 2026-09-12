@@ -35,7 +35,7 @@
 
   /* 顶栏状态 + 阅读进度条 */
   updaters.push(function () {
-    topbar.classList.toggle('scrolled', window.scrollY > 8);
+    if (topbar) topbar.classList.toggle('scrolled', window.scrollY > 8);
     if (progress) {
       var max = document.documentElement.scrollHeight - window.innerHeight;
       progress.style.transform = 'scaleX(' + (max > 0 ? Math.min(1, window.scrollY / max) : 0).toFixed(4) + ')';
@@ -277,7 +277,9 @@
   var figures = [];
   var figIndex = new Map();
   document.querySelectorAll('.ph').forEach(function (fig) {
-    var href = fig.querySelector('a').getAttribute('href');
+    var cardLink = fig.querySelector('a');
+    if (!cardLink) return;   /* 缺 <a> 的图卡跳过，不阻断其余图卡 */
+    var href = cardLink.getAttribute('href');
     if (!figIndex.has(href)) { figIndex.set(href, figures.length); figures.push(fig); }
   });
   var box = document.getElementById('lightbox');
@@ -285,6 +287,8 @@
   var lbCount = document.getElementById('lbCount');
   var lbCapT = document.getElementById('lbCapT');
   var lbCapD = document.getElementById('lbCapD');
+  /* 缺灯箱容器/图像/按钮任一节点时整段跳过：.ph 卡片退回 <a> 原生行为，不阻断后续交互 */
+  if (!box || !lbImg || !document.getElementById('lbClose')) return;
   var cur = -1, lastFocus = null;
   var stage = box.querySelector('.lb-stage');
 
@@ -313,14 +317,17 @@
 
   function preload(i) {
     if (i < 0 || i >= figures.length) return;
+    var link = figures[i].querySelector('a');
+    if (!link) return;
     var im = new Image();
-    im.src = figures[i].querySelector('a').getAttribute('href');
+    im.src = link.getAttribute('href');
   }
   function show(i) {
     if (!figures.length) return;
     cur = (i + figures.length) % figures.length;
     var fig = figures[cur];
     var link = fig.querySelector('a');
+    if (!link) return;
     var full = link.getAttribute('href');
     var thumb = fig.querySelector('img');
     lbImg.classList.remove('show');

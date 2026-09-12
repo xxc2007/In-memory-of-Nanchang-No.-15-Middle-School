@@ -145,7 +145,7 @@
   /* 服务端 date 形如 "2026-09-06 07:18"；中文给「2026年9月6日 07:18」，英文给 "Sep 6, 2026 07:18" */
   function fmtTime(s) {
     var m = /^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})/.exec(s || '');
-    if (!m) return s || '';
+    if (!m) return esc(s || '');
     if (EN && T.months) return T.months[+m[2] - 1] + ' ' + (+m[3]) + ', ' + m[1] + ' ' + m[4] + ':' + m[5];
     return m[1] + '年' + (+m[2]) + '月' + (+m[3]) + '日 ' + m[4] + ':' + m[5];
   }
@@ -184,6 +184,8 @@
 
   /* 昵称：可自定义，本地记忆，头像首字随动（中英版本共用同一 localStorage——同一位访客） */
   var nickInput = document.getElementById('cmtNick');
+  /* 缺编辑器时给惰性替身：读值返回空串、事件监听为空操作，避免后续 .value 直接抛错 */
+  if (!nickInput) nickInput = { value: '', addEventListener: function () { } };
   var myAvatar = document.getElementById('myAvatar');
   try { nickInput.value = localStorage.getItem('wallNick') || ''; } catch (e) { }
   function syncMyAvatar() {

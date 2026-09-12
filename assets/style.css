@@ -519,6 +519,17 @@ body.lb-lock{overflow:hidden}
 /* 定位图降级：无 WebGL / MapLibre 初始化失败时给出说明，而非留一块空白
    （照片漫游与其余区块不受影响，见 map.js 中 paint() 已提前到定位图之前） */
 #campusMap[data-map-failed]{display:flex;align-items:center;justify-content:center;padding:0 18px}
+#campusMap{position:relative}
+#campusMap[data-map-tiles-failed]::after{
+  content:"底图瓦片加载失败，暂无法显示";
+  position:absolute;left:10px;bottom:10px;z-index:5;
+  font-size:12px;line-height:1.6;letter-spacing:.04em;
+  color:#5F5E5A;background:rgba(250,249,245,.92);
+  border:1px solid var(--line);border-radius:6px;padding:5px 10px;pointer-events:none;
+}
+html[lang^="en"] #campusMap[data-map-tiles-failed]::after{content:"Map tiles failed to load"}
+html[lang^="ja"] #campusMap[data-map-tiles-failed]::after{content:"地図タイルを読み込めませんでした"}
+html[lang^="zh-Hant"] #campusMap[data-map-tiles-failed]::after{content:"底圖瓦片載入失敗，暫無法顯示"}
 #campusMap[data-map-failed]::after{
   content:"定位图需要 WebGL 支持，当前环境无法显示";
   font-size:13px;color:var(--muted);letter-spacing:.08em;text-align:center;line-height:1.9;

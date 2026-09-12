@@ -221,6 +221,16 @@
     });
   });
 
+  /* 瓦片失败降级：WebGL 正常但瓦片拉不下来（OSM 被墙/限流）时，地图只剩灰底无任何说明。
+     判定条件刻意收紧：10 秒内「一张瓦片都没成功加载」且「累计 ≥3 次瓦片错误」才标记，
+     避免把偶发的网络抖动误报成失败。 */
+  var tilesLoaded = false, tileErrors = 0;
+  map.on('data', function (e) { if (e && e.tile) tilesLoaded = true; });
+  map.on('error', function (e) { if (e && e.tile) tileErrors++; });
+  setTimeout(function () {
+    if (!tilesLoaded && tileErrors >= 3) el.setAttribute('data-map-tiles-failed', '1');
+  }, 10000);
+
   window.addEventListener('load', function () { map.resize(); });
   paint();   /* 机位钉建好后重绘一次，让当前机位钉与漫游保持一致（paint 幂等） */
 })();

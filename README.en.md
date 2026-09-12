@@ -141,6 +141,7 @@ python -m http.server 8000   # or any static server; open http://localhost:8000
 - **Desktop inertial scrolling is intentional**: the wheel is driven through inertial interpolation (Oryzo/Lusion feel), enabled only on fine-pointer devices; browser zoom (Ctrl+wheel), the map canvas, inputs and the lightbox are never hijacked, and touch devices / `prefers-reduced-motion` users keep native scrolling. Not a bug.
 - **Browser support matrix**: modern evergreen browsers only (Chrome / Edge / Firefox / Safari, last two years). IE and Legacy Edge are explicitly unsupported; no polyfills.
 - **Guestbook fetch cap**: at most 100 comments per request (plenty for a memorial page); the counter prefers the server-side total. All network requests carry a 15-second timeout fallback.
+- **The 404 page keeps pill-style language links** on purpose: `404.html` is fully self-contained (zero external requests, inline styles), so pulling in the site dropdown would drag in JS and more CSS. Two forms coexist; usability is unaffected.
 - **Spare shot pool**: `10-brick-building-court`, `22-running-track`, `23-library-gate` and `25-staff-lane` (in `images/full|thumbs`) are deliberately kept as spare material, not yet exhibited; reach for them first when adding or replacing photos.
 
 ## 📄 License

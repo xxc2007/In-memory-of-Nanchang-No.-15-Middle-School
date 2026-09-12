@@ -151,6 +151,7 @@ python -m http.server 8000   # 或任意静态服务器；浏览器打开 http:/
 - **桌面惯性滚动是刻意设计**：滚轮经惯性插值驱动（Oryzo/Lusion 手感），仅在精确指针设备启用；浏览器缩放（Ctrl+滚轮）、地图画布、输入框与灯箱均不劫持，触屏与 `prefers-reduced-motion` 用户走原生滚动。这不是 bug。
 - **浏览器支持矩阵**：面向现代常青浏览器（Chrome / Edge / Firefox / Safari 近两年版本），明确不支持 IE 及 Legacy Edge，全站无 polyfill。
 - **留言墙拉取上限**：单次最多取 100 条（纪念册体量足够），计数优先展示服务端真实总数；网络请求统一带 15 秒超时兜底。
+- **404 页的语言入口仍是药丸**：那是刻意取舍——404.html 设计成完全自包含（零外部请求、样式内联），引入主站的下拉交互就得带上 JS 与更多样式；两种形态并存不影响可用性。
 - **备用素材池**：`images/full|thumbs` 中的 `10-brick-building-court`、`22-running-track`、`23-library-gate`、`25-staff-lane` 共 4 组为刻意保留的备用素材，暂未编入画廊章节；新增/替换照片时优先从这里取用。
 
 ## 📄 License
