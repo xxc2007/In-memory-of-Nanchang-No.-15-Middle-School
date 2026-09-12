@@ -44,7 +44,7 @@
 ### 📖 纪念册本体
 
 - **七个章节**：概况 → 沿革 → 光影（25 张摄影，六个专题组）→ 水塔 → 寻踪 → 寄语 → 留言墙
-- **中英双语**：顶栏一键切换（`/` ↔ `/en/`），双向 hreflang + sitemap 交替链接；时光漫游、定位图与留言墙的动态文案按页面语言自动切换，两版共用同一面留言墙
+- **四种语言**：顶栏切换器按序排列 简 / 繁 / En / 日（各以自身语言呈现，当前语言实心高亮）——`/`（简体）`/zh-Hant/`（繁體，台湾用语习惯）`/en/`（英语）`/ja/`（日语）；四页互持 hreflang + sitemap 交替链接；时光漫游、定位图与留言墙的动态文案按页面语言自动切换，四版共用同一面留言墙
 - Claude 视觉语言：米白纸感底色 `#F0EEE6` + 赤陶橙 `#D97757` + 衬线标题，全站统一的发丝线与圆角卡片
 - 完整响应式（三档断点）、打印成册样式与 `prefers-reduced-motion` 降级
 
@@ -100,17 +100,19 @@
 
 ```text
 site/
-├── index.html          # 中文页（语义 HTML；仅交错动画序号与地图惰性加载器两处内联）
-├── en/index.html       # 英文页（与中文页同构，资源以 ../ 相对路径共享，可 file:// 打开）
+├── index.html          # 简体中文页（语义 HTML；仅交错动画序号与地图惰性加载器两处内联）
+├── zh-Hant/index.html  # 繁體中文頁（台湾用语习惯：暱稱/登入/載入/網路/郵遞區號）
+├── en/index.html       # English page (assets shared via ../ relative paths, file:// friendly)
+├── ja/index.html       # 日本語ページ（「おわりに」「通りすがり」など自然な日本語文体）
 ├── assets/
 │   ├── style.css       # 全站样式（设计令牌 + 组件 + 响应式 + 打印 + 降级）
 │   ├── main.js         # 主交互：进度条/scrollspy/视差/惯性滚动/灯箱
-│   ├── map.js          # 时光漫游 + 定位图（MapLibre，按需加载；机位数据中/英双字段）
-│   └── wall.js         # 留言墙（对接自托管 Artalk；动态文案按 <html lang> 切换）
+│   ├── map.js          # 时光漫游 + 定位图（MapLibre，按需加载；机位数据中简/繁/英/日四字段）
+│   └── wall.js         # 留言墙（对接自托管 Artalk；动态文案按 <html lang> 四语切换）
 ├── images/
 │   ├── full/           # 25 张全幅摄影（另有 4 张备用素材：10/22/23/25，暂未上墙）
 │   ├── thumbs/         # 对应缩略图
-│   ├── og-card.jpg     # 1200×630 分享卡
+│   ├── og-card.jpg     # 1200×630 分享卡（无文字，四语通用）
 │   └── emblem-*.png    # 校徽（顶栏 / 首屏 / 页脚 / favicon）
 ├── maplibre/           # MapLibre GL v5 自托管（不依赖 CDN）
 └── docs/               # README 展示截图 + [迁移手册](docs/MIGRATION.md)
@@ -141,7 +143,7 @@ python -m http.server 8000   # 或任意静态服务器；浏览器打开 http:/
 ## 📝 设计笔记
 
 - **视觉方向**：Claude / Anthropic 视觉语言（米白纸感 + 赤陶橙 + 衬线），由站长在项目之初指定，此后所有迭代都在这个方向上生长。背景保持纯净的米白纸面，不加任何装饰层——动效永远让位于内容。
-- **双语架构**：静态双页（`/` 与 `/en/`）而非 JS 运行时翻译——两页各自拥有完整的语义内容与 SEO 元数据，用 hreflang 与 sitemap 交替链接互认；`wall.js`/`map.js`/`main.js` 按 `<html lang>` 切换动态文案，两版共用同一面留言墙（同一 page_key），中英文留言汇成一面墙。
+- **双语架构**：四个静态页（`/` `/zh-Hant/` `/en/` `/ja/`）而非 JS 运行时翻译——每页拥有完整的语义内容与 SEO 元数据，用 hreflang 与 sitemap 交替链接互认；`wall.js`/`map.js`/`main.js` 按 `<html lang>` 切换动态文案，四版共用同一面留言墙（同一 page_key），各语言留言汇成一面墙。
 - **桌面惯性滚动是刻意设计**：滚轮经惯性插值驱动（Oryzo/Lusion 手感），仅在精确指针设备启用；浏览器缩放（Ctrl+滚轮）、地图画布、输入框与灯箱均不劫持，触屏与 `prefers-reduced-motion` 用户走原生滚动。这不是 bug。
 - **浏览器支持矩阵**：面向现代常青浏览器（Chrome / Edge / Firefox / Safari 近两年版本），明确不支持 IE 及 Legacy Edge，全站无 polyfill。
 - **留言墙拉取上限**：单次最多取 100 条（纪念册体量足够），计数优先展示服务端真实总数；网络请求统一带 15 秒超时兜底。
