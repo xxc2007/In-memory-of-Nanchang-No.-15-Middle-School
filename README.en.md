@@ -41,7 +41,7 @@ Pure HTML / CSS / vanilla JS with structure, style and behavior separated (`inde
 ### 📖 The memorial itself
 
 - **Seven sections**: School Overview → History → Campus Gallery (25 photographs in six themed groups) → The Water Tower → Campus Map → Epilogue → Guestbook
-- **Four languages**: the top-bar switcher reads 简 / 繁 / En / 日 in that order (each label in its own language, the current one filled) — `/` (Simplified Chinese), `/zh-Hant/` (Traditional, Taiwan usage), `/en/` (English), `/ja/` (Japanese); all four pages carry mutual hreflang + sitemap alternates; dynamic copy in the tour, map and guestbook follows the page language, and all four versions share one message wall
+- **Four languages**: a globe-icon dropdown in the top bar (modelled on AMD's site: the menu lists 简体中文 / 繁體中文 / English / 日本語 in each language's own script, with a check on the current one) — the whole block carries `translate="no"` so bilingual translation extensions cannot expand it the way they used to blow the old single-character pills out of the viewport; `/` (Simplified Chinese), `/zh-Hant/` (Traditional, Taiwan usage), `/en/` (English), `/ja/` (Japanese); all four pages carry mutual hreflang + sitemap alternates; dynamic copy in the tour, map and guestbook follows the page language, and all four versions share one message wall
 - Claude visual language: cream paper background + terracotta accents + serif headlines, with consistent hairlines and rounded cards throughout
 - Fully responsive (three breakpoints), a print-for-binding stylesheet, and a `prefers-reduced-motion` fallback
 
@@ -78,6 +78,7 @@ Pure HTML / CSS / vanilla JS with structure, style and behavior separated (`inde
 | Interaction | Details |
 |------|------|
 | Reading progress | A terracotta hairline under the top bar, `scaleX` follows scroll |
+| Language menu | Globe button opens the language dropdown: `Esc` closes, `↑↓`/`Home`/`End` move between options, clicking outside dismisses; falls back to a static pill row without JS |
 | Nav highlight | Scrollspy lights up the current section |
 | Count-up numbers | Hero key numbers 0 → 1958 / 51 / 2600+ / 25 with easeOutQuart |
 | Hero parallax | The hero image drifts at half scroll speed, `scale(1.09)` hides the edges |

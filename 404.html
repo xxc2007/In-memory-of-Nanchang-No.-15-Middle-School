@@ -62,9 +62,20 @@ body{
   padding:12px 34px;font-size:14.5px;font-weight:600;letter-spacing:.06em;
   transition:background .25s, transform .25s;
 }
-.nf a.home:hover{background:var(--terra);transform:translateY(-1px)}
-.nf .en-hint{margin-top:18px;font-size:12.5px;color:var(--muted);letter-spacing:.04em}
-.nf .en-hint a{color:var(--terra-deep)}
+.nf .home:hover{background:var(--terra);transform:translateY(-1px)}
+/* 语言入口：沿用主站语言切换器的药丸视觉，与顶栏设计一致 */
+.lang-pills{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:22px}
+.lang-pills a{
+  font-size:13px;font-weight:600;letter-spacing:.03em;
+  color:var(--terra-deep);background:transparent;
+  border:1px solid rgba(217,119,87,.45);border-radius:99px;
+  padding:6px 16px;text-decoration:none;
+  transition:background .2s;
+}
+.lang-pills a:hover{background:rgba(217,119,87,.12)}
+/* 各语言药丸按本语言字形渲染，避免日文/繁体汉字落到简体字形上 */
+.lang-pills a[lang="zh-Hant"]{font-family:'PingFang TC','Microsoft JhengHei','Noto Sans TC',var(--sans)}
+.lang-pills a[lang="ja"]{font-family:'Hiragino Sans','Yu Gothic','Noto Sans JP',var(--sans)}
 .nf a.home svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
 /* ---- 地平线：母题——线上停一枚时间线节点 ---- */
@@ -109,7 +120,11 @@ body{
       回到纪念册
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
     </a>
-    <p class="en-hint">English: <a href="/en/">Read in English</a> · 日本語：<a href="/ja/">日本語版</a> · 繁體：<a href="/zh-Hant/">繁體中文版</a></p>
+    <div class="lang-pills" role="group" aria-label="语言 / Language">
+      <a lang="en" hreflang="en" href="/en/">English</a>
+      <a lang="ja" hreflang="ja" href="/ja/">日本語</a>
+      <a lang="zh-Hant" hreflang="zh-Hant" href="/zh-Hant/">繁體中文</a>
+    </div>
   </div>
 </main>
 

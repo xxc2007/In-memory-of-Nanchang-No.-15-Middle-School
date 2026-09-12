@@ -42,11 +42,12 @@
 1. **DNS**：Cloudflare 添加新域名的 A 记录 → 同一台服务器 IP。
 2. **证书**：`sudo certbot --nginx -d 新域名 -d www.新域名 --expand`。
 3. **nginx**：`server_name` 加上新域名，`nginx -t && sudo systemctl reload nginx`。
-4. **改代码里的域名标识**（一条命令找全，全口径 10 个文件 77 行）：
+4. **改代码里的域名标识**（一条命令找全，全口径 **12 个文件 85 行**）：
    ```bash
    grep -rn "xxc2007.me" --include="*.html" --include="*.xml" --include="*.md" --include="*.js" --include="*.txt" .
    ```
-   涉及：四个语言页 `index.html` / `zh-Hant/index.html` / `en/index.html` / `ja/index.html` 各 10 行（canonical + hreflang×5 + og:url + og:image + JSON-LD + 页脚签名）、`sitemap.xml` 四个 URL 与交替链接共 24 行、双语 README 各 3 行、`robots.txt` 2 行（含 Sitemap 声明，功能行必改）、`404.html` 页脚签名 1 行、`assets/wall.js` 4 行（匿名邮箱域 `local.xxc2007.me`，仅作身份串不渲染，漏改不影响功能，建议顺手改齐）。改完提交。
+   其中**站点本体 10 个文件 77 行**：四个语言页 `index.html` / `zh-Hant/index.html` / `en/index.html` / `ja/index.html` 各 10 行（canonical + hreflang×5 + og:url + og:image + JSON-LD + 页脚签名）、`sitemap.xml` 四个 URL 与交替链接共 24 行、双语 README 各 3 行、`robots.txt` 2 行（含 Sitemap 声明，功能行必改）、`404.html` 页脚签名 1 行、`assets/wall.js` 4 行（匿名邮箱域 `local.xxc2007.me`，仅作身份串不渲染，漏改不影响功能，建议顺手改齐）。
+   剩下 **2 个文件 8 行**是这份迁移手册自己（`docs/MIGRATION.md` 与 `docs/MIGRATION.en.md` 各 4 行）——手册里的示例命令写着旧域名，**也要一并改**，否则下次照着敲会打回旧站。改完提交。
 5. **替换旧留言里的头像链接**（存量数据存的是绝对 URL）：
    ```bash
    sudo python3 infra/replace-comment-domain.py https://旧域名 https://新域名 --apply
@@ -64,7 +65,7 @@
 ## 迁移后验收清单
 
 - [ ] `https://新域名/` 返回 200（curl 记得带浏览器 UA，否则 Cloudflare 会拦）
-- [ ] 页面滚到底再滚回来：41 张图（含灯箱）零破图
+- [ ] 页面滚到底再滚回来：32 张静态图 + 8 张漫游大图零破图（打开灯箱会另取 27 张原图）
 - [ ] 留言墙：加载正常、发一条测试留言、后台能审核（发完删掉）
 - [ ] 定位图瓦片正常、时光漫游 8 张大图正常
 - [ ] `robots.txt` / `sitemap.xml` 200

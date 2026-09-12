@@ -29,7 +29,7 @@
 <link rel="icon" type="image/png" href="images/emblem-64.png">
 <link rel="apple-touch-icon" href="images/emblem-180.png">
 <link rel="stylesheet" href="assets/fonts/noto-serif-sc/wght.css">
-<link rel="stylesheet" href="assets/style.css?v=20260912d">
+<link rel="stylesheet" href="assets/style.css?v=20260912e">
 <link rel="preload" as="image" href="images/full/18-plaza-summer.jpg" fetchpriority="high">
 <noscript>
 <style>
@@ -83,7 +83,7 @@ window.addEventListener('DOMContentLoaded', function () {
       s.src = 'maplibre/maplibre-gl.js?v=20260907f';
       s.onload = function () {
         var m = document.createElement('script');
-        m.src = 'assets/map.js?v=20260912d';
+        m.src = 'assets/map.js?v=20260912e';
         document.body.appendChild(m);
       };
       document.body.appendChild(s);
@@ -104,21 +104,31 @@ window.addEventListener('DOMContentLoaded', function () {
       <img src="images/emblem-320.png" alt="南昌市第十五中学校徽" width="28" height="28">
       <b>南昌市第十五中学</b><span>纪念册 · 2022–2025</span>
     </div>
-    <nav class="toc" aria-label="页面导航">
-      <a href="#about">概况</a>
-      <a href="#history">沿革</a>
-      <a href="#gallery">光影</a>
-      <a href="#landmark">水塔</a>
-      <a href="#map">寻踪</a>
-      <a href="#words">寄语</a>
-      <a href="#wall">留言</a>
-      <span class="lang-group" role="group" aria-label="语言">
-        <a class="lang-switch" lang="zh-Hans" hreflang="zh-Hans" href="/" aria-current="true" title="简体中文">简</a>
-        <a class="lang-switch" lang="zh-Hant" hreflang="zh-Hant" href="/zh-Hant/" title="繁體中文">繁</a>
-        <a class="lang-switch" lang="en" hreflang="en" href="/en/" title="English">En</a>
-        <a class="lang-switch" lang="ja" hreflang="ja" href="/ja/" title="日本語">日</a>
-      </span>
-    </nav>
+    <div class="topbar-right">
+      <nav class="toc" aria-label="页面导航">
+        <a href="#about">概况</a>
+        <a href="#history">沿革</a>
+        <a href="#gallery">光影</a>
+        <a href="#landmark">水塔</a>
+        <a href="#map">寻踪</a>
+        <a href="#words">寄语</a>
+        <a href="#wall">留言</a>
+      </nav>
+      <!-- 语言切换：整块 notranslate / translate="no"，避免被双语翻译插件扩写撑破 -->
+      <div class="lang-nav notranslate" id="langSwitch" translate="no">
+        <button type="button" class="lang-btn" id="langBtn" aria-haspopup="true" aria-expanded="false" aria-controls="langMenu" aria-label="切换语言，当前为简体中文">
+          <svg class="lang-globe" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3.6 9h16.8M3.6 15h16.8"/><path d="M12 3c2.6 2.6 3.9 5.7 3.9 9s-1.3 6.4-3.9 9c-2.6-2.6-3.9-5.7-3.9-9S9.4 5.6 12 3z"/></svg>
+          <span class="lang-current notranslate" translate="no" aria-hidden="true"></span><span class="lang-current-short notranslate" translate="no" aria-hidden="true"></span>
+          <svg class="lang-caret" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="lang-menu" id="langMenu" role="menu" aria-labelledby="langBtn" hidden>
+          <a class="lang-item" role="menuitem" lang="zh-Hans" hreflang="zh-Hans" href="/" aria-current="true"><span class="lang-native notranslate" translate="no">简体中文</span><svg class="lang-check" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 13 4.5 4.5L19 7"/></svg></a>
+          <a class="lang-item" role="menuitem" lang="zh-Hant" hreflang="zh-Hant" href="/zh-Hant/"><span class="lang-native notranslate" translate="no">繁體中文</span><svg class="lang-check" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 13 4.5 4.5L19 7"/></svg></a>
+          <a class="lang-item" role="menuitem" lang="en" hreflang="en" href="/en/"><span class="lang-native notranslate" translate="no">English</span><svg class="lang-check" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 13 4.5 4.5L19 7"/></svg></a>
+          <a class="lang-item" role="menuitem" lang="ja" hreflang="ja" href="/ja/"><span class="lang-native notranslate" translate="no">日本語</span><svg class="lang-check" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 13 4.5 4.5L19 7"/></svg></a>
+        </div>
+      </div>
+    </div>
   </div>
   <span class="progress" id="progress" aria-hidden="true"></span>
 </header>
@@ -541,8 +551,8 @@ window.addEventListener('DOMContentLoaded', function () {
   </div>
 </div>
 
-<script src="assets/main.js?v=20260912d" defer></script>
-<script src="assets/wall.js?v=20260912d" defer></script>
+<script src="assets/main.js?v=20260912e" defer></script>
+<script src="assets/wall.js?v=20260912e" defer></script>
 <!-- 定位图（map.js）由 head 内的惰性初始化器在滚动临近时按需加载 maplibre-gl.js -->
 </body>
 </html>

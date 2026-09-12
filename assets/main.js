@@ -64,6 +64,62 @@
     });
   })();
 
+  /* ---------- 语言切换下拉（地球图标 + 语言菜单，AMD 式） ----------
+     渐进增强：菜单本身是普通链接，无 JS 时由各页 <noscript> 样式展开为药丸行；
+     有 JS 时按钮负责开合，并补齐 Esc / 方向键 / Home·End / 点击外部收起。 */
+  (function () {
+    var wrap = document.getElementById('langSwitch');
+    if (!wrap) return;
+    var btn = document.getElementById('langBtn');
+    var menu = document.getElementById('langMenu');
+    if (!btn || !menu) return;
+    var items = Array.prototype.slice.call(menu.querySelectorAll('.lang-item'));
+    if (!items.length) return;
+
+    function isOpen() { return !menu.hidden; }
+    function open(focusIndex) {
+      menu.hidden = false;
+      btn.setAttribute('aria-expanded', 'true');
+      if (typeof focusIndex === 'number') items[focusIndex].focus();
+    }
+    function close(refocusBtn) {
+      if (menu.hidden) return;
+      menu.hidden = true;
+      btn.setAttribute('aria-expanded', 'false');
+      if (refocusBtn) btn.focus();
+    }
+
+    btn.addEventListener('click', function () { if (isOpen()) close(false); else open(); });
+
+    /* 点击菜单以外任何位置收起（含触摸；按钮与菜单同在 wrap 内，不会误关） */
+    document.addEventListener('click', function (ev) {
+      if (isOpen() && !wrap.contains(ev.target)) close(false);
+    });
+
+    /* 键盘：Esc 只要菜单开着就能关（焦点已移出组件时同样有效，不把焦点抢回按钮）；
+       方向键 / Home / End 负责在菜单内移动；Tab 移出即收起。 */
+    document.addEventListener('keydown', function (ev) {
+      var inside = wrap.contains(ev.target);
+      if (!isOpen() && !inside) return;
+      var i = items.indexOf(document.activeElement);
+      if (ev.key === 'Escape') {
+        if (isOpen()) { ev.preventDefault(); close(inside); }
+      } else if (ev.key === 'ArrowDown') {
+        ev.preventDefault();
+        if (isOpen()) items[(i + 1) % items.length].focus(); else open(0);
+      } else if (ev.key === 'ArrowUp') {
+        ev.preventDefault();
+        if (isOpen()) items[(i - 1 + items.length) % items.length].focus(); else open(items.length - 1);
+      } else if (ev.key === 'Home') {
+        if (isOpen()) { ev.preventDefault(); items[0].focus(); }
+      } else if (ev.key === 'End') {
+        if (isOpen()) { ev.preventDefault(); items[items.length - 1].focus(); }
+      } else if (ev.key === 'Tab' && inside) {
+        close(false);
+      }
+    });
+  })();
+
   /* ---------- 滚动显现 ---------- */
   var reveals = document.querySelectorAll('.reveal');
   if ('IntersectionObserver' in window) {

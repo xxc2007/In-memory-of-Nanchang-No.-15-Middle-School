@@ -26,7 +26,7 @@
       desc: '清晨七点十八分，红色跑道迎来新高一学生的第一张照片。',
       descHant: '清晨七點十八分，紅色跑道迎來新高一學生的第一張照片。',
       descEn: '7:18 in the morning — the red track welcomes a new senior-high student’s first photograph.',
-      descJa: '朝7時18分、赤いトラックが新入生の最初の一枚を出迎えた。' },
+      descJa: '朝7時18分、赤い陸上トラックが新入生の最初の一枚を出迎えた。' },
     { name: '红砖教学楼 · 冬日黄昏', nameHant: '紅磚教學樓 · 冬日黃昏',       nameEn: 'Red-brick Building at Winter Dusk', nameJa: '赤煉瓦の校舎・冬の夕暮れ',
       img: '04-teaching-building-winter-dusk.jpg', date: '2022.12.19', lat: 28.72145, lng: 115.93193, conf: 'approx',
       desc: '冬日黄昏里的红砖教学楼与玻璃楼梯间。',
@@ -57,12 +57,12 @@
       descHant: '暑假的廣場空無一人，月牙雕塑仍指向天空。',
       descEn: 'An empty plaza in summer break — the crescent sculpture still points at the sky.',
       descJa: '夏休みの広場には誰もおらず、三日月の彫刻は今も空を指している。' },
-    { name: '综合楼仰拍',             nameHant: '綜合樓仰拍',                 nameEn: 'Complex Building, Looking Up',    nameJa: '綜合楼を見上げる',
+    { name: '综合楼仰拍',             nameHant: '綜合樓仰拍',                 nameEn: 'Complex Building, Looking Up',    nameJa: '総合棟を見上げる',
       img: '19-library-building-sky.jpg', date: '2025.08.23', lat: 28.72078, lng: 115.93244, conf: 'approx',
       desc: '仰拍综合楼，蓝天上大朵积云。',
       descHant: '仰拍綜合樓，藍天上大朵積雲。',
       descEn: 'The complex building from below, cumulus clouds in a blue sky.',
-      descJa: '綜合楼を見上げれば、青空に大きな入道雲。' }
+      descJa: '総合棟を見上げれば、青空に大きな入道雲。' }
   ];
   function spotName(s) {
     if (EN) return s.nameEn || s.name;
@@ -116,10 +116,13 @@
   }
 
   function paint() {
+    var vt = document.getElementById('tourTitle');
+    var vd = document.getElementById('tourDate');
+    var vn = document.getElementById('tourNum');
     slides.forEach(function (img, i) { img.classList.toggle('on', i === cur); });
-    document.getElementById('tourTitle').textContent = spotName(SPOTS[cur]);
-    document.getElementById('tourDate').textContent = SPOTS[cur].date + ' · ' + spotDesc(SPOTS[cur]);
-    document.getElementById('tourNum').textContent = (cur + 1) + ' / ' + SPOTS.length;
+    if (vt) vt.textContent = spotName(SPOTS[cur]);
+    if (vd) vd.textContent = SPOTS[cur].date + ' · ' + spotDesc(SPOTS[cur]);
+    if (vn) vn.textContent = (cur + 1) + ' / ' + SPOTS.length;
     dots.forEach(function (d, i) {
       d.classList.toggle('on', i === cur);
       if (i === cur) d.setAttribute('aria-current', 'true'); else d.removeAttribute('aria-current');
@@ -153,31 +156,42 @@
   });
 
   /* ---------- 定位图（MapLibre 矢量底图：OSM 栅格 + 中文地名，2D 俯视最清晰） ---------- */
+  /* 先把「照片漫游」落地：它只依赖上面的 slides / dots 与机位数据，
+     不能被定位图连坐——WebGL 不可用、瓦片被墙或 MapLibre 缺失时定位图会失败，
+     但漫游必须照常显示（paint 原先排在定位图之后，会一起静默消失）。 */
+  paint();
+
   var el = document.getElementById('campusMap');
-  if (!el || el.getAttribute('data-map-ready')) return;
+  if (!el || el.getAttribute('data-map-ready') || typeof maplibregl === 'undefined') return;
   el.setAttribute('data-map-ready', '1');
 
-  var map = new maplibregl.Map({
-    container: el,
-    style: {
-      version: 8,
-      sources: {
-        osm: {
-          type: 'raster',
-          tiles: ['https://tile.openstreetmap.org/{z}/{x}/{y}.png'],
-          tileSize: 256, maxzoom: 19,
-          attribution: ARIA.attribution
-        }
+  var map;
+  try {
+    map = new maplibregl.Map({
+      container: el,
+      style: {
+        version: 8,
+        sources: {
+          osm: {
+            type: 'raster',
+            tiles: ['https://tile.openstreetmap.org/{z}/{x}/{y}.png'],
+            tileSize: 256, maxzoom: 19,
+            attribution: ARIA.attribution
+          }
+        },
+        layers: [
+          { id: 'bg', type: 'background', paint: { 'background-color': '#EDEAE0' } },
+          { id: 'osm', type: 'raster', source: 'osm' }
+        ]
       },
-      layers: [
-        { id: 'bg', type: 'background', paint: { 'background-color': '#EDEAE0' } },
-        { id: 'osm', type: 'raster', source: 'osm' }
-      ]
-    },
-    center: [115.93216, 28.72078],
-    zoom: 15.6, pitch: 0, bearing: 0,
-    attributionControl: false
-  });
+      center: [115.93216, 28.72078],
+      zoom: 15.6, pitch: 0, bearing: 0,
+      attributionControl: false
+    });
+  } catch (err) {
+    el.setAttribute('data-map-failed', '1');   /* 定位图降级：漫游与其余区块不受影响 */
+    return;
+  }
   window.__campusMap = map;
   map.addControl(new maplibregl.AttributionControl({ compact: true }));
   map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
@@ -197,5 +211,5 @@
   });
 
   window.addEventListener('load', function () { map.resize(); });
-  paint();
+  paint();   /* 机位钉建好后重绘一次，让当前机位钉与漫游保持一致（paint 幂等） */
 })();

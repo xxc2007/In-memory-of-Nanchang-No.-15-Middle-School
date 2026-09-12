@@ -29,7 +29,7 @@
 <link rel="icon" type="image/png" href="../images/emblem-64.png">
 <link rel="apple-touch-icon" href="../images/emblem-180.png">
 <link rel="stylesheet" href="../assets/fonts/noto-serif-sc/wght.css">
-<link rel="stylesheet" href="../assets/style.css?v=20260912d">
+<link rel="stylesheet" href="../assets/style.css?v=20260912e">
 <link rel="preload" as="image" href="../images/full/18-plaza-summer.jpg" fetchpriority="high">
 <noscript>
 <style>
@@ -40,6 +40,16 @@
   display:flex;align-items:center;justify-content:center;height:100%;
   color:#6E6A5E;font-size:13px;letter-spacing:.14em}
 #cmtLoading{display:none}
+/* Language switcher: without JS the button cannot open, so lay the four
+   language links out inline (same pill look) instead of losing the entry */
+.lang-btn{display:none}
+.lang-menu[hidden]{display:flex!important;position:static;padding:0;border:none;
+  background:none;box-shadow:none;min-width:0;animation:none}
+.lang-menu{flex-direction:row;gap:4px}
+.lang-item{padding:5px 11px;border:1px solid rgba(217,119,87,.45);border-radius:99px;
+  font-size:13px;color:#C15F3C}
+.lang-item .lang-check{display:none}
+.lang-nav{margin-left:4px;padding-left:8px}
 </style>
 </noscript>
 <script type="application/ld+json">
@@ -83,7 +93,7 @@ window.addEventListener('DOMContentLoaded', function () {
       s.src = '../maplibre/maplibre-gl.js?v=20260907f';
       s.onload = function () {
         var m = document.createElement('script');
-        m.src = '../assets/map.js?v=20260912d';
+        m.src = '../assets/map.js?v=20260912e';
         document.body.appendChild(m);
       };
       document.body.appendChild(s);
@@ -104,21 +114,32 @@ window.addEventListener('DOMContentLoaded', function () {
       <img src="../images/emblem-320.png" alt="School emblem of Nanchang No. 15 Middle School" width="28" height="28">
       <b>Nanchang No. 15 Middle School</b><span>A Memorial · 2022–2025</span>
     </div>
-    <nav class="toc" aria-label="Page navigation">
-      <a href="#about">About</a>
-      <a href="#history">History</a>
-      <a href="#gallery">Gallery</a>
-      <a href="#landmark">Tower</a>
-      <a href="#map">Map</a>
-      <a href="#words">Words</a>
-      <a href="#wall">Wall</a>
-      <span class="lang-group" role="group" aria-label="Language">
-        <a class="lang-switch" lang="zh-Hans" hreflang="zh-Hans" href="/" title="简体中文">简</a>
-        <a class="lang-switch" lang="zh-Hant" hreflang="zh-Hant" href="/zh-Hant/" title="繁體中文">繁</a>
-        <a class="lang-switch" lang="en" hreflang="en" href="/en/" aria-current="true" title="English">En</a>
-        <a class="lang-switch" lang="ja" hreflang="ja" href="/ja/" title="日本語">日</a>
-      </span>
-    </nav>
+    <div class="topbar-right">
+      <nav class="toc" aria-label="Page navigation">
+        <a href="#about">About</a>
+        <a href="#history">History</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#landmark">Tower</a>
+        <a href="#map">Map</a>
+        <a href="#words">Words</a>
+        <a href="#wall">Wall</a>
+      </nav>
+      <!-- Language switcher: whole block is notranslate / translate="no" so bilingual
+           translation extensions cannot expand its text and break the layout -->
+      <div class="lang-nav notranslate" id="langSwitch" translate="no">
+        <button type="button" class="lang-btn" id="langBtn" aria-haspopup="true" aria-expanded="false" aria-controls="langMenu" aria-label="Change language, current: English">
+          <svg class="lang-globe" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3.6 9h16.8M3.6 15h16.8"/><path d="M12 3c2.6 2.6 3.9 5.7 3.9 9s-1.3 6.4-3.9 9c-2.6-2.6-3.9-5.7-3.9-9S9.4 5.6 12 3z"/></svg>
+          <span class="lang-current notranslate" translate="no" aria-hidden="true"></span><span class="lang-current-short notranslate" translate="no" aria-hidden="true"></span>
+          <svg class="lang-caret" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="lang-menu" id="langMenu" role="menu" aria-labelledby="langBtn" hidden>
+          <a class="lang-item" role="menuitem" lang="zh-Hans" hreflang="zh-Hans" href="/"><span class="lang-native notranslate" translate="no">简体中文</span><svg class="lang-check" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 13 4.5 4.5L19 7"/></svg></a>
+          <a class="lang-item" role="menuitem" lang="zh-Hant" hreflang="zh-Hant" href="/zh-Hant/"><span class="lang-native notranslate" translate="no">繁體中文</span><svg class="lang-check" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 13 4.5 4.5L19 7"/></svg></a>
+          <a class="lang-item" role="menuitem" lang="en" hreflang="en" href="/en/" aria-current="true"><span class="lang-native notranslate" translate="no">English</span><svg class="lang-check" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 13 4.5 4.5L19 7"/></svg></a>
+          <a class="lang-item" role="menuitem" lang="ja" hreflang="ja" href="/ja/"><span class="lang-native notranslate" translate="no">日本語</span><svg class="lang-check" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 13 4.5 4.5L19 7"/></svg></a>
+        </div>
+      </div>
+    </div>
   </div>
   <span class="progress" id="progress" aria-hidden="true"></span>
 </header>
@@ -154,7 +175,7 @@ window.addEventListener('DOMContentLoaded', function () {
         <p>On campus, red-brick teaching buildings mingle with camphor and cedar trees, and the old water tower rises above the treetops. The track field, basketball courts, tennis courts and library are all there — and the sports venues open to the neighbourhood.</p>
         <div class="pull">
           “Dedication builds virtue; diligent study cultivates the self.”
-          <small>—— School motto</small>
+          <small>— School motto</small>
         </div>
       </div>
       <aside class="fact-card reveal">
@@ -188,7 +209,7 @@ window.addEventListener('DOMContentLoaded', function () {
   <section class="block" id="history">
     <div class="sec-head reveal"><span class="sec-index">II · HISTORY</span><h2>A Brief Chronicle</h2></div>
     <hr class="sec-rule reveal">
-    <p class="sec-lede reveal">Only the years on record are listed — restraint is also a form of sincerity.</p>
+    <p class="sec-lede reveal">Only the years on record are listed — historical restraint is itself a form of sincerity.</p>
     <div class="timeline">
       <div class="t-item reveal">
         <div class="t-year">1958</div>
@@ -224,7 +245,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
     <!-- Group 1 · Gate & Plaza -->
     <div class="group-head reveal"><span class="g-no">I</span><h3>The Gate &amp; the Plaza</h3><span class="g-note">First impressions: the gate, the flagpole, the open plaza</span></div>
-    <p class="group-desc reveal">The five silver characters “Nanchang Shiwuzhong” on the pink-brick gate posts were the coordinates of a thousand comings and goings; the plaza in summer break is empty, and the crescent sculpture in front of the office building still points at the sky.</p>
+    <p class="group-desc reveal">The five silver characters spelling “Nanchang Shiwuzhong” (Nanchang No. 15) on the pink-brick gate posts were the coordinates of a thousand comings and goings; the plaza in summer break is empty, and the crescent sculpture in front of the office building still points at the sky.</p>
     <div class="gallery-grid">
       <figure class="ph reveal" style="--i:0" data-cap="The gate nameplate · at dusk" data-date="Apr 2025">
         <a href="../images/full/01-gate.jpg" target="_blank" rel="noopener">
@@ -400,7 +421,7 @@ window.addEventListener('DOMContentLoaded', function () {
     <div class="group-head reveal"><span class="g-no">VI</span><h3>The Signature Wall</h3><span class="g-note">The eve of Gaokao · a way to say goodbye</span></div>
     <p class="group-desc reveal">June 6, 2025, the day before Gaokao — a signature wall rose on the plaza. A wall full of names: the liveliest farewell of those three years.</p>
     <div class="gallery-grid feature">
-      <figure class="ph reveal" data-cap="The signature wall · I♥Shiwuzhong" data-date="Jun 6, 2025">
+      <figure class="ph reveal" data-cap="The signature wall · I♥15" data-date="Jun 6, 2025">
         <a href="../images/full/26-festival-signin.jpg" target="_blank" rel="noopener">
           <span class="ph-img"><img src="../images/thumbs/26-festival-signin.jpg" width="1600" height="1200" alt="The Gaokao signature wall and the “I♥15” sculpture, the school motto carved on its base, the old water tower beyond" loading="lazy" decoding="async"></span>
         </a>
@@ -462,12 +483,12 @@ window.addEventListener('DOMContentLoaded', function () {
       In three years we saw too many mornings and evenings here — dawn light under the flagpole, sunset at the end of the corridor, snow-laden cedar branches, the empty plaza of summer break. Only after graduating did we understand: your alma mater is the campus that <em>you begin to miss without end only after you leave</em>.<br>
       This page is dedicated to the red-brick buildings, the camphor trees and the old water tower by Qingshan Lake — and to everyone who spent their youth at No. 15.
     </blockquote>
-    <p class="sign reveal">—— Class of 2025</p>
+    <p class="sign reveal">— Class of 2025</p>
   </section>
 
   <!-- ===================== Guestbook ===================== -->
   <section class="block wall" id="wall">
-    <div class="sec-head reveal"><span class="sec-index">VII · WALL</span><h2>The Message Wall</h2></div>
+    <div class="sec-head reveal"><span class="sec-index">VII · WALL</span><h2>The Message Wall</h2><a id="wallAdmin" class="wall-admin" href="/comment/sidebar/" target="_blank" rel="noopener" title="Site owner's moderation console (login required)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Moderate</a></div>
     <hr class="sec-rule reveal">
     <p class="sec-lede reveal">A memorial should not carry only one voice. Leave a line from those years — no login needed; messages appear after the webmaster’s review.</p>
     <div class="bili-comments reveal">
@@ -477,7 +498,7 @@ window.addEventListener('DOMContentLoaded', function () {
         <div class="bili-editor-box">
           <textarea id="cmtInput" maxlength="500" aria-label="Your message (posted anonymously, shown after review)" placeholder="Kind words bind kind fates — leave a line from those years…"></textarea>
           <div class="bili-editor-foot">
-            <span class="bili-nick-wrap">Name <input id="cmtNick" maxlength="20" aria-label="Name (optional; leave empty to show “A passerby”)" placeholder="Leave empty to show “A passerby”"></span>
+            <span class="bili-nick-wrap">Name <input id="cmtNick" maxlength="20" aria-label="Name (optional; leave empty to show “A passing classmate”)" placeholder="Leave empty → “A passing classmate”"></span>
             <span id="cmtCount">0 / 500</span>
             <button id="cmtSubmit">Post</button>
           </div>
@@ -541,8 +562,8 @@ window.addEventListener('DOMContentLoaded', function () {
   </div>
 </div>
 
-<script src="../assets/main.js?v=20260912d" defer></script>
-<script src="../assets/wall.js?v=20260912d" defer></script>
+<script src="../assets/main.js?v=20260912e" defer></script>
+<script src="../assets/wall.js?v=20260912e" defer></script>
 <!-- map.js is lazy-loaded by the in-head initializer when the map section approaches -->
 </body>
 </html>

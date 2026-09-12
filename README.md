@@ -86,6 +86,7 @@
 | 交互 | 说明 |
 |------|------|
 | 阅读进度条 | 顶栏赤陶橙细线，`scaleX` 随滚动增长 |
+| 语言切换菜单 | 顶栏地球按钮展开四语下拉（AMD 式）：`Esc` 收起、`↑↓`/`Home`/`End` 在选项间移动、点击菜单外任意处关闭；无 JS 时降级为静态药丸行 |
 | 导航高亮 | scrollspy 自动点亮当前章节 |
 | 数字滚动 | 首屏关键数字 0 → 1958 / 51 / 2600+ / 25，easeOutQuart |
 | 大图视差 | 首图以 0.5× 速率反向移动 + 光标惯性视差，`scale(1.09)` 防露边 |
@@ -104,9 +105,10 @@ site/
 ├── zh-Hant/index.html  # 繁體中文頁（台湾用语习惯：暱稱/登入/載入/網路/郵遞區號）
 ├── en/index.html       # English page (assets shared via ../ relative paths, file:// friendly)
 ├── ja/index.html       # 日本語ページ（「おわりに」「通りすがり」など自然な日本語文体）
+├── 404.html            # 自包含 404 页（样式内联、零外部依赖，附英/日/繁语言入口）
 ├── assets/
 │   ├── style.css       # 全站样式（设计令牌 + 组件 + 响应式 + 打印 + 降级）
-│   ├── main.js         # 主交互：进度条/scrollspy/视差/惯性滚动/灯箱
+│   ├── main.js         # 主交互：进度条/scrollspy/语言下拉/视差/惯性滚动/灯箱
 │   ├── map.js          # 时光漫游 + 定位图（MapLibre，按需加载；机位数据中简/繁/英/日四字段）
 │   └── wall.js         # 留言墙（对接自托管 Artalk；动态文案按 <html lang> 四语切换）
 ├── images/
@@ -115,7 +117,9 @@ site/
 │   ├── og-card.jpg     # 1200×630 分享卡（无文字，四语通用）
 │   └── emblem-*.png    # 校徽（顶栏 / 首屏 / 页脚 / favicon）
 ├── maplibre/           # MapLibre GL v5 自托管（不依赖 CDN）
-└── docs/               # README 展示截图 + [迁移手册](docs/MIGRATION.md)
+├── docs/               # README 展示截图 + [迁移手册](docs/MIGRATION.md)
+├── README.md / README.en.md   # 中英双语仓库说明（本文件与英文版）
+├── robots.txt / sitemap.xml / LICENSE / .gitattributes / .gitignore
 ```
 
 ## ⚙️ 技术栈

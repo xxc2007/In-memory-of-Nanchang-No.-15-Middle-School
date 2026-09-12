@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>南昌市第十五中学 · 青山湖畔の記念帳</title>
-<meta name="description" content="南昌市第十五中学を偲ぶ私的記念帳——1958年創立、江西省の重点高校。青山湖のほとりにある赤煉瓦の校舎、樟の木、古い給水塔と校庭を、熊鑫晨のカメラがとらえた25枚の写真。">
+<title>南昌市第十五中学 · 青山湖畔の記念アルバム</title>
+<meta name="description" content="南昌市第十五中学を偲ぶ私的記念アルバム——1958年創立、江西省の重点高校。青山湖のほとりにある赤煉瓦の校舎、樟の木、古い給水塔と校庭を、熊鑫晨のカメラがとらえた25枚の写真。">
 <meta name="theme-color" content="#F0EEE6">
 <link rel="canonical" href="https://xxc2007.me/ja/">
 <link rel="alternate" hreflang="zh-Hans" href="https://xxc2007.me/">
@@ -12,7 +12,7 @@
 <link rel="alternate" hreflang="en" href="https://xxc2007.me/en/">
 <link rel="alternate" hreflang="ja" href="https://xxc2007.me/ja/">
 <link rel="alternate" hreflang="x-default" href="https://xxc2007.me/">
-<meta property="og:title" content="南昌市第十五中学 · 青山湖畔の記念帳">
+<meta property="og:title" content="南昌市第十五中学 · 青山湖畔の記念アルバム">
 <meta property="og:description" content="赤煉瓦の校舎、樟の木、古い給水塔——熊鑫晨のレンズを通した南昌十五中、25枚のスクールスナップ。">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://xxc2007.me/ja/">
@@ -20,7 +20,7 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="夕焼けに染まる南昌十五中の校舎と旗竿">
-<meta property="og:site_name" content="青山湖畔の記念帳">
+<meta property="og:site_name" content="青山湖畔の記念アルバム">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:locale:alternate" content="zh_CN">
 <meta property="og:locale:alternate" content="zh_TW">
@@ -29,7 +29,7 @@
 <link rel="icon" type="image/png" href="../images/emblem-64.png">
 <link rel="apple-touch-icon" href="../images/emblem-180.png">
 <link rel="stylesheet" href="../assets/fonts/noto-serif-sc/wght.css">
-<link rel="stylesheet" href="../assets/style.css?v=20260912d">
+<link rel="stylesheet" href="../assets/style.css?v=20260912e">
 <link rel="preload" as="image" href="../images/full/18-plaza-summer.jpg" fetchpriority="high">
 <noscript>
 <style>
@@ -40,15 +40,25 @@
   display:flex;align-items:center;justify-content:center;height:100%;
   color:#6E6A5E;font-size:13px;letter-spacing:.14em}
 #cmtLoading{display:none}
+/* 言語切り替え：JS 無効時はボタンが開けないため、4 言語のリンクを
+   そのまま横並びで表示する（旧ピル風の見た目を踏襲し、入口を失わせない） */
+.lang-btn{display:none}
+.lang-menu[hidden]{display:flex!important;position:static;padding:0;border:none;
+  background:none;box-shadow:none;min-width:0;animation:none}
+.lang-menu{flex-direction:row;gap:4px}
+.lang-item{padding:5px 11px;border:1px solid rgba(217,119,87,.45);border-radius:99px;
+  font-size:13px;color:#C15F3C}
+.lang-item .lang-check{display:none}
+.lang-nav{margin-left:4px;padding-left:8px}
 </style>
 </noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  "name": "青山湖畔の記念帳",
+  "name": "青山湖畔の記念アルバム",
   "url": "https://xxc2007.me/ja/",
-  "description": "南昌市第十五中学を偲ぶ私的記念帳：25枚の写真、フォトツアー、メッセージウォール。",
+  "description": "南昌市第十五中学を偲ぶ私的記念アルバム：25枚の写真、フォトツアー、メッセージウォール。",
   "author": { "@type": "Person", "name": "熊鑫晨" },
   "about": {
     "@type": "HighSchool",
@@ -83,7 +93,7 @@ window.addEventListener('DOMContentLoaded', function () {
       s.src = '../maplibre/maplibre-gl.js?v=20260907f';
       s.onload = function () {
         var m = document.createElement('script');
-        m.src = '../assets/map.js?v=20260912d';
+        m.src = '../assets/map.js?v=20260912e';
         document.body.appendChild(m);
       };
       document.body.appendChild(s);
@@ -102,23 +112,34 @@ window.addEventListener('DOMContentLoaded', function () {
   <div class="topbar-inner">
     <div class="brand">
       <img src="../images/emblem-320.png" alt="南昌市第十五中学の校章" width="28" height="28">
-      <b>南昌市第十五中学</b><span>記念帳 · 2022–2025</span>
+      <b>南昌市第十五中学</b><span>記念アルバム · 2022–2025</span>
     </div>
-    <nav class="toc" aria-label="ページ内ナビゲーション">
-      <a href="#about">概要</a>
-      <a href="#history">沿革</a>
-      <a href="#gallery">ギャラリー</a>
-      <a href="#landmark">給水塔</a>
-      <a href="#map">マップ</a>
-      <a href="#words">おわりに</a>
-      <a href="#wall">掲示板</a>
-      <span class="lang-group" role="group" aria-label="言語">
-        <a class="lang-switch" lang="zh-Hans" hreflang="zh-Hans" href="/" title="简体中文">简</a>
-        <a class="lang-switch" lang="zh-Hant" hreflang="zh-Hant" href="/zh-Hant/" title="繁體中文">繁</a>
-        <a class="lang-switch" lang="en" hreflang="en" href="/en/" title="English">En</a>
-        <a class="lang-switch" lang="ja" hreflang="ja" href="/ja/" aria-current="true" title="日本語">日</a>
-      </span>
-    </nav>
+    <div class="topbar-right">
+      <nav class="toc" aria-label="ページ内ナビゲーション">
+        <a href="#about">概要</a>
+        <a href="#history">沿革</a>
+        <a href="#gallery">ギャラリー</a>
+        <a href="#landmark">給水塔</a>
+        <a href="#map">マップ</a>
+        <a href="#words">おわりに</a>
+        <a href="#wall">掲示板</a>
+      </nav>
+      <!-- 言語切り替え：ブロック全体を notranslate / translate="no" にして、
+           翻訳拡張機能がテキストを展開してレイアウトを崩すのを防ぐ -->
+      <div class="lang-nav notranslate" id="langSwitch" translate="no">
+        <button type="button" class="lang-btn" id="langBtn" aria-haspopup="true" aria-expanded="false" aria-controls="langMenu" aria-label="言語を切り替える（現在は日本語）">
+          <svg class="lang-globe" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3.6 9h16.8M3.6 15h16.8"/><path d="M12 3c2.6 2.6 3.9 5.7 3.9 9s-1.3 6.4-3.9 9c-2.6-2.6-3.9-5.7-3.9-9S9.4 5.6 12 3z"/></svg>
+          <span class="lang-current notranslate" translate="no" aria-hidden="true"></span><span class="lang-current-short notranslate" translate="no" aria-hidden="true"></span>
+          <svg class="lang-caret" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="lang-menu" id="langMenu" role="menu" aria-labelledby="langBtn" hidden>
+          <a class="lang-item" role="menuitem" lang="zh-Hans" hreflang="zh-Hans" href="/"><span class="lang-native notranslate" translate="no">简体中文</span><svg class="lang-check" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 13 4.5 4.5L19 7"/></svg></a>
+          <a class="lang-item" role="menuitem" lang="zh-Hant" hreflang="zh-Hant" href="/zh-Hant/"><span class="lang-native notranslate" translate="no">繁體中文</span><svg class="lang-check" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 13 4.5 4.5L19 7"/></svg></a>
+          <a class="lang-item" role="menuitem" lang="en" hreflang="en" href="/en/"><span class="lang-native notranslate" translate="no">English</span><svg class="lang-check" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 13 4.5 4.5L19 7"/></svg></a>
+          <a class="lang-item" role="menuitem" lang="ja" hreflang="ja" href="/ja/" aria-current="true"><span class="lang-native notranslate" translate="no">日本語</span><svg class="lang-check" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 13 4.5 4.5L19 7"/></svg></a>
+        </div>
+      </div>
+    </div>
   </div>
   <span class="progress" id="progress" aria-hidden="true"></span>
 </header>
@@ -129,7 +150,7 @@ window.addEventListener('DOMContentLoaded', function () {
     <img class="hero-emblem" src="../images/emblem-320.png" alt="南昌市第十五中学の校章" width="78" height="78">
     <p class="eyebrow">NANCHANG NO. 15 MIDDLE SCHOOL · EST. 1958</p>
     <h1><span class="line-mask"><span class="line">青山湖のほとりで、</span></span><span class="line-mask"><span class="line">赤煉瓦と<em>樟の木</em>が覚えている。</span></span></h1>
-    <p class="sub">これは、ひとつの学校のための私的記念帳——南昌市第十五中学、江西省の重点高校、1958年創立。2022年から2025年まで、熊鑫晨がスマートフォンのカメラで校庭、廊下、夕焼け、雪の記憶を記録しました。</p>
+    <p class="sub">これは、ひとつの学校のための私的記念アルバム——南昌市第十五中学、江西省の重点高校、1958年創立。2022年から2025年まで、熊鑫晨がスマートフォンのカメラで校庭、廊下、夕焼け、雪の記憶を記録しました。</p>
     <div class="stats">
       <div class="stat"><b><span class="stat-n" data-count="1958">1958</span></b><span>創立年</span></div>
       <div class="stat"><b><span class="stat-n" data-count="51">51</span></b><span>クラス数 · 中等部23 / 高等部28</span></div>
@@ -145,11 +166,11 @@ window.addEventListener('DOMContentLoaded', function () {
 
   <!-- ===================== 概要 ===================== -->
   <section class="block" id="about">
-    <div class="sec-head reveal"><span class="sec-index">壱 · ABOUT</span><h2>学校概要</h2></div>
+    <div class="sec-head reveal"><span class="sec-index">一 · ABOUT</span><h2>学校概要</h2></div>
     <hr class="sec-rule reveal">
     <div class="about-grid">
       <div class="about-text reveal">
-        <p>南昌市第十五中学は<strong>1958年</strong>に創立した、南昌市教育局直轄の公立中高一貫校です。<strong>江西省重点高校</strong>であり、<strong>江西省文明校園</strong>にも選ばれています。学校は南昌市<strong>青山湖</strong>のほとりにあります。公開資料によれば、現在<strong>51クラス</strong>（中等部23・高等部28）、<strong>2,600人余り</strong>の生徒が学んでいます。</p>
+        <p>南昌市第十五中学は<strong>1958年</strong>に創立した、南昌市教育局直轄の公立校で、中等部と高等部を併設しています。<strong>江西省重点高校</strong>であり、<strong>江西省文明校園</strong>にも選ばれています。学校は南昌市<strong>青山湖</strong>のほとりにあります。公開資料によれば、現在<strong>51クラス</strong>（中等部23・高等部28）、<strong>2,600人余り</strong>の生徒が学んでいます。</p>
         <p><strong>2012年</strong>、南昌市人民政府の認可を得て旧南昌市第三十中学と統合し、旧三十中のキャンパスは中等部の校舎となりました。その後、中等部は<strong>2016年</strong>に「南昌二中教育集団青山湖キャンパス」と改称、高等部では<strong>2017年</strong>に南昌二中から教員が派遣され、教育資源を共有する「二中クラス」が始まりました。2024年の公開情報によれば、教職員の定員は<strong>154名</strong>、校長は熊禕です。</p>
         <p>キャンパスでは、赤煉瓦の校舎が樟やシーダーの木と調和し、古い給水塔が木の梢の上に立っています。陸上トラック、バスケットボールコート、テニスコート、図書館もそろい、体育施設は地域にも開放されています。</p>
         <div class="pull">
@@ -163,7 +184,7 @@ window.addEventListener('DOMContentLoaded', function () {
         <div class="fact-row"><b>51<i>クラス</i></b><span>中等部23 · 高等部28</span></div>
         <div class="fact-row"><b>2600<i>+</i></b><span>在籍生徒数</span></div>
         <div class="fact-row"><b>154<i>名</i></b><span>教職員の定員（2024年）</span></div>
-        <div class="fact-row"><b>2<i>校舎</i></b><span>2012年に旧南昌三十中と統合</span></div>
+        <div class="fact-row"><b>2<i>つの部</i></b><span>2012年に旧南昌三十中と統合</span></div>
         <div class="honors">
           <em>江西省重点高校</em>
           <em>江西省文明校園</em>
@@ -174,19 +195,19 @@ window.addEventListener('DOMContentLoaded', function () {
     <div class="culture reveal">
       <div class="culture-item"><h4>教師の訓</h4><p>生徒のために尽くし、自分らしさを発揮する</p></div>
       <div class="culture-item"><h4>校本の特色</h4><p>庶民のための教育</p></div>
-      <div class="culture-item"><h4>経営理念</h4><p>文明ある運営 · 文明ある学校づくり · 文明ある発展</p></div>
-      <div class="culture-item"><h4>授業の理念</h4><p>思いやりの授業 · 対話の授業 · 実りの授業</p></div>
+      <div class="culture-item"><h4>教育理念</h4><p>文明ある運営 · 文明ある学校づくり · 文明ある発展</p></div>
+      <div class="culture-item"><h4>授業の理念</h4><p>思いやりの授業 · 対話の授業 · 実りある授業</p></div>
     </div>
     <div class="campus-info reveal">
       <h4>高等部 · メインキャンパス</h4>
-      <p>〒330096 江西省南昌市青山湖区塘山街新何村47号（江紡路の南、江紡西路の西 · 青山湖のほとり）</p>
+      <p>江西省南昌市青山湖区塘山街新何村47号（江紡路の南、江紡西路の西 · 青山湖のほとり）</p>
       <p>郵便番号 330096 <span class="sep">·</span> 電話 0791-88633296 / 0791-88601420</p>
     </div>
   </section>
 
   <!-- ===================== 沿革 ===================== -->
   <section class="block" id="history">
-    <div class="sec-head reveal"><span class="sec-index">弐 · HISTORY</span><h2>沿革紀要</h2></div>
+    <div class="sec-head reveal"><span class="sec-index">二 · HISTORY</span><h2>沿革紀要</h2></div>
     <hr class="sec-rule reveal">
     <p class="sec-lede reveal">記録に残る年だけを並べました——歴史への抑制もまた、偲ぶ誠意のひとつです。</p>
     <div class="timeline">
@@ -207,8 +228,8 @@ window.addEventListener('DOMContentLoaded', function () {
         <p>高等部に<strong>「二中クラス」</strong>が開設され、南昌二中から教員が派遣され、教育資源を共有しています。</p>
       </div>
       <div class="t-item reveal">
-        <div class="t-year">2022–2025<span class="t-tag">この記念帳の視点</span></div>
-        <p><strong>熊鑫晨の三年間</strong>：2022年8月31日の朝のグラウンドから、2025年夏の卒業の別れまで。このページの25枚の写真は、すべてこの時間に撮られたものです。</p>
+        <div class="t-year">2022–2025<span class="t-tag">この記念アルバムの視点</span></div>
+        <p><strong>熊鑫晨の三年間</strong>：2022年8月31日の朝のグラウンドから、2025年夏の卒業の別れまで。このページの25枚の写真は、すべてこの時期に撮られたものです。</p>
       </div>
       <div class="t-item now reveal">
         <div class="t-year">2026</div>
@@ -219,7 +240,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
   <!-- ===================== ギャラリー ===================== -->
   <section class="block" id="gallery">
-    <div class="sec-head reveal"><span class="sec-index">参 · GALLERY</span><h2>キャンパスの光と影</h2></div>
+    <div class="sec-head reveal"><span class="sec-index">三 · GALLERY</span><h2>キャンパスの光と影</h2></div>
     <hr class="sec-rule reveal">
 
     <!-- その一 · 門と広場 -->
@@ -274,11 +295,11 @@ window.addEventListener('DOMContentLoaded', function () {
         </a>
         <figcaption><span class="cap-t">廊下の突き当たりの景色</span><span class="cap-d">2023.03.07</span></figcaption>
       </figure>
-      <figure class="ph reveal" style="--i:7" data-cap="綜合楼を見上げる · 青空の入道雲" data-date="2025年8月23日">
+      <figure class="ph reveal" style="--i:7" data-cap="総合棟を見上げる · 青空の入道雲" data-date="2025年8月23日">
         <a href="../images/full/19-library-building-sky.jpg" target="_blank" rel="noopener">
-          <span class="ph-img"><img src="../images/thumbs/19-library-building-sky.jpg" width="1600" height="1200" alt="綜合楼を見上げると、青空に大きな入道雲" loading="lazy" decoding="async"></span>
+          <span class="ph-img"><img src="../images/thumbs/19-library-building-sky.jpg" width="1600" height="1200" alt="総合棟を見上げると、青空に大きな入道雲" loading="lazy" decoding="async"></span>
         </a>
-        <figcaption><span class="cap-t">綜合楼を見上げる</span><span class="cap-d">2025.08.23</span></figcaption>
+        <figcaption><span class="cap-t">総合棟を見上げる</span><span class="cap-d">2025.08.23</span></figcaption>
       </figure>
       <figure class="ph reveal" style="--i:8" data-cap="ひかりあふれる自習スペース" data-date="2025年5月30日">
         <a href="../images/full/17-study-lounge.jpg" target="_blank" rel="noopener">
@@ -350,11 +371,11 @@ window.addEventListener('DOMContentLoaded', function () {
 
     <!-- その四 · 校庭 -->
     <div class="group-head reveal"><span class="g-no">其の四</span><h3>校庭</h3><span class="g-note">青春のテラコッタ</span></div>
-    <p class="group-desc reveal">2022年8月31日の朝7時18分、赤いトラックが新入生の最初の一枚を出迎えました。その後の三年間、バスケットコートとテニスコートと旗竿の広場が、休み時間と黄昏のすべてを集めていました。</p>
+    <p class="group-desc reveal">2022年8月31日の朝7時18分、赤い陸上トラックが新入生の最初の一枚を出迎えました。その後の三年間、バスケットコートとテニスコートと旗竿の広場が、休み時間と黄昏のすべてを集めていました。</p>
     <div class="gallery-grid">
       <figure class="ph reveal" style="--i:0" data-cap="新学期初日のグラウンド" data-date="2022年8月31日 07:18">
         <a href="../images/full/02-playground-firstday.jpg" target="_blank" rel="noopener">
-          <span class="ph-img"><img src="../images/thumbs/02-playground-firstday.jpg" width="1600" height="900" alt="2022年8月31日の朝のグラウンド：赤いトラック、緑のコートと旗竿の広場" loading="lazy" decoding="async"></span>
+          <span class="ph-img"><img src="../images/thumbs/02-playground-firstday.jpg" width="1600" height="900" alt="2022年8月31日の朝のグラウンド：赤い陸上トラック、緑のコートと旗竿の広場" loading="lazy" decoding="async"></span>
         </a>
         <figcaption><span class="cap-t">新学期初日のグラウンド</span><span class="cap-d">2022.08.31 07:18</span></figcaption>
       </figure>
@@ -374,11 +395,11 @@ window.addEventListener('DOMContentLoaded', function () {
 
     <!-- その五 · 文化芸術祭 -->
     <div class="group-head reveal"><span class="g-no">其の五</span><h3>文化芸術祭</h3><span class="g-note">青春に夢を · 人生を躍らせて</span></div>
-    <p class="group-desc reveal">2023年5月8日、「青春に夢を、人生を躍らせて」校内文化芸術祭が開幕：受付が広場に立ち、校訓・教師の訓・経営理念がパネルに印刷されました。</p>
+    <p class="group-desc reveal">2023年5月8日、「青春に夢を、人生を躍らせて」校内文化芸術祭が開幕：受付が広場に立ち、校訓・教師の訓・教育理念がパネルに印刷されました。</p>
     <div class="gallery-grid">
       <figure class="ph reveal" style="--i:0" data-cap="文化芸術祭のメインパネル" data-date="2023年5月8日">
         <a href="../images/full/28-festival-backdrop.jpg" target="_blank" rel="noopener">
-          <span class="ph-img"><img src="../images/thumbs/28-festival-backdrop.jpg" width="1600" height="1200" alt="文化芸術祭のパネル：校訓「敬業以て徳を立て、篤学以て身を修む」、教師の訓と経営理念が印刷されている" loading="lazy" decoding="async"></span>
+          <span class="ph-img"><img src="../images/thumbs/28-festival-backdrop.jpg" width="1600" height="1200" alt="文化芸術祭のパネル：校訓「敬業以て徳を立て、篤学以て身を修む」、教師の訓と教育理念が印刷されている" loading="lazy" decoding="async"></span>
         </a>
         <figcaption><span class="cap-t">文化芸術祭のパネル</span><span class="cap-d">2023.05.08</span></figcaption>
       </figure>
@@ -396,15 +417,15 @@ window.addEventListener('DOMContentLoaded', function () {
       </figure>
     </div>
 
-    <!-- その六 · サインボード -->
-    <div class="group-head reveal"><span class="g-no">其の六</span><h3>サインボード</h3><span class="g-note">高考前日 · さよならのしかた</span></div>
-    <p class="group-desc reveal">2025年6月6日、高考（大学統一入試）の前日——広場にサインボードが立いました。一面の名前は、三年間でいちばんにぎやかなさよならでした。</p>
+    <!-- その六 · 寄せ書きボード -->
+    <div class="group-head reveal"><span class="g-no">其の六</span><h3>寄せ書きボード</h3><span class="g-note">高考前日 · さよならのしかた</span></div>
+    <p class="group-desc reveal">2025年6月6日、高考（大学統一入試）の前日——広場に寄せ書きボードが立いました。一面の名前は、三年間でいちばんにぎやかなさよならでした。</p>
     <div class="gallery-grid feature">
-      <figure class="ph reveal" data-cap="サインボード · I♥十五中" data-date="2025年6月6日">
+      <figure class="ph reveal" data-cap="寄せ書きボード · I♥十五中" data-date="2025年6月6日">
         <a href="../images/full/26-festival-signin.jpg" target="_blank" rel="noopener">
-          <span class="ph-img"><img src="../images/thumbs/26-festival-signin.jpg" width="1600" height="1200" alt="高考のサインボードと「I♥十五中」の彫刻、台座には校訓、遠くに古い給水塔" loading="lazy" decoding="async"></span>
+          <span class="ph-img"><img src="../images/thumbs/26-festival-signin.jpg" width="1600" height="1200" alt="高考の寄せ書きボードと「I♥十五中」の彫刻、台座には校訓、遠くに古い給水塔" loading="lazy" decoding="async"></span>
         </a>
-        <figcaption><span class="cap-t">サインボード · I♥十五中</span><span class="cap-d">2025.06.06</span></figcaption>
+        <figcaption><span class="cap-t">寄せ書きボード · I♥十五中</span><span class="cap-d">2025.06.06</span></figcaption>
       </figure>
     </div>
   </section>
@@ -412,7 +433,7 @@ window.addEventListener('DOMContentLoaded', function () {
   <!-- ===================== 給水塔（暗色セクション） ===================== -->
   <section class="landmark" id="landmark">
     <div class="inner">
-      <div class="sec-head reveal"><span class="sec-index">肆 · LANDMARK</span><h2>ある給水塔の記憶のしかた</h2></div>
+      <div class="sec-head reveal"><span class="sec-index">四 · LANDMARK</span><h2>ある給水塔の記憶のしかた</h2></div>
       <hr class="sec-rule reveal">
       <p class="sec-lede reveal">どの古いキャンパスにも、すべての校舎より年長の建造物がひとつあります。十五中では、それは木の梢の上に立つこの古い給水塔です。</p>
       <div class="duo">
@@ -429,13 +450,13 @@ window.addEventListener('DOMContentLoaded', function () {
           <figcaption><span class="cap-t">給水塔 · 夕焼け</span><span class="cap-d">2023.06</span></figcaption>
         </figure>
       </div>
-      <p class="tale reveal">もう水を送ることはありません。それでもこの塔は、今も毎日時間どおりに<em>日の出と夕焼け</em>を受け止めています。三年のあいだ、教室の窓の右側に、トラックの突き当たりに、下校の帰り道のふと見上げた一瞥の中に——まるで物言わぬ時計番のように、私たちのために覚えていてくれたのです。授業の始まりと、終わりと、四季と、卒業を。</p>
+      <p class="tale reveal">もう水を送ることはありません。それでもこの塔は、今も毎日時間どおりに<em>日の出と夕焼け</em>を受け止めています。三年のあいだ、教室の窓の右側に、陸上トラックの突き当たりに、下校の帰り道のふと見上げた一瞥の中に——まるで物言わぬ時計番のように、私たちのために覚えていてくれたのです。授業の始まりと、終わりと、四季と、卒業を。</p>
     </div>
   </section>
 
   <!-- ===================== マップ（時を巡るツアー） ===================== -->
   <section class="block campus-map-scope" id="map">
-    <div class="sec-head reveal"><span class="sec-index">伍 · MAP</span><h2>時を巡るフォトツアー</h2></div>
+    <div class="sec-head reveal"><span class="sec-index">五 · MAP</span><h2>時を巡るフォトツアー</h2></div>
     <hr class="sec-rule reveal">
     <p class="sec-lede reveal">八枚の写真、八つの場所。矢印で巡ることも、下の地図を灯して、レンズとともにあの片隅へ戻ることもできます。</p>
     <div class="tour-viewer reveal" id="tourViewer">
@@ -451,12 +472,12 @@ window.addEventListener('DOMContentLoaded', function () {
     <div class="minimap reveal">
       <div id="campusMap" role="region" aria-label="青山湖キャンパスの位置マップ（8つの撮影地点を表示）"></div>
     </div>
-    <p class="map-note reveal">地図 © OpenStreetMap contributors（ラスタタイルには中国語の地名が含まれます）</p>
+    <p class="map-note reveal">地図 © OpenStreetMap contributors（ラスタータイルには中国語の地名が含まれます）</p>
   </section>
 
   <!-- ===================== おわりに ===================== -->
   <section class="block words" id="words">
-    <div class="sec-head reveal"><span class="sec-index">陸 · EPILOGUE</span><h2>おわりに</h2></div>
+    <div class="sec-head reveal"><span class="sec-index">六 · EPILOGUE</span><h2>おわりに</h2></div>
     <hr class="sec-rule reveal">
     <blockquote class="reveal">
       三年のあいだに、ここでのあまりにも多くの朝と夕暮れを見てきました——旗竿の下の朝の光、廊下の突き当たりの夕焼け、雪の重みでしなる松の枝、夏休みの誰もいない広場。卒業してからようやくわかったのです。母校とは、<em>離れてからこそ限りなく懐かしくなる</em>場所のことだということに。<br>
@@ -467,9 +488,9 @@ window.addEventListener('DOMContentLoaded', function () {
 
   <!-- ===================== メッセージウォール ===================== -->
   <section class="block wall" id="wall">
-    <div class="sec-head reveal"><span class="sec-index">漆 · WALL</span><h2>メッセージウォール</h2></div>
+    <div class="sec-head reveal"><span class="sec-index">七 · WALL</span><h2>メッセージウォール</h2><a id="wallAdmin" class="wall-admin" href="/comment/sidebar/" target="_blank" rel="noopener" title="管理者用の承認画面（要ログイン）"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>管理</a></div>
     <hr class="sec-rule reveal">
-    <p class="sec-lede reveal">記念帳は、ひとりの声だけでできていてはいけません。あの頃のひと言を残してみてください——ログイン不要。投稿は管理者の承認後に表示されます。</p>
+    <p class="sec-lede reveal">記念アルバムは、ひとりの声だけでできていてはいけません。あの頃のひと言を残してみてください——ログイン不要。投稿は管理者の承認後に表示されます。</p>
     <div class="bili-comments reveal">
       <div class="bili-editor-row">
         <div class="bili-avatar" id="myAvatar" title="クリックしてアイコンをアップロード">通</div>
@@ -477,7 +498,7 @@ window.addEventListener('DOMContentLoaded', function () {
         <div class="bili-editor-box">
           <textarea id="cmtInput" maxlength="500" aria-label="メッセージ内容（匿名投稿、承認後に表示）" placeholder="やさしい言葉はいつか縁になる。——あの頃のひと言をどうぞ……"></textarea>
           <div class="bili-editor-foot">
-            <span class="bili-nick-wrap">名前 <input id="cmtNick" maxlength="20" aria-label="名前（任意。空欄なら「通りすがり」と表示）" placeholder="空欄なら「通りすがり」と表示されます"></span>
+            <span class="bili-nick-wrap">名前 <input id="cmtNick" maxlength="20" aria-label="名前（任意。空欄なら「通りすがり」と表示）" placeholder="空欄なら「通りすがり」"></span>
             <span id="cmtCount">0 / 500</span>
             <button id="cmtSubmit">送信</button>
           </div>
@@ -497,7 +518,7 @@ window.addEventListener('DOMContentLoaded', function () {
   <div class="footer-inner">
     <div>
       <img src="../images/emblem-320.png" alt="南昌市第十五中学の校章" width="44" height="44">
-      <div class="f-brand">南昌市第十五中学 · 記念帳</div>
+      <div class="f-brand">南昌市第十五中学 · 記念アルバム</div>
       <div>写真・制作：熊鑫晨</div>
     </div>
     <div class="right">
@@ -541,8 +562,8 @@ window.addEventListener('DOMContentLoaded', function () {
   </div>
 </div>
 
-<script src="../assets/main.js?v=20260912d" defer></script>
-<script src="../assets/wall.js?v=20260912d" defer></script>
+<script src="../assets/main.js?v=20260912e" defer></script>
+<script src="../assets/wall.js?v=20260912e" defer></script>
 <!-- map.js は head 内の遅延イニシエータが地図セクション接近時に maplibre-gl.js を読み込みます -->
 </body>
 </html>

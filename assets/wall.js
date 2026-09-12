@@ -15,7 +15,7 @@
 
   /* ---------- 四语字符串表（仅 JS 动态生成的部分；HTML 静态文案随页面走） ---------- */
   var T = EN ? {
-    guest: 'A passerby', guestChar: 'V',
+    guest: 'A passing classmate', guestChar: 'V',
     avatarAltOf: '’s avatar', myAvatarAlt: 'My avatar',
     ariaAvatar: 'Upload a custom avatar',
     ariaLike: 'Upvote this message', ariaReplyTo: 'Reply to ',

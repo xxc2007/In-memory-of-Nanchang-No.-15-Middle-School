@@ -29,7 +29,7 @@
 <link rel="icon" type="image/png" href="../images/emblem-64.png">
 <link rel="apple-touch-icon" href="../images/emblem-180.png">
 <link rel="stylesheet" href="../assets/fonts/noto-serif-sc/wght.css">
-<link rel="stylesheet" href="../assets/style.css?v=20260912d">
+<link rel="stylesheet" href="../assets/style.css?v=20260912e">
 <link rel="preload" as="image" href="../images/full/18-plaza-summer.jpg" fetchpriority="high">
 <noscript>
 <style>
@@ -40,6 +40,15 @@
   display:flex;align-items:center;justify-content:center;height:100%;
   color:#6E6A5E;font-size:13px;letter-spacing:.14em}
 #cmtLoading{display:none}
+/* 語言切換：無 JS 時按鈕點不開，改為直接鋪開四語連結（沿用舊藥丸視覺，不丟入口） */
+.lang-btn{display:none}
+.lang-menu[hidden]{display:flex!important;position:static;padding:0;border:none;
+  background:none;box-shadow:none;min-width:0;animation:none}
+.lang-menu{flex-direction:row;gap:4px}
+.lang-item{padding:5px 11px;border:1px solid rgba(217,119,87,.45);border-radius:99px;
+  font-size:13px;color:#C15F3C}
+.lang-item .lang-check{display:none}
+.lang-nav{margin-left:4px;padding-left:8px}
 </style>
 </noscript>
 <script type="application/ld+json">
@@ -83,7 +92,7 @@ window.addEventListener('DOMContentLoaded', function () {
       s.src = '../maplibre/maplibre-gl.js?v=20260907f';
       s.onload = function () {
         var m = document.createElement('script');
-        m.src = '../assets/map.js?v=20260912d';
+        m.src = '../assets/map.js?v=20260912e';
         document.body.appendChild(m);
       };
       document.body.appendChild(s);
@@ -104,21 +113,31 @@ window.addEventListener('DOMContentLoaded', function () {
       <img src="../images/emblem-320.png" alt="南昌市第十五中學校徽" width="28" height="28">
       <b>南昌市第十五中學</b><span>紀念冊 · 2022–2025</span>
     </div>
-    <nav class="toc" aria-label="頁面導覽">
-      <a href="#about">概況</a>
-      <a href="#history">沿革</a>
-      <a href="#gallery">光影</a>
-      <a href="#landmark">水塔</a>
-      <a href="#map">尋蹤</a>
-      <a href="#words">寄語</a>
-      <a href="#wall">留言</a>
-      <span class="lang-group" role="group" aria-label="語言">
-        <a class="lang-switch" lang="zh-Hans" hreflang="zh-Hans" href="/" title="简体中文">简</a>
-        <a class="lang-switch" lang="zh-Hant" hreflang="zh-Hant" href="/zh-Hant/" aria-current="true" title="繁體中文">繁</a>
-        <a class="lang-switch" lang="en" hreflang="en" href="/en/" title="English">En</a>
-        <a class="lang-switch" lang="ja" hreflang="ja" href="/ja/" title="日本語">日</a>
-      </span>
-    </nav>
+    <div class="topbar-right">
+      <nav class="toc" aria-label="頁面導覽">
+        <a href="#about">概況</a>
+        <a href="#history">沿革</a>
+        <a href="#gallery">光影</a>
+        <a href="#landmark">水塔</a>
+        <a href="#map">尋蹤</a>
+        <a href="#words">寄語</a>
+        <a href="#wall">留言</a>
+      </nav>
+      <!-- 語言切換：整塊 notranslate / translate="no"，避免被雙語翻譯外掛擴寫撐破 -->
+      <div class="lang-nav notranslate" id="langSwitch" translate="no">
+        <button type="button" class="lang-btn" id="langBtn" aria-haspopup="true" aria-expanded="false" aria-controls="langMenu" aria-label="切換語言，目前為繁體中文">
+          <svg class="lang-globe" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3.6 9h16.8M3.6 15h16.8"/><path d="M12 3c2.6 2.6 3.9 5.7 3.9 9s-1.3 6.4-3.9 9c-2.6-2.6-3.9-5.7-3.9-9S9.4 5.6 12 3z"/></svg>
+          <span class="lang-current notranslate" translate="no" aria-hidden="true"></span><span class="lang-current-short notranslate" translate="no" aria-hidden="true"></span>
+          <svg class="lang-caret" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="lang-menu" id="langMenu" role="menu" aria-labelledby="langBtn" hidden>
+          <a class="lang-item" role="menuitem" lang="zh-Hans" hreflang="zh-Hans" href="/"><span class="lang-native notranslate" translate="no">简体中文</span><svg class="lang-check" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 13 4.5 4.5L19 7"/></svg></a>
+          <a class="lang-item" role="menuitem" lang="zh-Hant" hreflang="zh-Hant" href="/zh-Hant/" aria-current="true"><span class="lang-native notranslate" translate="no">繁體中文</span><svg class="lang-check" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 13 4.5 4.5L19 7"/></svg></a>
+          <a class="lang-item" role="menuitem" lang="en" hreflang="en" href="/en/"><span class="lang-native notranslate" translate="no">English</span><svg class="lang-check" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 13 4.5 4.5L19 7"/></svg></a>
+          <a class="lang-item" role="menuitem" lang="ja" hreflang="ja" href="/ja/"><span class="lang-native notranslate" translate="no">日本語</span><svg class="lang-check" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 13 4.5 4.5L19 7"/></svg></a>
+        </div>
+      </div>
+    </div>
   </div>
   <span class="progress" id="progress" aria-hidden="true"></span>
 </header>
@@ -150,7 +169,7 @@ window.addEventListener('DOMContentLoaded', function () {
     <div class="about-grid">
       <div class="about-text reveal">
         <p>南昌市第十五中學創建於<strong>1958年</strong>，是南昌市教育局直屬公辦完全中學，<strong>江西省重點中學</strong>、<strong>江西省文明校園</strong>。學校坐落於南昌市<strong>青山湖畔</strong>。據公開資料，學校現有<strong>51個教學班</strong>（初中23個、高中28個），在校學生<strong>2600餘人</strong>。</p>
-        <p><strong>2012年</strong>，經南昌市人民政府批准，學校與原南昌市第三十中學合併辦學，原三十中校區作為初中校區。此後初中部於<strong>2016年</strong>更名為「南昌二中教育集團青山湖校區」，高中部於<strong>2017年</strong>開辦「二中班」，由南昌二中派駐師資、共享教育資源。據2024年公開資訊，學校編制人數<strong>154人</strong>，校長為熊祎。</p>
+        <p><strong>2012年</strong>，經南昌市人民政府批准，學校與原南昌市第三十中學合併辦學，原三十中校區作為初中校區。此後初中部於<strong>2016年</strong>更名為「南昌二中教育集團青山湖校區」，高中部於<strong>2017年</strong>開辦「二中班」，由南昌二中派駐師資、共享教育資源。據2024年公開資訊，學校編制人數<strong>154人</strong>，校長為熊禕。</p>
         <p>校園內，紅磚教學樓與香樟、雪松相映，老水塔立在樹梢之上；田徑場、籃球場、網球場與圖書館一應俱全，體育場館並向社會開放。</p>
         <div class="pull">
           「敬業以立德，篤學以修身。」
@@ -188,7 +207,7 @@ window.addEventListener('DOMContentLoaded', function () {
   <section class="block" id="history">
     <div class="sec-head reveal"><span class="sec-index">貳 · HISTORY</span><h2>沿革紀要</h2></div>
     <hr class="sec-rule reveal">
-    <p class="sec-lede reveal">只列有據可查的年份——歷史的剋制，也是紀念的誠意。</p>
+    <p class="sec-lede reveal">只列有據可查的年份——歷史的克制，也是紀念的誠意。</p>
     <div class="timeline">
       <div class="t-item reveal">
         <div class="t-year">1958</div>
@@ -290,7 +309,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
     <!-- 組三 · 四季草木與天光 -->
     <div class="group-head reveal"><span class="g-no">其三</span><h3>四季 · 草木與天光</h3><span class="g-note">春樟 · 夏霞 · 秋暮 · 冬雪</span></div>
-    <p class="group-desc reveal">香樟在春分抽出紅綠交織的新葉；六月晚霞把水塔染成剪影；深秋的路燈次第亮起；而2024年1月22日那場大雪，壓彎了雪松，也壓住了整個校園的喧譁。</p>
+    <p class="group-desc reveal">香樟在春分抽出紅綠交織的新葉；六月晚霞把水塔染成剪影；深秋的路燈次第亮起；而2024年1月22日那場大雪，壓彎了雪松，也壓住了整個校園的喧嘩。</p>
     <div class="gallery-grid">
       <figure class="ph reveal" style="--i:0" data-cap="春分 · 香樟新葉與車棚" data-date="2023年3月22日">
         <a href="../images/full/07-camphor-spring.jpg" target="_blank" rel="noopener">
@@ -449,7 +468,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
     <div class="mm-head reveal"><b>定位圖</b><span>點擊標記，漫遊到那個位置</span></div>
     <div class="minimap reveal">
-      <div id="campusMap" role="region" aria-label="南昌市第十五中學青山湖校區定位圖，標注八個照片拍攝位置"></div>
+      <div id="campusMap" role="region" aria-label="南昌市第十五中學青山湖校區定位圖，標註八個照片拍攝位置"></div>
     </div>
     <p class="map-note reveal">底圖 © OpenStreetMap 貢獻者（柵格瓦片含中文地名）</p>
   </section>
@@ -467,7 +486,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
   <!-- ===================== 留言牆 ===================== -->
   <section class="block wall" id="wall">
-    <div class="sec-head reveal"><span class="sec-index">柒 · WALL</span><h2>留言牆</h2></div>
+    <div class="sec-head reveal"><span class="sec-index">柒 · WALL</span><h2>留言牆</h2><a id="wallAdmin" class="wall-admin" href="/comment/sidebar/" target="_blank" rel="noopener" title="站長留言管理（需登入）"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>管理留言</a></div>
     <hr class="sec-rule reveal">
     <p class="sec-lede reveal">紀念冊不該只有一個人的聲音。寫一句那年的話——無需登入，發布後經站長審核即會展示。</p>
     <div class="bili-comments reveal">
@@ -541,8 +560,8 @@ window.addEventListener('DOMContentLoaded', function () {
   </div>
 </div>
 
-<script src="../assets/main.js?v=20260912d" defer></script>
-<script src="../assets/wall.js?v=20260912d" defer></script>
+<script src="../assets/main.js?v=20260912e" defer></script>
+<script src="../assets/wall.js?v=20260912e" defer></script>
 <!-- 定位圖（map.js）由 head 內的惰性初始化器在滾動臨近時按需載入 maplibre-gl.js -->
 </body>
 </html>
