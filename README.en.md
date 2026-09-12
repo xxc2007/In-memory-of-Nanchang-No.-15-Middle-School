@@ -41,8 +41,9 @@ Pure HTML / CSS / vanilla JS with structure, style and behavior separated (`inde
 ### 📖 The memorial itself
 
 - **Seven sections**: School Overview → History → Campus Gallery (25 photographs in six themed groups) → The Water Tower → Campus Map → Epilogue → Guestbook
+- **Bilingual**: one-click switch in the top bar (`/` ↔ `/en/`), with mutual hreflang + sitemap alternates; dynamic copy in the tour, map and guestbook follows the page language, and both versions share one message wall
 - Claude visual language: cream paper background + terracotta accents + serif headlines, with consistent hairlines and rounded cards throughout
-- Fully responsive (three breakpoints) with a `prefers-reduced-motion` fallback
+- Fully responsive (three breakpoints), a print-for-binding stylesheet, and a `prefers-reduced-motion` fallback
 
 ### 🗺 Campus Tour (photo tour + MapLibre location map)
 
@@ -83,15 +84,17 @@ All animations share a single rAF-driven scroll loop and degrade gracefully when
 
 ```text
 site/
-├── index.html          # Semantic markup (no inline styles or scripts)
+├── index.html          # Chinese page (semantic markup; inline only the stagger indices and the map lazy-loader)
+├── en/index.html       # English page (same structure; assets shared via ../ relative paths, file:// friendly)
 ├── assets/
-│   ├── style.css       # Site-wide styles (tokens, components, breakpoints, fallbacks)
+│   ├── style.css       # Site-wide styles (tokens, components, breakpoints, print, fallbacks)
 │   ├── main.js         # Main interactions: progress, scrollspy, parallax, inertia, lightbox
-│   ├── map.js          # Photo tour + location map (lazy-loaded MapLibre)
-│   └── wall.js         # Guestbook (talks to self-hosted Artalk)
+│   ├── map.js          # Photo tour + location map (lazy-loaded MapLibre; spot data in zh/en fields)
+│   └── wall.js         # Guestbook (talks to self-hosted Artalk; dynamic copy follows <html lang>)
 ├── images/
-│   ├── full/           # 25 full-size photographs
+│   ├── full/           # 25 full-size photographs (plus 4 spare shots: 10/22/23/25, not yet exhibited)
 │   ├── thumbs/         # Matching thumbnails
+│   ├── og-card.jpg     # 1200×630 social share card
 │   └── emblem-*.png    # School emblem (top bar / hero / footer / favicon)
 ├── maplibre/           # Self-hosted MapLibre GL v5 (no CDN dependency)
 └── docs/               # README screenshots + [migration guide](docs/MIGRATION.en.md)
@@ -122,9 +125,11 @@ python -m http.server 8000   # or any static server; open http://localhost:8000
 ## 📝 Design notes
 
 - **Visual direction**: Claude / Anthropic visual language (cream paper + terracotta + serif), specified by the site owner at the very beginning; every iteration grows within this direction. The background stays a pure cream paper surface with no decorative layers — motion always yields to content.
+- **Bilingual architecture**: two static pages (`/` and `/en/`) rather than runtime translation — each page owns its full semantic content and SEO metadata, mutually recognised via hreflang and sitemap alternates; `wall.js`/`map.js`/`main.js` switch dynamic copy by `<html lang>`, and both versions share one guestbook (same page_key), so messages in either language land on the same wall.
 - **Desktop inertial scrolling is intentional**: the wheel is driven through inertial interpolation (Oryzo/Lusion feel), enabled only on fine-pointer devices; browser zoom (Ctrl+wheel), the map canvas, inputs and the lightbox are never hijacked, and touch devices / `prefers-reduced-motion` users keep native scrolling. Not a bug.
 - **Browser support matrix**: modern evergreen browsers only (Chrome / Edge / Firefox / Safari, last two years). IE and Legacy Edge are explicitly unsupported; no polyfills.
 - **Guestbook fetch cap**: at most 100 comments per request (plenty for a memorial page); the counter prefers the server-side total. All network requests carry a 15-second timeout fallback.
+- **Spare shot pool**: `10-brick-building-court`, `22-running-track`, `23-library-gate` and `25-staff-lane` (in `images/full|thumbs`) are deliberately kept as spare material, not yet exhibited; reach for them first when adding or replacing photos.
 
 ## 📄 License
 
