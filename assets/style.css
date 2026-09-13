@@ -215,8 +215,11 @@ html[lang^="ko"] .lang-item[lang="ko"] .lang-native{font-family:'Apple SD Gothic
 .scroll-hint::after{content:"";flex:1;height:1px;background:var(--line)}
 @keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
 
-/* 标题逐行揭示：每行套 .line-mask，内部 .line 上滑 */
-.line-mask{display:block;overflow:hidden}
+/* 标题逐行揭示：每行套 .line-mask，内部 .line 上滑
+   padding-bottom 給降部字母（Q g p y j 等）留出渲染空间——
+   overflow:hidden 裁掉的正是这些「基线以下」的笔画，
+   在拉丁/西里尔文字中尤为明显；负 margin 抵消额外间距，版面不变 */
+.line-mask{display:block;overflow:hidden;padding-bottom:.15em;margin-bottom:-.15em}
 .hero h1 .line{display:block;transform:translateY(105%);animation:lineUp 1.1s cubic-bezier(.16,.84,.28,1) forwards}
 .hero h1 .line:nth-child(2){animation-delay:.16s}
 @keyframes lineUp{to{transform:none}}
