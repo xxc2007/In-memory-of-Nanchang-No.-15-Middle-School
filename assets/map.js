@@ -179,68 +179,70 @@
      但漫游必须照常显示（paint 原先排在定位图之后，会一起静默消失）。 */
   paint();
 
-  var el = document.getElementById('campusMap');
-  if (!el || el.getAttribute('data-map-ready')) return;
-  if (typeof maplibregl === 'undefined') { el.setAttribute('data-map-failed', '1'); return; }
-  el.setAttribute('data-map-ready', '1');
+  /* 定位图初始化：暴露为全局函数。map.js 提前加载（漫游不被连坐），
+     而 MapLibre 由惰性加载器按需载入，加载完后调用此函数初始化定位图。 */
+  window.__initCampusMap = function () {
+    var el = document.getElementById('campusMap');
+    if (!el || el.getAttribute('data-map-ready')) return;
+    if (typeof maplibregl === 'undefined') { el.setAttribute('data-map-failed', '1'); return; }
+    el.setAttribute('data-map-ready', '1');
 
-  var map;
-  try {
-    map = new maplibregl.Map({
-      container: el,
-      style: {
-        version: 8,
-        sources: {
-          osm: {
-            type: 'raster',
-            tiles: ['https://tile.openstreetmap.org/{z}/{x}/{y}.png'],
-            tileSize: 256, maxzoom: 19,
-            attribution: ARIA.attribution
-          }
+    try {
+      var map = new maplibregl.Map({
+        container: el,
+        style: {
+          version: 8,
+          sources: {
+            osm: {
+              type: 'raster',
+              tiles: ['https://tile.openstreetmap.org/{z}/{x}/{y}.png'],
+              tileSize: 256, maxzoom: 19,
+              attribution: ARIA.attribution
+            }
+          },
+          layers: [
+            { id: 'bg', type: 'background', paint: { 'background-color': '#EDEAE0' } },
+            { id: 'osm', type: 'raster', source: 'osm' }
+          ]
         },
-        layers: [
-          { id: 'bg', type: 'background', paint: { 'background-color': '#EDEAE0' } },
-          { id: 'osm', type: 'raster', source: 'osm' }
-        ]
-      },
-      center: [115.93216, 28.72078],
-      zoom: 15.6, pitch: 0, bearing: 0,
-      attributionControl: false
-    });
-  } catch (err) {
-    el.setAttribute('data-map-failed', '1');   /* 定位图降级：漫游与其余区块不受影响 */
-    return;
-  }
-  window.__campusMap = map;
-  map.addControl(new maplibregl.AttributionControl({ compact: true }));
-  map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
+        center: [115.93216, 28.72078],
+        zoom: 15.6, pitch: 0, bearing: 0,
+        attributionControl: false
+      });
+      window.__campusMap = map;
+      map.addControl(new maplibregl.AttributionControl({ compact: true }));
+      map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
 
-  SPOTS.forEach(function (s, i) {
-    var pin = document.createElement('button');
-    pin.type = 'button';
-    pin.className = 'mm-pin';
-    pin.title = spotName(s);
-    pin.setAttribute('aria-label', ARIA.viewSpot + spotName(s));
-    var m = new maplibregl.Marker({ element: pin, anchor: 'center' }).setLngLat([s.lng, s.lat]).addTo(map);
-    mmMarkers.push({ el: pin, m: m, s: s });
-    pin.addEventListener('click', function (ev) {
-      ev.stopPropagation();
-      go(i);
-    });
-  });
+      SPOTS.forEach(function (s, i) {
+        var pin = document.createElement('button');
+        pin.type = 'button';
+        pin.className = 'mm-pin';
+        pin.title = spotName(s);
+        pin.setAttribute('aria-label', ARIA.viewSpot + spotName(s));
+        var mk = new maplibregl.Marker({ element: pin, anchor: 'center' }).setLngLat([s.lng, s.lat]).addTo(map);
+        mmMarkers.push({ el: pin, m: mk, s: s });
+        pin.addEventListener('click', function (ev) {
+          ev.stopPropagation();
+          go(i);
+        });
+      });
 
-  /* 瓦片失败降级：WebGL 正常但瓦片拉不下来（OSM 被墙/限流）时，地图只剩灰底无任何说明。
-     判定条件刻意收紧：10 秒内「一张瓦片都没成功加载」且「累计 ≥3 次瓦片错误」才标记，
-     避免把偶发的网络抖动误报成失败。 */
-  var tilesLoaded = false, tileErrors = 0;
-  map.on('data', function (e) { if (e && e.tile) tilesLoaded = true; });
-  map.on('error', function (e) { if (e && e.tile) tileErrors++; });
-  setTimeout(function () {
-    if (!tilesLoaded && tileErrors >= 3) el.setAttribute('data-map-tiles-failed', '1');
-  }, 10000);
+      var tilesLoaded = false, tileErrors = 0;
+      map.on('data', function (e) { if (e && e.tile) tilesLoaded = true; });
+      map.on('error', function (e) { if (e && e.tile) tileErrors++; });
+      setTimeout(function () {
+        if (!tilesLoaded && tileErrors >= 3) el.setAttribute('data-map-tiles-failed', '1');
+      }, 10000);
 
-  window.addEventListener('load', function () { map.resize(); });
-  paint();   /* 机位钉建好后重绘一次，让当前机位钉与漫游保持一致（paint 幂等） */
+      window.addEventListener('load', function () { map.resize(); });
+    } catch (err) {
+      el.setAttribute('data-map-failed', '1');
+    }
+    paint();
+  };
+
+  /* 如果 maplibre 已经可用（例如脚本加载顺序恰好正确），立即初始化 */
+  window.__initCampusMap();
   /* ---------- 五语机位补充数据（键为 img 文件名；不动 SPOTS 结构） ---------- */
   var I18N5 = {
     '01-gate.jpg': {
