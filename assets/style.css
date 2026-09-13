@@ -115,10 +115,20 @@ html[lang="zh-CN"] .lang-current::before,html[lang^="zh-Hans"] .lang-current::be
 html[lang^="zh-Hant"] .lang-current::before{content:"繁體中文"}
 html[lang^="en"] .lang-current::before{content:"English"}
 html[lang^="ja"] .lang-current::before{content:"日本語"}
+html[lang^="ko"] .lang-current::before{content:"한국어"}
+html[lang^="ru"] .lang-current::before{content:"Русский"}
+html[lang^="es"] .lang-current::before{content:"Español"}
+html[lang^="fr"] .lang-current::before{content:"Français"}
+html[lang^="pt"] .lang-current::before{content:"Português"}
 html[lang="zh-CN"] .lang-current-short::before,html[lang^="zh-Hans"] .lang-current-short::before{content:"简"}
 html[lang^="zh-Hant"] .lang-current-short::before{content:"繁"}
 html[lang^="en"] .lang-current-short::before{content:"EN"}
 html[lang^="ja"] .lang-current-short::before{content:"日"}
+html[lang^="ko"] .lang-current-short::before{content:"한"}
+html[lang^="ru"] .lang-current-short::before{content:"RU"}
+html[lang^="es"] .lang-current-short::before{content:"ES"}
+html[lang^="fr"] .lang-current-short::before{content:"FR"}
+html[lang^="pt"] .lang-current-short::before{content:"PT"}
 .lang-current-short{display:none}
 
 .lang-menu{
@@ -147,6 +157,12 @@ html[lang^="zh-Hant"] .lang-current,
 html[lang^="zh-Hant"] .lang-item[lang="zh-Hant"] .lang-native{font-family:"PingFang TC","Microsoft JhengHei","Noto Sans TC",var(--sans)}
 html[lang^="ja"] .lang-current,
 html[lang^="ja"] .lang-item[lang="ja"] .lang-native{font-family:"Hiragino Sans","Yu Gothic","Noto Sans JP",var(--sans)}
+/* 韩文页面：标题衬线与正文无衬线都换到含谚文的书体（Noto Serif SC 无谚文字形） */
+html[lang^="ko"]{
+  --serif:'Noto Serif KR','Noto Serif SC','NanumMyeongjo','Batang','Apple SD Gothic Neo','Malgun Gothic',Georgia,'Times New Roman',serif;
+  --sans:'Apple SD Gothic Neo','Noto Sans KR','Malgun Gothic','AppleGothic',-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;
+}
+html[lang^="ko"] .lang-item[lang="ko"] .lang-native{font-family:'Apple SD Gothic Neo','Noto Sans KR','Malgun Gothic',var(--sans)}
 /* 防翻译插件：把文本节点包成块级 wrapper 时，内部一律收回 inline 级，布局不被撑破 */
 .lang-nav .lang-btn>span>*,.lang-nav .lang-item>span>*{display:inline}
 
@@ -361,8 +377,23 @@ html[lang^="ja"] .ph-img.load-failed::before,
 html[lang^="ja"] .hero-img-wrap.load-failed::before{content:"画像を読み込めません · 後ほど再度お試しください"}
 html[lang^="zh-Hant"] .ph-img.load-failed::before,
 html[lang^="zh-Hant"] .hero-img-wrap.load-failed::before{content:"圖片載入失敗 · 請稍後再試"}
+html[lang^="ko"] .ph-img.load-failed::before,
+html[lang^="ko"] .hero-img-wrap.load-failed::before{content:"이미지를 불러올 수 없습니다 · 잠시 후 다시 시도해 주세요"}
+html[lang^="ru"] .ph-img.load-failed::before,
+html[lang^="ru"] .hero-img-wrap.load-failed::before{content:"Не удалось загрузить изображение · попробуйте позже"}
+html[lang^="es"] .ph-img.load-failed::before,
+html[lang^="es"] .hero-img-wrap.load-failed::before{content:"No se pudo cargar la imagen · inténtalo de nuevo más tarde"}
+html[lang^="fr"] .ph-img.load-failed::before,
+html[lang^="fr"] .hero-img-wrap.load-failed::before{content:"Impossible de charger l'image · réessayez plus tard"}
+html[lang^="pt"] .ph-img.load-failed::before,
+html[lang^="pt"] .hero-img-wrap.load-failed::before{content:"Não foi possível carregar a imagem · tente novamente mais tarde"}
 html[lang^="ja"] .bili-editor-row .bili-avatar:hover::after{content:"アイコン変更"}
 html[lang^="zh-Hant"] .bili-editor-row .bili-avatar:hover::after{content:"換頭像"}
+html[lang^="ko"] .bili-editor-row .bili-avatar:hover::after{content:"아이콘 변경"}
+html[lang^="ru"] .bili-editor-row .bili-avatar:hover::after{content:"Сменить аватар"}
+html[lang^="es"] .bili-editor-row .bili-avatar:hover::after{content:"Cambiar avatar"}
+html[lang^="fr"] .bili-editor-row .bili-avatar:hover::after{content:"Changer l'avatar"}
+html[lang^="pt"] .bili-editor-row .bili-avatar:hover::after{content:"Mudar avatar"}
 
 /* 单张收束组（其六 · 高考签名墙）：升格为电影宽幅卡 */
 .gallery-grid.feature{grid-template-columns:1fr}
