@@ -41,7 +41,6 @@
     avatarNetFail: 'Avatar upload failed. Please try again later.',
     avatarReadFail: 'Could not read that image. Please try another one.',
     avatarProcessFail: 'Avatar processing failed. Please try another image.',
-    avatarAlt: 'avatar',
     months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
   } : JA ? {
     guest: '通りすがり', guestChar: '通',
@@ -86,7 +85,6 @@
     avatarNetFail: '頭像上傳失敗，請稍後重試。',
     avatarReadFail: '圖片讀取失敗，請換一張圖片。',
     avatarProcessFail: '頭像處理失敗，請換一張圖片。',
-    avatarAlt: '的頭像',
     months: null  } : KO ? {
     guest: '지나가던 학생', guestChar: '학',
     avatarAltOf: '의 아바타', myAvatarAlt: '내 아바타',
@@ -108,8 +106,7 @@
     avatarNetFail: '아바타 업로드에 실패했습니다. 잠시 후 다시 시도해 주세요.',
     avatarReadFail: '이미지를 읽을 수 없습니다. 다른 이미지를 시도해 주세요.',
     avatarProcessFail: '아바타 처리에 실패했습니다. 다른 이미지를 시도해 주세요.',
-    avatarAlt: '아바타',
-    months: null
+    months: null   /* 한국어는 「년 월 일」 분기 사용 */
   } : RU ? {
     guest: 'Гость', guestChar: 'Г',
     avatarAltOf: ' — аватар', myAvatarAlt: 'Мой аватар',
@@ -175,11 +172,10 @@
     avatarNetFail: "Impossible de téléverser l'avatar. Réessaie plus tard.",
     avatarReadFail: 'Impossible de lire cette image. Essaie-en une autre.',
     avatarProcessFail: "Échec du traitement de l'avatar. Essaie une autre image.",
-    avatarAlt: 'avatar',
-    months: null
+    months: ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.']
   } : PT ? {
     guest: 'Um colega de passagem', guestChar: 'C',
-    avatarAltOf: '’s avatar', myAvatarAlt: 'Meu avatar',
+    avatarAltOf: ' — avatar', myAvatarAlt: 'Meu avatar',
     ariaAvatar: 'Enviar seu próprio avatar',
     ariaLike: 'Curtir esta mensagem', ariaReplyTo: 'Responder a ',
     replyLabel: 'Responder', cancelLabel: 'Cancelar', postLabel: 'Publicar',
@@ -198,11 +194,10 @@
     avatarNetFail: 'Não foi possível enviar o avatar. Tente novamente mais tarde.',
     avatarReadFail: 'Não foi possível ler essa imagem. Tente outra.',
     avatarProcessFail: 'Falha ao processar o avatar. Tente outra imagem.',
-    avatarAlt: 'avatar',
-    months: null
+    months: ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez']
   } : AR ? {
     guest: 'طالب عابر', guestChar: 'ط',
-    avatarAltOf: ' صورة رمزية', myAvatarAlt: 'صورتي الرمزية',
+    avatarAltOf: ' — صورة رمزية', myAvatarAlt: 'صورتي الرمزية',
     ariaAvatar: 'رفع صورة رمزية مخصصة',
     ariaLike: 'إعجاب بهذه الرسالة', ariaReplyTo: 'رد على ',
     replyLabel: 'رد', cancelLabel: 'إلغاء', postLabel: 'نشر',
@@ -243,8 +238,7 @@
     avatarNetFail: '头像上传失败，请稍后重试。',
     avatarReadFail: '图片读取失败，请换一张图片。',
     avatarProcessFail: '头像处理失败，请换一张图片。',
-    avatarAlt: '的头像',
-    months: null
+    months: null   /* 中文走「年月日」分支 */
   };
 
   var AVATAR_GRADS = [
