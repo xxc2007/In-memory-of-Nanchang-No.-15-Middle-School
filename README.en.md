@@ -96,11 +96,16 @@ site/
 ├── zh-Hant/index.html  # Traditional Chinese page (Taiwan usage: 暱稱/登入/載入/網路/郵遞區號)
 ├── en/index.html       # English page (assets shared via ../ relative paths, file:// friendly)
 ├── ja/index.html       # Japanese page (natural phrasing: おわりに, 通りすがり, メッセージウォール…)
+├── ko/index.html       # Korean page (natural Korean: 기념 앨범, 지나가던 학생, 방명록…)
+├── ru/index.html       # Russian page (natural Russian phrasing throughout)
+├── es/index.html       # Spanish page (idiomatic Spanish, not machine-translated)
+├── fr/index.html       # French page (idiomatic French formulations)
+├── pt/index.html       # Portuguese page (idiomatic Portuguese expressions)
 ├── assets/
 │   ├── style.css       # Site-wide styles (tokens, components, breakpoints, print, fallbacks)
 │   ├── main.js         # Main interactions: progress, scrollspy, parallax, inertia, lightbox
-│   ├── map.js          # Photo tour + location map (lazy-loaded MapLibre; spot data in 4 languages)
-│   └── wall.js         # Guestbook (talks to self-hosted Artalk; dynamic copy follows <html lang>)
+│   ├── map.js          # Photo tour + location map (lazy-loaded MapLibre; spot data in 9 languages)
+│   └── wall.js         # Guestbook (talks to self-hosted Artalk; dynamic copy in 9 languages follows <html lang>)
 ├── images/
 │   ├── full/           # 25 full-size photographs (plus 4 spare shots: 10/22/23/25, not yet exhibited)
 │   ├── thumbs/         # Matching thumbnails

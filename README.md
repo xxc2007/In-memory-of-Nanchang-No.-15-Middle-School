@@ -44,7 +44,7 @@
 ### 📖 纪念册本体
 
 - **七个章节**：概况 → 沿革 → 光影（25 张摄影，六个专题组）→ 水塔 → 寻踪 → 寄语 → 留言墙
-- **九种语言**：顶栏右侧「地球图标 + 下拉语言菜单」（参照 AMD 官网的切换方式，菜单里是 简体中文 / 繁體中文 / English / 日本語 九个完整本族名，当前语言赤陶橙高亮并打勾）——整块标记 `translate="no"` 与双语翻译插件隔离，不会像旧版单字药丸那样被插件扩写撑出可视区；`/`（简体）`/zh-Hant/`（繁體）`/en/`（English）`/ja/`（日本語）`/ko/`（한국어）`/ru/`（Русский）`/es/`（Español）`/fr/`（Français）`/pt/`（Português）；四页互持 hreflang + sitemap 交替链接；时光漫游、定位图与留言墙的动态文案按页面语言自动切换，四版共用同一面留言墙
+- **九种语言**：顶栏右侧「地球图标 + 下拉语言菜单」（参照 AMD 官网的切换方式，菜单里是 简体中文 / 繁體中文 / English / 日本語 九个完整本族名，当前语言赤陶橙高亮并打勾）——整块标记 `translate="no"` 与双语翻译插件隔离，不会像旧版单字药丸那样被插件扩写撑出可视区；`/`（简体）`/zh-Hant/`（繁體）`/en/`（English）`/ja/`（日本語）`/ko/`（한국어）`/ru/`（Русский）`/es/`（Español）`/fr/`（Français）`/pt/`（Português）；九页互持 hreflang + sitemap 交替链接；时光漫游、定位图与留言墙的动态文案按页面语言自动切换，九版共用同一面留言墙
 - Claude 视觉语言：米白纸感底色 `#F0EEE6` + 赤陶橙 `#D97757` + 衬线标题，全站统一的发丝线与圆角卡片
 - 完整响应式（三档断点）、打印成册样式与 `prefers-reduced-motion` 降级
 
@@ -86,7 +86,7 @@
 | 交互 | 说明 |
 |------|------|
 | 阅读进度条 | 顶栏赤陶橙细线，`scaleX` 随滚动增长 |
-| 语言切换菜单 | 顶栏地球按钮展开四语下拉（AMD 式）：`Esc` 收起、`↑↓`/`Home`/`End` 在选项间移动、点击菜单外任意处关闭；无 JS 时降级为静态药丸行 |
+| 语言切换菜单 | 顶栏地球按钮展开九语下拉（AMD 式）：`Esc` 收起、`↑↓`/`Home`/`End` 在选项间移动、点击菜单外任意处关闭；无 JS 时降级为静态药丸行 |
 | 导航高亮 | scrollspy 自动点亮当前章节 |
 | 数字滚动 | 首屏关键数字 0 → 1958 / 51 / 2600+ / 25，easeOutQuart |
 | 大图视差 | 首图以 0.5× 速率反向移动 + 光标惯性视差，`scale(1.09)` 防露边 |
@@ -105,16 +105,21 @@ site/
 ├── zh-Hant/index.html  # 繁體中文頁（台湾用语习惯：暱稱/登入/載入/網路/郵遞區號）
 ├── en/index.html       # English page (assets shared via ../ relative paths, file:// friendly)
 ├── ja/index.html       # 日本語ページ（「おわりに」「通りすがり」など自然な日本語文体）
+├── ko/index.html       # 한국어 페이지（「기념 앨범」「지나가던 학생」등 자연스러운 한국어 표현）
+├── ru/index.html       # Русская страница（памятный альбом, паллиативная транслитерация имён）
+├── es/index.html       # Página en español（lenguaje natural, no traducción automática）
+├── fr/index.html       # Page en français（formulations idiomatiques françaises）
+├── pt/index.html       # Página em português（expressões idiomáticas em português）
 ├── 404.html            # 自包含 404 页（样式内联、零外部依赖，附英/日/繁语言入口）
 ├── assets/
 │   ├── style.css       # 全站样式（设计令牌 + 组件 + 响应式 + 打印 + 降级）
 │   ├── main.js         # 主交互：进度条/scrollspy/语言下拉/视差/惯性滚动/灯箱
-│   ├── map.js          # 时光漫游 + 定位图（MapLibre，按需加载；机位数据中简/繁/英/日四字段）
-│   └── wall.js         # 留言墙（对接自托管 Artalk；动态文案按 <html lang> 四语切换）
+│   ├── map.js          # 时光漫游 + 定位图（MapLibre，按需加载；机位数据含简/繁/英/日/韩/俄/西/法/葡九语字段）
+│   └── wall.js         # 留言墙（对接自托管 Artalk；动态文案按 <html lang> 九语切换）
 ├── images/
 │   ├── full/           # 25 张全幅摄影（另有 4 张备用素材：10/22/23/25，暂未上墙）
 │   ├── thumbs/         # 对应缩略图
-│   ├── og-card.jpg     # 1200×630 分享卡（无文字，四语通用）
+│   ├── og-card.jpg     # 1200×630 分享卡（无文字，九语通用）
 │   └── emblem-*.png    # 校徽（顶栏 / 首屏 / 页脚 / favicon）
 ├── maplibre/           # MapLibre GL v5 自托管（不依赖 CDN）
 ├── docs/               # README 展示截图 + [迁移手册](docs/MIGRATION.md)
@@ -147,7 +152,7 @@ python -m http.server 8000   # 或任意静态服务器；浏览器打开 http:/
 ## 📝 设计笔记
 
 - **视觉方向**：Claude / Anthropic 视觉语言（米白纸感 + 赤陶橙 + 衬线），由站长在项目之初指定，此后所有迭代都在这个方向上生长。背景保持纯净的米白纸面，不加任何装饰层——动效永远让位于内容。
-- **多语架构**：九个静态页（`/` `/zh-Hant/` `/en/` `/ja/`）而非 JS 运行时翻译——每页拥有完整的语义内容与 SEO 元数据，用 hreflang 与 sitemap 交替链接互认；`wall.js`/`map.js`/`main.js` 按 `<html lang>` 切换动态文案，九版共用同一面留言墙（同一 page_key），各语言留言汇成一面墙。
+- **多语架构**：九个静态页（`/` `/zh-Hant/` `/en/` `/ja/` `/ko/` `/ru/` `/es/` `/fr/` `/pt/`）而非 JS 运行时翻译——每页拥有完整的语义内容与 SEO 元数据，用 hreflang 与 sitemap 交替链接互认；`wall.js`/`map.js`/`main.js` 按 `<html lang>` 切换动态文案，九版共用同一面留言墙（同一 page_key），各语言留言汇成一面墙。
 - **桌面惯性滚动是刻意设计**：滚轮经惯性插值驱动（Oryzo/Lusion 手感），仅在精确指针设备启用；浏览器缩放（Ctrl+滚轮）、地图画布、输入框与灯箱均不劫持，触屏与 `prefers-reduced-motion` 用户走原生滚动。这不是 bug。
 - **浏览器支持矩阵**：面向现代常青浏览器（Chrome / Edge / Firefox / Safari 近两年版本），明确不支持 IE 及 Legacy Edge，全站无 polyfill。
 - **留言墙拉取上限**：单次最多取 100 条（纪念册体量足够），计数优先展示服务端真实总数；网络请求统一带 15 秒超时兜底。
