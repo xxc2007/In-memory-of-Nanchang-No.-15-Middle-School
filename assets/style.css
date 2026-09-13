@@ -106,6 +106,11 @@ nav.toc a.active{color:var(--terra-ink);background:rgba(217,119,87,.12)}
 .lang-caret{width:12px;height:12px;flex:none;stroke:currentColor;fill:none;
   stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .25s}
 .lang-btn[aria-expanded="true"] .lang-caret{transform:rotate(180deg)}
+/* 阿拉伯语页面：RTL + 阿文字体 + 语言名 */
+html[lang^="ar"]{direction:rtl;--serif:"Noto Naskh Arabic","Amiri","Scheherazade New",Georgia,"Noto Serif SC",serif;--sans:"Noto Kufi Arabic","Segoe UI",Tahoma,Arial,var(--sans)}
+html[lang^="ar"] .lang-item[lang="ar"] .lang-native{font-family:"Noto Naskh Arabic","Amiri","Segoe UI",var(--sans)}
+html[lang^="ar"] .lang-current::before{content:"العربية"}
+html[lang^="ar"] .lang-current-short::before{content:"ع"}
 /* 按钮上的语言名由 CSS 生成（HTML 里两个 span 故意留空）。
    实测：沉浸式翻译这类双语外挂会忽略元素上的 translate="no" 与 .notranslate，
    仍把文本节点扩写成「English 英语」；而伪元素内容不参与文本翻译，
