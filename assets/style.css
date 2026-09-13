@@ -312,6 +312,10 @@ section.block{max-width:1200px;margin:0 auto;padding:96px 28px 30px}
 
 /* ============ 沿革时间线 ============ */
 .timeline{position:relative;margin:10px 0 8px;padding-left:34px;max-width:760px}
+html[lang^="ar"] .timeline{padding-left:0;padding-right:34px}
+html[lang^="ar"] .timeline::before{left:auto;right:7px}
+html[lang^="ar"] .t-fill{left:auto;right:7px}
+html[lang^="ar"] .t-item::before{left:auto;right:-31px}
 .timeline::before{content:"";position:absolute;left:7px;top:8px;bottom:8px;width:1px;background:var(--line)}
 .t-item{position:relative;padding:0 0 42px}
 .t-item:last-child{padding-bottom:6px}

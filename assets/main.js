@@ -15,6 +15,7 @@
   var ES = LOCALE.indexOf('es') === 0;
   var FR = LOCALE.indexOf('fr') === 0;
   var PT = LOCALE.indexOf('pt') === 0;
+  var AR = LOCALE.indexOf('ar') === 0;
   var IMG_FAIL = EN ? ' · Image failed to load — check your connection and retry'
     : JA ? ' · 画像を読み込めませんでした — 通信状況をご確認ください'
     : ZHT ? ' · 圖片載入失敗，請檢查網路後重試'
@@ -23,6 +24,7 @@
     : ES ? ' · No se pudo cargar la imagen — comprueba la conexión e inténtalo de nuevo'
     : FR ? ' · Impossible de charger l\'image — vérifie la connexion et réessaie'
     : PT ? ' · Não foi possível carregar a imagem — verifica a conexão e tenta novamente'
+    : AR ? ' · تعذر تحميل الصورة — تحقق من الاتصال وحاول مرة أخرى'
     : ' · 图像加载失败，请检查网络后重试';
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;

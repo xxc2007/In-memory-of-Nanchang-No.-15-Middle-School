@@ -17,6 +17,7 @@
   var ES = LOCALE.indexOf('es') === 0;
   var FR = LOCALE.indexOf('fr') === 0;
   var PT = LOCALE.indexOf('pt') === 0;
+  var AR = LOCALE.indexOf('ar') === 0;
 
   /* ---------- 四语字符串表（仅 JS 动态生成的部分；HTML 静态文案随页面走） ---------- */
   var T = EN ? {
@@ -202,7 +203,29 @@
     avatarProcessFail: 'Falha ao processar o avatar. Tente outra imagem.',
     avatarAlt: 'avatar',
     months: null
-
+  } : AR ? {
+    guest: 'طالب عابر', guestChar: 'ط',
+    avatarAltOf: ' صورة رمزية', myAvatarAlt: 'صورتي الرمزية',
+    ariaAvatar: 'رفع صورة رمزية مخصصة',
+    ariaLike: 'إعجاب بهذه الرسالة', ariaReplyTo: 'رد على ',
+    replyLabel: 'رد', cancelLabel: 'إلغاء', postLabel: 'نشر',
+    ipLabel: 'الموقع: ',
+    replyAtPrefix: 'رد @',
+    replyPlaceholderPrefix: 'رد على @',
+    count: function (n) { return n + ' / 500'; },
+    submitted: '<b>تم النشر.</b> ستظهر هنا بعد موافقة المشرف ✦',
+    replySubmitted: '<b>تم إرسال الرد.</b> سيظهر بعد الموافقة ✦',
+    postFail: 'فشل النشر: ', replyFail: 'فشل الرد: ',
+    netFail: 'خطأ في الشبكة. حاول مرة أخرى لاحقاً.',
+    timeout: 'انتهت المهلة — تحقق من الاتصال وحاول مرة أخرى.',
+    loadFail: 'تعذر تحميل الرسائل. انقر للمحاولة مجدداً.',
+    avatarUpdated: '<b>تم تحديث الصورة الرمزية.</b> ستظهر مع رسالتك التالية ✦',
+    avatarFailPrefix: 'فشل رفع الصورة الرمزية: ',
+    avatarNetFail: 'فشل رفع الصورة الرمزية. حاول مرة أخرى لاحقاً.',
+    avatarReadFail: 'تعذرت قراءة الصورة. حاول صورة أخرى.',
+    avatarProcessFail: 'فشلت معالجة الصورة الرمزية. حاول صورة أخرى.',
+    avatarAlt: 'صورة رمزية',
+    months: null
   } : {
     guest: '路过的同学', guestChar: '访',
     avatarAltOf: '的头像', myAvatarAlt: '我的头像',

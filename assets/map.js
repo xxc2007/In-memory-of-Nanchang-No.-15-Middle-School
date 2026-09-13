@@ -15,6 +15,7 @@
   var ES = LOCALE.indexOf('es') === 0;
   var FR = LOCALE.indexOf('fr') === 0;
   var PT = LOCALE.indexOf('pt') === 0;
+  var AR = LOCALE.indexOf('ar') === 0;
   /* 资源基路径：以本脚本自身的 URL 为锚反推站点根。
      原先用 `location.pathname === '/' ? '' : '../'`，在 file:// 下打开根目录的
      index.html 时 pathname 不是 '/'，会得到 '../' 从而把 8 张漫游大图全部指到
@@ -247,56 +248,56 @@
       ru: { n: 'Ворота · Табличка', d: 'Пять серебряных знаков «Наньчан-15» на воротах из розового кирпича — координата тысяч приходов и уходов.' },
       es: { n: 'La puerta · La placa', d: 'Cinco caracteres plateados en los pilares de ladrillo rosa, la coordenada de mil idas y venidas.' },
       fr: { n: 'Le portail · La plaque', d: 'Cinq caractères argentés sur les piliers de brique rose, la coordonnée de mille allées et venues.' },
-      pt: { n: 'O portão · A placa', d: 'Cinco caracteres prateados nos pilares de tijolo rosa, a coordenada de mil idas e vindas.' }
+      pt: { n: 'O portão · A placa', d: 'Cinco caracteres prateados nos pilares de tijolo rosa, a coordenada de mil idas e vindas.' , ar: {"n":"البوابة · اللوحة","d":"خمسة أحرف فضية «نانشانغ-15» على أعمدة البوابة الوردية — إحداثيات آلاف المرور."}}
     },
     '02-playground-firstday.jpg': {
       ko: { n: '개학 첫날의 운동장', d: '아침 7시 18분, 붉은 육상 트랙이 고등부 신입생의 첫 사진을 맞이했습니다.' },
       ru: { n: 'Стадион в первый день', d: 'В 7:18 утра красная дорожка встретила первый снимок нового старшеклассника.' },
       es: { n: 'El campo, primer día', d: 'A las 7:18 de la mañana, la pista roja recibió la primera fotografía de un estudiante nuevo.' },
       fr: { n: 'Le stade, le premier jour', d: 'À 7 h 18 du matin, la piste rouge a accueilli le premier cliché d\'un nouvel élève.' },
-      pt: { n: 'O campo, primeiro dia', d: 'Às 7h18 da manhã, a pista vermelha recebeu a primeira foto de um aluno novo.' }
+      pt: { n: 'O campo, primeiro dia', d: 'Às 7h18 da manhã, a pista vermelha recebeu a primeira foto de um aluno novo.' , ar: {"n":"الملعب في اليوم الأول","d":"في الساعة 7:18 صباحاً، رحبت الحلبة الحمراء بأول صورة لطالب جديد."}}
     },
     '04-teaching-building-winter-dusk.jpg': {
       ko: { n: '붉은 벽돌 교사 · 겨울 황혼', d: '겨울 황혼 속의 붉은 벽돌 교사와 유리 계단실.' },
       ru: { n: 'Краснокирпичный корпус · зимние сумерки', d: 'Краснокирпичный корпус и стеклянная лестничная клетка в зимних сумерках.' },
       es: { n: 'Edificio de ladrillo rojo · crepúsculo de invierno', d: 'El edificio de ladrillo rojo y su escalera de cristal al anochecer de invierno.' },
       fr: { n: 'Bâtiment de brique rouge · crépuscule d\'hiver', d: 'Le bâtiment de brique rouge et sa cage d\'escalier de verre au crépuscule d\'hiver.' },
-      pt: { n: 'Prédio de tijolo vermelho · crepúsculo de inverno', d: 'O prédio de tijolo vermelho e sua escada de vidro ao crepúsculo de inverno.' }
+      pt: { n: 'Prédio de tijolo vermelho · crepúsculo de inverno', d: 'O prédio de tijolo vermelho e sua escada de vidro ao crepúsculo de inverno.' , ar: {"n":"مبنى التدريس · شفق الشتاء","d":"مبنى التدريس الأحمر وبرج السلالم الزجاجي في شفق الشتاء."}}
     },
     '09-camphor-grove.jpg': {
       ko: { n: '녹나무 숲과 오래된 교사', d: '녹나무 새 잎이 붉고 초록으로 물들고, 오래된 교사가 나무 아래 고요히 서 있습니다.' },
       ru: { n: 'Роща камфорных деревьев и старый корпус', d: 'Новая листва краснеет и зеленеет, старый корпус тихо стоит под ними.' },
       es: { n: 'La arboleda y el edificio antiguo', d: 'Los brotes nuevos en rojo y verde, el edificio antiguo descansa bajo ellos.' },
       fr: { n: 'Le bosquet et le vieux bâtiment', d: 'Les jeunes feuilles se teintent de rouge et de vert, le vieux bâtiment repose sous eux.' },
-      pt: { n: 'O bosque e o prédio antigo', d: 'Os brotos novos em vermelho e verde, o prédio antigo descansa sob eles.' }
+      pt: { n: 'O bosque e o prédio antigo', d: 'Os brotos novos em vermelho e verde, o prédio antigo descansa sob eles.' , ar: {"n":"بستان الكافور والمبنى القديم","d":"أوراق جديدة بالأحمر والأخضر، المبنى القديم يستريح تحتها."}}
     },
     '11-water-tower.jpg': {
       ko: { n: '오래된 급수탑', d: '모든 교사보다 연장인 구조물이, 수업의 시작과 끝을 기억해 줍니다.' },
       ru: { n: 'Старая водонапорная башня', d: 'Сооружение старше всех корпусов помнит начало и конец каждого урока.' },
       es: { n: 'La vieja torre de agua', d: 'Una estructura más vieja que todos los edificios recuerda el inicio y el fin de las clases.' },
       fr: { n: 'Le vieux château d\'eau', d: 'Une structure plus âgée que tous les bâtiments se souvient du début et de la fin des cours.' },
-      pt: { n: 'A antiga torre de água', d: 'Uma estrutura mais velha que todos os prédios lembra o início e o fim das aulas.' }
+      pt: { n: 'A antiga torre de água', d: 'Uma estrutura mais velha que todos os prédios lembra o início e o fim das aulas.' , ar: {"n":"برج المياه القديم","d":"مبنى أكبر سناً من جميع المباني يتذكر بداية ونهاية كل درس."}}
     },
     '08-tennis-court.jpg': {
       ko: { n: '내려다본 테니스 코트', d: '초록과 빨강의 테니스 코트에, 모든 쉬는 시간의 황혼이 모여 있습니다.' },
       ru: { n: 'Теннисные корты сверху', d: 'На зелёно-красных кортах собрались сумерки всех перемен.' },
       es: { n: 'Las pistas de tenis desde arriba', d: 'En las pistas verdes y rojas se reúnen los ocasos de todos los recreos.' },
       fr: { n: 'Les courts vus d\'en haut', d: 'Sur les courts verts et rouges se rassemblent les crépuscules de toutes les récréations.' },
-      pt: { n: 'As quadras de tênis de cima', d: 'Nas quadras verdes e vermelhas se reúnem os entardeceres de todos os recreios.' }
+      pt: { n: 'As quadras de tênis de cima', d: 'Nas quadras verdes e vermelhas se reúnem os entardeceres de todos os recreios.' , ar: {"n":"ملاعب التنس من الأعلى","d":"في الملاعب الخضراء والحمراء تتجمع سمراءات كل استراحة."}}
     },
     '18-plaza-summer.jpg': {
       ko: { n: '광장 · 초승달 조각', d: '여름방학의 광장은 텅 비어 있고, 초승달 조각은 여전히 하늘을 가리킵니다.' },
       ru: { n: 'Площадь · скульптура полумесяца', d: 'Площадь в каникулы пуста, скульптура полумесяца по-прежнему указывает в небо.' },
       es: { n: 'La plaza · la escultura de la medialuna', d: 'La plaza en vacaciones está vacía, la escultura sigue apuntando al cielo.' },
       fr: { n: 'La place · la sculpture en croissant', d: 'La place des vacances est vide, la sculpture pointe toujours vers le ciel.' },
-      pt: { n: 'A praça · a escultura de meia-lua', d: 'A praça nas férias está vazia, a escultura ainda aponta para o céu.' }
+      pt: { n: 'A praça · a escultura de meia-lua', d: 'A praça nas férias está vazia, a escultura ainda aponta para o céu.' , ar: {"n":"الساحة · تمثال الهلال","d":"ساحة العطلة فارغة، وتمثال الهلال لا يزال يشير إلى السماء."}}
     },
     '19-library-building-sky.jpg': {
       ko: { n: '종합교사를 올려다보며', d: '종합교사를 올려다보면 푸른 하늘에 큰 적란운이 떠 있습니다.' },
       ru: { n: 'Многофункциональный корпус снизу вверх', d: 'Взгляд вверх — большие кучевые облака в синем небе.' },
       es: { n: 'El edificio polivalente desde abajo', d: 'Mirando hacia arriba, grandes cúmulos en el cielo azul.' },
       fr: { n: 'Le bâtiment polyvalent vu d\'en bas', d: 'Vue vers le haut — gros cumulus dans un ciel bleu.' },
-      pt: { n: 'O prédio polivalente de baixo para cima', d: 'Olhando para cima — grandes cúmulos no céu azul.' }
+      pt: { n: 'O prédio polivalente de baixo para cima', d: 'Olhando para cima — grandes cúmulos no céu azul.' , ar: {"n":"المبنى المتكامل من الأسفل","d":"النظر إلى الأعلى — سحب ركامية كبيرة في سماء زرقاء."}}
     }
   };
 })();
