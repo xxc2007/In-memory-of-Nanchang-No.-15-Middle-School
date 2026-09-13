@@ -64,7 +64,6 @@
     avatarNetFail: 'アイコンのアップロードに失敗しました。しばらくしてからお試しください。',
     avatarReadFail: '画像を読み込めませんでした。別の画像をお試しください。',
     avatarProcessFail: 'アイコンの処理に失敗しました。別の画像をお試しください。',
-    avatarAlt: 'のアイコン',
     months: null   /* 日本語も「年月日」表記なので共通ブランチを使う */
   } : ZHT ? {
     guest: '路過的同學', guestChar: '訪',
@@ -112,7 +111,7 @@
     avatarAlt: '아바타',
     months: null
   } : RU ? {
-    guest: 'Случайный ученик', guestChar: 'С',
+    guest: 'Гость', guestChar: 'Г',
     avatarAltOf: ' — аватар', myAvatarAlt: 'Мой аватар',
     ariaAvatar: 'Загрузить свой аватар',
     ariaLike: 'Одобрить сообщение', ariaReplyTo: 'Ответ для ',
@@ -132,11 +131,10 @@
     avatarNetFail: 'Не удалось загрузить аватар. Попробуйте позже.',
     avatarReadFail: 'Не удалось прочитать изображение. Попробуйте другое.',
     avatarProcessFail: 'Не удалось обработать аватар. Попробуйте другое изображение.',
-    avatarAlt: 'аватар',
-    months: null
+    months: ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря']
   } : ES ? {
     guest: 'Un compañero de paso', guestChar: 'C',
-    avatarAltOf: '’s avatar', myAvatarAlt: 'Mi avatar',
+    avatarAltOf: ' — avatar', myAvatarAlt: 'Mi avatar',
     ariaAvatar: 'Subir un avatar propio',
     ariaLike: 'Me gusta este mensaje', ariaReplyTo: 'Responder a ',
     replyLabel: 'Responder', cancelLabel: 'Cancelar', postLabel: 'Publicar',
@@ -155,11 +153,10 @@
     avatarNetFail: 'No se pudo subir el avatar. Inténtalo de nuevo más tarde.',
     avatarReadFail: 'No se pudo leer esa imagen. Prueba con otra.',
     avatarProcessFail: 'No se pudo procesar el avatar. Prueba con otra imagen.',
-    avatarAlt: 'avatar',
-    months: null
+    months: ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic']
   } : FR ? {
     guest: 'Un camarade de passage', guestChar: 'C',
-    avatarAltOf: '’s avatar', myAvatarAlt: 'Mon avatar',
+    avatarAltOf: ' — avatar', myAvatarAlt: 'Mon avatar',
     ariaAvatar: 'Téléverser votre avatar',
     ariaLike: 'Approuver ce message', ariaReplyTo: 'Répondre à ',
     replyLabel: 'Répondre', cancelLabel: 'Annuler', postLabel: 'Publier',
@@ -224,8 +221,7 @@
     avatarNetFail: 'فشل رفع الصورة الرمزية. حاول مرة أخرى لاحقاً.',
     avatarReadFail: 'تعذرت قراءة الصورة. حاول صورة أخرى.',
     avatarProcessFail: 'فشلت معالجة الصورة الرمزية. حاول صورة أخرى.',
-    avatarAlt: 'صورة رمزية',
-    months: null
+    months: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر']
   } : {
     guest: '路过的同学', guestChar: '访',
     avatarAltOf: '的头像', myAvatarAlt: '我的头像',
@@ -285,12 +281,17 @@
     for (var i = 0; i < bytes.length; i++) out += ('0' + bytes[i].toString(16)).slice(-2);
     return out;
   }
-  /* 服务端 date 形如 "2026-09-06 07:18"；中文给「2026年9月6日 07:18」，英文给 "Sep 6, 2026 07:18" */
+  /* 服务端 date 形如 "2026-09-06 07:18"；按页面语言本地化：
+     中文/日文/繁體 → 年月日；English → "Sep 6, 2026 07:18"；한국어 → 년 월 일；
+     ru/es/fr/pt/ar → "6 сентября 2026, 07:18" 式（月份表在各自 T 表内） */
   function fmtTime(s) {
     var m = /^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})/.exec(s || '');
     if (!m) return esc(s || '');
-    if (EN && T.months) return T.months[+m[2] - 1] + ' ' + (+m[3]) + ', ' + m[1] + ' ' + m[4] + ':' + m[5];
-    return m[1] + '年' + (+m[2]) + '月' + (+m[3]) + '日 ' + m[4] + ':' + m[5];
+    var y = m[1], mo = +m[2], d = +m[3], t = m[4] + ':' + m[5];
+    if (EN && T.months) return T.months[mo - 1] + ' ' + d + ', ' + y + ' ' + t;
+    if (KO) return y + '년 ' + mo + '월 ' + d + '일 ' + t;
+    if (T.months) return d + ' ' + T.months[mo - 1] + ' ' + y + (AR ? '، ' : ', ') + t;
+    return y + '年' + mo + '月' + d + '日 ' + t;
   }
   /* 头像只放行本站 Artalk 上传资源——最终一律归一化为以 /comment/ 开头的同源相对路径，
      与页面协议/域名无关（http/https、apex/www 均可渲染）；

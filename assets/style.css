@@ -106,8 +106,10 @@ nav.toc a.active{color:var(--terra-ink);background:rgba(217,119,87,.12)}
 .lang-caret{width:12px;height:12px;flex:none;stroke:currentColor;fill:none;
   stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .25s}
 .lang-btn[aria-expanded="true"] .lang-caret{transform:rotate(180deg)}
-/* 阿拉伯语页面：RTL + 阿文字体 + 语言名 */
-html[lang^="ar"]{direction:rtl;--serif:"Noto Naskh Arabic","Amiri","Scheherazade New",Georgia,"Noto Serif SC",serif;--sans:"Noto Kufi Arabic","Segoe UI",Tahoma,Arial,var(--sans)}
+/* 阿拉伯语页面：RTL + 阿文字体 + 语言名
+   注意：--sans 不能写成 var(--sans) 自引用（循环引用会让声明在 computed-value 时失效，
+   阿语页正文直接掉回 UA 默认字体）——必须写完整字体栈字面量 */
+html[lang^="ar"]{direction:rtl;--serif:"Noto Naskh Arabic","Amiri","Scheherazade New",Georgia,"Noto Serif SC",serif;--sans:"Noto Kufi Arabic","Segoe UI",Tahoma,Arial,"PingFang SC","Microsoft YaHei",sans-serif}
 html[lang^="ar"] .lang-item[lang="ar"] .lang-native{font-family:"Noto Naskh Arabic","Amiri","Segoe UI",var(--sans)}
 html[lang^="ar"] .lang-current::before{content:"العربية"}
 html[lang^="ar"] .lang-current-short::before{content:"ع"}
@@ -322,6 +324,9 @@ html[lang^="ar"] .timeline::before{left:auto;right:7px}
 html[lang^="ar"] .t-fill{left:auto;right:7px}
 html[lang^="ar"] .t-item::before{left:auto;right:-31px}
 .timeline::before{content:"";position:absolute;left:7px;top:8px;bottom:8px;width:1px;background:var(--line)}
+/* RTL 细节：引言竖线与留言回复缩进线翻到右侧 */
+html[lang^="ar"] .about-text .pull{border-left:none;border-right:3px solid var(--terra);padding-left:0;padding-right:22px}
+html[lang^="ar"] .bili-replies{padding-left:0;padding-right:14px;border-left:none;border-right:2px solid var(--line)}
 .t-item{position:relative;padding:0 0 42px}
 .t-item:last-child{padding-bottom:6px}
 .t-fill{position:absolute;left:7px;top:8px;width:1px;height:0;background:var(--terra)}
@@ -399,6 +404,9 @@ html[lang^="fr"] .ph-img.load-failed::before,
 html[lang^="fr"] .hero-img-wrap.load-failed::before{content:"Impossible de charger l'image · réessayez plus tard"}
 html[lang^="pt"] .ph-img.load-failed::before,
 html[lang^="pt"] .hero-img-wrap.load-failed::before{content:"Não foi possível carregar a imagem · tente novamente mais tarde"}
+html[lang^="ar"] .ph-img.load-failed::before,
+html[lang^="ar"] .hero-img-wrap.load-failed::before{content:"تعذر تحميل الصورة · حاول مرة أخرى لاحقاً"}
+html[lang^="en"] .bili-editor-row .bili-avatar:hover::after{content:"Change avatar"}
 html[lang^="ja"] .bili-editor-row .bili-avatar:hover::after{content:"アイコン変更"}
 html[lang^="zh-Hant"] .bili-editor-row .bili-avatar:hover::after{content:"換頭像"}
 html[lang^="ko"] .bili-editor-row .bili-avatar:hover::after{content:"아이콘 변경"}
@@ -406,6 +414,7 @@ html[lang^="ru"] .bili-editor-row .bili-avatar:hover::after{content:"Смени�
 html[lang^="es"] .bili-editor-row .bili-avatar:hover::after{content:"Cambiar avatar"}
 html[lang^="fr"] .bili-editor-row .bili-avatar:hover::after{content:"Changer l'avatar"}
 html[lang^="pt"] .bili-editor-row .bili-avatar:hover::after{content:"Mudar avatar"}
+html[lang^="ar"] .bili-editor-row .bili-avatar:hover::after{content:"تغيير الصورة"}
 
 /* 单张收束组（其六 · 高考签名墙）：升格为电影宽幅卡 */
 .gallery-grid.feature{grid-template-columns:1fr}

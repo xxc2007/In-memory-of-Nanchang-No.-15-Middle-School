@@ -22,8 +22,8 @@
     : KO ? ' · 이미지를 불러올 수 없습니다 — 연결 상태를 확인하고 다시 시도해 주세요'
     : RU ? ' · Не удалось загрузить изображение — проверьте соединение и повторите попытку'
     : ES ? ' · No se pudo cargar la imagen — comprueba la conexión e inténtalo de nuevo'
-    : FR ? ' · Impossible de charger l\'image — vérifie la connexion et réessaie'
-    : PT ? ' · Não foi possível carregar a imagem — verifica a conexão e tenta novamente'
+    : FR ? ' · Impossible de charger l\'image — vérifiez la connexion et réessayez'
+    : PT ? ' · Não foi possível carregar a imagem — verifique a conexão e tente novamente'
     : AR ? ' · تعذر تحميل الصورة — تحقق من الاتصال وحاول مرة أخرى'
     : ' · 图像加载失败，请检查网络后重试';
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -300,7 +300,7 @@
   var lbCapT = document.getElementById('lbCapT');
   var lbCapD = document.getElementById('lbCapD');
   /* 缺灯箱容器/图像/按钮任一节点时整段跳过：.ph 卡片退回 <a> 原生行为，不阻断后续交互 */
-  if (!box || !lbImg || !document.getElementById('lbClose')) return;
+  if (!box || !lbImg || !document.getElementById('lbClose') || !document.getElementById('lbPrev') || !document.getElementById('lbNext')) return;
   var cur = -1, lastFocus = null;
   var stage = box.querySelector('.lb-stage');
 
@@ -377,7 +377,9 @@
 
   document.querySelectorAll('.ph').forEach(function (fig) {
     var link = fig.querySelector('a');
+    if (!link) return;   /* 与 figures 构建同口径：缺 <a> 的图卡跳过，不连坐 */
     var idx = figIndex.get(link.getAttribute('href'));
+    if (typeof idx !== 'number') return;
     link.addEventListener('click', function (ev) {
       ev.preventDefault();
       open(idx);

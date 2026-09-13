@@ -92,7 +92,7 @@ All animations share a single rAF-driven scroll loop and degrade gracefully when
 
 ```text
 site/
-├── index.html          # Simplified Chinese page (only three inline scripts: JSON-LD, stagger indices, map lazy-loader)
+├── index.html          # Simplified Chinese page (only two inline scripts: JSON-LD and the map lazy-loader)
 ├── zh-Hant/index.html  # Traditional Chinese page (Taiwan usage: 暱稱/登入/載入/網路/郵遞區號)
 ├── en/index.html       # English page (assets shared via ../ relative paths, file:// friendly)
 ├── ja/index.html       # Japanese page (natural phrasing: おわりに, 通りすがり, メッセージウォール…)
@@ -101,11 +101,13 @@ site/
 ├── es/index.html       # Spanish page (idiomatic Spanish, not machine-translated)
 ├── fr/index.html       # French page (idiomatic French formulations)
 ├── pt/index.html       # Portuguese page (idiomatic Portuguese expressions)
+├── ar/index.html       # Arabic page (full RTL layout with Arabic font stacks)
+├── 404.html            # Self-contained 404 page (inline styles, zero external requests; links to the other nine languages)
 ├── assets/
 │   ├── style.css       # Site-wide styles (tokens, components, breakpoints, print, fallbacks)
 │   ├── main.js         # Main interactions: progress, scrollspy, parallax, inertia, lightbox
-│   ├── map.js          # Photo tour + location map (lazy-loaded MapLibre; spot data in 9 languages)
-│   └── wall.js         # Guestbook (talks to self-hosted Artalk; dynamic copy in 9 languages follows <html lang>)
+│   ├── map.js          # Photo tour + location map (lazy-loaded MapLibre; spot data in ten languages)
+│   └── wall.js         # Guestbook (talks to self-hosted Artalk; dynamic copy in ten languages follows <html lang>)
 ├── images/
 │   ├── full/           # 25 full-size photographs (plus 4 spare shots: 10/22/23/25, not yet exhibited)
 │   ├── thumbs/         # Matching thumbnails

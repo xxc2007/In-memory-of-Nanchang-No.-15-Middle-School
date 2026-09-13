@@ -153,4 +153,21 @@
     <xhtml:link rel="alternate" hreflang="ar" href="https://xxc2007.me/ar/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://xxc2007.me/"/>
   </url>
+  <url>
+    <loc>https://xxc2007.me/ar/</loc>
+    <lastmod>2026-09-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://xxc2007.me/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://xxc2007.me/zh-Hant/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://xxc2007.me/en/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://xxc2007.me/ja/"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://xxc2007.me/ko/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://xxc2007.me/ru/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://xxc2007.me/es/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://xxc2007.me/fr/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://xxc2007.me/pt/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://xxc2007.me/ar/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://xxc2007.me/"/>
+  </url>
 </urlset>
