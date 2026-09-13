@@ -580,6 +580,12 @@ html[lang^="zh-Hant"] #campusMap[data-map-tiles-failed]::after{content:"底圖�
 html[lang^="en"] #campusMap[data-map-failed]::after{content:"The location map needs WebGL and can’t be shown in this environment"}
 html[lang^="ja"] #campusMap[data-map-failed]::after{content:"位置マップの表示には WebGL が必要です（この環境では表示できません）"}
 html[lang^="zh-Hant"] #campusMap[data-map-failed]::after{content:"定位圖需要 WebGL 支援，目前環境無法顯示"}
+html[lang^="ko"] #campusMap[data-map-failed]::after{content:"위치 지도는 WebGL이 필요하여 이 환경에서는 표시할 수 없습니다"}
+html[lang^="ru"] #campusMap[data-map-failed]::after{content:"Карте нужна поддержка WebGL — в этой среде она недоступна"}
+html[lang^="es"] #campusMap[data-map-failed]::after{content:"El mapa necesita WebGL y no puede mostrarse en este entorno"}
+html[lang^="fr"] #campusMap[data-map-failed]::after{content:"Le plan nécessite WebGL et ne peut pas s'afficher dans cet environnement"}
+html[lang^="pt"] #campusMap[data-map-failed]::after{content:"O mapa precisa de WebGL e não pode ser exibido neste ambiente"}
+html[lang^="ar"] #campusMap[data-map-failed]::after{content:"خريطة الموقع تتطلب WebGL ولا يمكن عرضها في هذه البيئة"}
 
 /* ============ 柒 · WALL 留言墙 ============ */
 .wall{position:relative}

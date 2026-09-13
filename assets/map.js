@@ -5,6 +5,8 @@
    ========================================================= */
 (function () {
   'use strict';
+  if (window.__mapJsLoaded) return;   /* eager 标签与惰性链路都可能执行本文件，只跑一次 */
+  window.__mapJsLoaded = true;
 
   var LOCALE = (document.documentElement.lang || '').toLowerCase();
   var EN = LOCALE.indexOf('en') === 0;
@@ -184,7 +186,7 @@
   window.__initCampusMap = function () {
     var el = document.getElementById('campusMap');
     if (!el || el.getAttribute('data-map-ready')) return;
-    if (typeof maplibregl === 'undefined') { el.setAttribute('data-map-failed', '1'); return; }
+    if (typeof maplibregl === 'undefined') return;   /* maplibre 还在惰性加载，等 onload 再进来；真失败由加载器 onerror 标记 */
     el.setAttribute('data-map-ready', '1');
 
     try {
