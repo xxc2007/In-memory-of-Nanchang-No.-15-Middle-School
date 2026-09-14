@@ -42,7 +42,7 @@ This 35-second English cut mirrors the original film shot for shot: the emblem a
 
 Open the English player below to watch online.
 
-https://raw.githubusercontent.com/xxc2007/In-memory-of-Nanchang-No.-15-Middle-School/main/docs/promo/nanchang15-promo-en-readme.mp4
+https://github.com/user-attachments/assets/efec42a7-b3dd-4846-99dd-66c758d12db4
 
 ▶️ [Open the English 1080p HD player](https://xxc2007.me/promo/en/) · [Open the English 1080p source video directly](https://raw.githubusercontent.com/xxc2007/In-memory-of-Nanchang-No.-15-Middle-School/main/docs/promo/nanchang15-promo-en.mp4)
 
