@@ -44,7 +44,7 @@ This 35-second promo turns the real page into one short viewing path: the emblem
   <strong>Use the player below to watch online — no sign-in required</strong>
 </p>
 
-<video controls width="100%" src="https://raw.githubusercontent.com/xxc2007/In-memory-of-Nanchang-No.-15-Middle-School/main/docs/promo/nanchang15-promo-readme.mp4"></video>
+https://github.com/user-attachments/assets/75696dc0-9825-4f96-a0af-ebcd60b1a23d
 
 <p align="center"><sub>
   720p README preview with the full soundtrack · <a href="https://xxc2007.me/promo/">Open the HD player</a> · <a href="https://raw.githubusercontent.com/xxc2007/In-memory-of-Nanchang-No.-15-Middle-School/main/docs/promo/nanchang15-promo.mp4">Open the 1080p MP4 directly</a>
