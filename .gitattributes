@@ -11,6 +11,7 @@
 *.woff2 binary
 *.db binary
 *.xdb binary
+*.mp4 binary
 
 # 第三方库
 maplibre/maplibre-gl.js linguist-generated=true linguist-detectable=false
