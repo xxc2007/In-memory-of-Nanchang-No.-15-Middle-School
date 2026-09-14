@@ -41,7 +41,7 @@ Pure HTML / CSS / vanilla JS with structure, style and behavior separated (`inde
 This 35-second promo turns the real page into one short viewing path: the emblem and hero first, then the history timeline, 25 campus photographs, the water tower across day and night, an eight-spot campus map, and a privacy-safe guestbook demo before the whole memorial comes back together. It uses real page captures and campus photography, with a restrained rhythmic score and paper-like transitions.
 
 <p align="center">
-  <strong>Native README player · click the controls to play (no login required)</strong>
+  <strong>Use the player below to watch online — no sign-in required</strong>
 </p>
 
 <video controls width="100%" src="https://raw.githubusercontent.com/xxc2007/In-memory-of-Nanchang-No.-15-Middle-School/main/docs/promo/nanchang15-promo-readme.mp4"></video>

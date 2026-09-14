@@ -44,7 +44,7 @@
 这支宣传片把网页里的真实内容重新编排成一条 35 秒的观看路径：从首屏的校徽与标题出发，经过沿革时间轴、25 张校园实景、水塔昼夜、八机位地图和脱敏留言墙，最后回到整本纪念册。画面使用真实网页截图与公开校园摄影，配以克制的节奏和纸页式转场。
 
 <p align="center">
-  <strong>README 原生播放器 · 点击控件即可播放（无需登录）</strong>
+  <strong>点击下方播放器即可在线播放（无需登录）</strong>
 </p>
 
 <video controls width="100%" src="https://raw.githubusercontent.com/xxc2007/In-memory-of-Nanchang-No.-15-Middle-School/main/docs/promo/nanchang15-promo-readme.mp4"></video>
