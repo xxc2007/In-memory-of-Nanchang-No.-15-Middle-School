@@ -36,21 +36,17 @@ Pure HTML / CSS / vanilla JS with structure, style and behavior separated (`inde
 
 ---
 
-## 🎬 The memorial, cut into a return path
+## 🎬 Promo showcase
 
 This 35-second promo turns the real page into one short viewing path: the emblem and hero first, then the history timeline, 25 campus photographs, the water tower across day and night, an eight-spot campus map, and a privacy-safe guestbook demo before the whole memorial comes back together. It uses real page captures and campus photography, with a restrained rhythmic score and paper-like transitions.
 
-<p align="center">
-  <strong>Open the HD player below to watch online</strong>
-</p>
+Open the player below to watch online.
 
-<p align="center">
-  <a href="https://xxc2007.me/promo/">▶ Open the 1080p HD player</a> · <a href="https://raw.githubusercontent.com/xxc2007/In-memory-of-Nanchang-No.-15-Middle-School/main/docs/promo/nanchang15-promo.mp4">Open the 1080p source video directly</a>
-</p>
+https://github.com/user-attachments/assets/90cc920b-9beb-4f9d-93ca-069deec357b2
 
-<p align="center"><sub>
-  The player uses the repository's 1080p source file, without a compressed README preview
-</sub></p>
+▶️ [Open the 1080p HD player](https://xxc2007.me/promo/) · [Open the 1080p source video directly](https://raw.githubusercontent.com/xxc2007/In-memory-of-Nanchang-No.-15-Middle-School/main/docs/promo/nanchang15-promo.mp4)
+
+The native README preview keeps a 1920×1080 frame; the standalone player and source link continue to use the repository's complete 1080p master.
 
 ---
 
@@ -133,7 +129,7 @@ site/
 │   └── emblem-*.png    # School emblem (top bar / hero / footer / favicon)
 ├── maplibre/           # Self-hosted MapLibre GL v5 (no CDN dependency)
 ├── docs/               # README screenshots + [migration guide](docs/MIGRATION.en.md)
-│   └── promo/          # Public player page and 1080p master (live at /promo/)
+│   └── promo/          # Public player page, 1080p showcase copy and full master (live at /promo/)
 ├── README.md / README.en.md   # Bilingual repository docs (this file and the Chinese original)
 ├── robots.txt / sitemap.xml / LICENSE / .gitattributes / .gitignore
 ```

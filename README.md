@@ -39,21 +39,17 @@
 
 ---
 
-## 🎬 把纪念册拍成一段可以回去的时间
+## 🎬 宣传片展示
 
 这支宣传片把网页里的真实内容重新编排成一条 35 秒的观看路径：从首屏的校徽与标题出发，经过沿革时间轴、25 张校园实景、水塔昼夜、八机位地图和脱敏留言墙，最后回到整本纪念册。画面使用真实网页截图与公开校园摄影，配以克制的节奏和纸页式转场。
 
-<p align="center">
-  <strong>点击下方播放器即可在线播放</strong>
-</p>
+点击下方播放器即可在线播放。
 
-<p align="center">
-  <a href="https://xxc2007.me/promo/">▶ 打开 1080p 高清播放器</a> · <a href="https://raw.githubusercontent.com/xxc2007/In-memory-of-Nanchang-No.-15-Middle-School/main/docs/promo/nanchang15-promo.mp4">直接打开 1080p 源视频</a>
-</p>
+https://github.com/user-attachments/assets/90cc920b-9beb-4f9d-93ca-069deec357b2
 
-<p align="center"><sub>
-  播放页直接使用仓库中的 1080p 源文件，不使用 README 压缩预览
-</sub></p>
+▶️ [打开 1080p 高清播放器](https://xxc2007.me/promo/) · [直接打开 1080p 源视频](https://raw.githubusercontent.com/xxc2007/In-memory-of-Nanchang-No.-15-Middle-School/main/docs/promo/nanchang15-promo.mp4)
+
+README 原生预览保持 1920×1080 分辨率；独立播放器与源视频链接继续直接使用仓库中的 1080p 完整片。
 
 ---
 
@@ -141,7 +137,7 @@ site/
 │   └── emblem-*.png    # 校徽（顶栏 / 首屏 / 页脚 / favicon）
 ├── maplibre/           # MapLibre GL v5 自托管（不依赖 CDN）
 ├── docs/               # README 展示截图 + [迁移手册](docs/MIGRATION.md)
-│   └── promo/          # 公开在线播放页与 1080p 完整片（线上入口：/promo/）
+│   └── promo/          # 公开在线播放页、1080p 展示副本与完整源片（线上入口：/promo/）
 ├── README.md / README.en.md   # 中英双语仓库说明（本文件与英文版）
 ├── robots.txt / sitemap.xml / LICENSE / .gitattributes / .gitignore
 ```
