@@ -41,16 +41,15 @@ Pure HTML / CSS / vanilla JS with structure, style and behavior separated (`inde
 This 35-second promo turns the real page into one short viewing path: the emblem and hero first, then the history timeline, 25 campus photographs, the water tower across day and night, an eight-spot campus map, and a privacy-safe guestbook demo before the whole memorial comes back together. It uses real page captures and campus photography, with a restrained rhythmic score and paper-like transitions.
 
 <p align="center">
-  <strong>Use the player below to watch online</strong>
+  <strong>Open the HD player below to watch online</strong>
 </p>
 
-<video controls playsinline preload="metadata" width="100%" poster="https://xxc2007.me/images/og-card.jpg">
-  <source src="https://raw.githubusercontent.com/xxc2007/In-memory-of-Nanchang-No.-15-Middle-School/main/docs/promo/nanchang15-promo.mp4" type="video/mp4">
-  Your browser does not support embedded video. <a href="https://raw.githubusercontent.com/xxc2007/In-memory-of-Nanchang-No.-15-Middle-School/main/docs/promo/nanchang15-promo.mp4">Open the 1080p MP4 directly</a>.
-</video>
+<p align="center">
+  <a href="https://xxc2007.me/promo/">▶ Open the 1080p HD player</a> · <a href="https://raw.githubusercontent.com/xxc2007/In-memory-of-Nanchang-No.-15-Middle-School/main/docs/promo/nanchang15-promo.mp4">Open the 1080p source video directly</a>
+</p>
 
 <p align="center"><sub>
-  The player uses the repository's 1080p source file · <a href="https://xxc2007.me/promo/">Open the standalone player</a>
+  The player uses the repository's 1080p source file, without a compressed README preview
 </sub></p>
 
 ---

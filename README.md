@@ -44,16 +44,15 @@
 这支宣传片把网页里的真实内容重新编排成一条 35 秒的观看路径：从首屏的校徽与标题出发，经过沿革时间轴、25 张校园实景、水塔昼夜、八机位地图和脱敏留言墙，最后回到整本纪念册。画面使用真实网页截图与公开校园摄影，配以克制的节奏和纸页式转场。
 
 <p align="center">
-  <strong>点击下方播放器即可在线播放</strong>
+  <strong>打开下方高清播放器即可在线播放</strong>
 </p>
 
-<video controls playsinline preload="metadata" width="100%" poster="https://xxc2007.me/images/og-card.jpg">
-  <source src="https://raw.githubusercontent.com/xxc2007/In-memory-of-Nanchang-No.-15-Middle-School/main/docs/promo/nanchang15-promo.mp4" type="video/mp4">
-  您的浏览器不支持内嵌视频，请<a href="https://raw.githubusercontent.com/xxc2007/In-memory-of-Nanchang-No.-15-Middle-School/main/docs/promo/nanchang15-promo.mp4">直接打开 1080p MP4</a>观看。
-</video>
+<p align="center">
+  <a href="https://xxc2007.me/promo/">▶ 打开 1080p 高清播放器</a> · <a href="https://raw.githubusercontent.com/xxc2007/In-memory-of-Nanchang-No.-15-Middle-School/main/docs/promo/nanchang15-promo.mp4">直接打开 1080p 源视频</a>
+</p>
 
 <p align="center"><sub>
-  视频直接使用仓库中的 1080p 源文件 · <a href="https://xxc2007.me/promo/">打开独立播放器页面</a>
+  播放页直接使用仓库中的 1080p 源文件，不使用 README 压缩预览
 </sub></p>
 
 ---
