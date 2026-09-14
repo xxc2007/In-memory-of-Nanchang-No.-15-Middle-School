@@ -24,7 +24,7 @@ This is a memorial page for Nanchang No. 15 Middle School: **25 photographs of t
 
 Pure HTML / CSS / vanilla JS with structure, style and behavior separated (`index.html` + `assets/`) — zero frameworks, no build step.
 
-[Live Site](https://xxc2007.me) · [Structure](#-site-structure) · [Highlights](#-highlights) · [Tech Stack](#️-tech-stack) · [Run Locally](#-run-locally) · [Migration guide](docs/MIGRATION.en.md)
+[Live Site](https://xxc2007.me/en/) · [English promo player](https://xxc2007.me/promo/en/) · [Structure](#-site-structure) · [Highlights](#-highlights) · [Tech Stack](#️-tech-stack) · [Run Locally](#-run-locally) · [Migration guide](docs/MIGRATION.en.md)
 
 </div>
 
@@ -38,15 +38,15 @@ Pure HTML / CSS / vanilla JS with structure, style and behavior separated (`inde
 
 ## 🎬 Promo showcase
 
-This 35-second promo turns the real page into one short viewing path: the emblem and hero first, then the history timeline, 25 campus photographs, the water tower across day and night, an eight-spot campus map, and a privacy-safe guestbook demo before the whole memorial comes back together. It uses real page captures and campus photography, with a restrained rhythmic score and paper-like transitions.
+This 35-second English cut mirrors the original film shot for shot: the emblem and hero first, then the history timeline, 25 campus photographs, the water tower across day and dusk, an eight-point campus map, and a privacy-safe guestbook demo before the whole memorial comes back together. It uses the English page captures and the same real campus photography, rhythm and paper-like transitions.
 
-Open the player below to watch online.
+Open the English player below to watch online.
 
-https://github.com/user-attachments/assets/368cc8d5-2605-4444-949f-fe6b7a017408
+https://raw.githubusercontent.com/xxc2007/In-memory-of-Nanchang-No.-15-Middle-School/main/docs/promo/nanchang15-promo-en-readme.mp4
 
-▶️ [Open the 1080p HD player](https://xxc2007.me/promo/) · [Open the 1080p source video directly](https://raw.githubusercontent.com/xxc2007/In-memory-of-Nanchang-No.-15-Middle-School/main/docs/promo/nanchang15-promo.mp4)
+▶️ [Open the English 1080p HD player](https://xxc2007.me/promo/en/) · [Open the English 1080p source video directly](https://raw.githubusercontent.com/xxc2007/In-memory-of-Nanchang-No.-15-Middle-School/main/docs/promo/nanchang15-promo-en.mp4)
 
-The native README preview keeps a 1920×1080 frame; the standalone player and source link continue to use the repository's complete 1080p master.
+The English standalone player and source link use the complete 1920×1080 master; the README preview is a high-quality 1080p copy prepared for GitHub's inline playback limits.
 
 ---
 
@@ -129,7 +129,7 @@ site/
 │   └── emblem-*.png    # School emblem (top bar / hero / footer / favicon)
 ├── maplibre/           # Self-hosted MapLibre GL v5 (no CDN dependency)
 ├── docs/               # README screenshots + [migration guide](docs/MIGRATION.en.md)
-│   └── promo/          # Public player page, 1080p showcase copy and full master (live at /promo/)
+│   └── promo/          # Chinese + English public players, 1080p showcase copies and full masters (live at /promo/ and /promo/en/)
 ├── README.md / README.en.md   # Bilingual repository docs (this file and the Chinese original)
 ├── robots.txt / sitemap.xml / LICENSE / .gitattributes / .gitignore
 ```
