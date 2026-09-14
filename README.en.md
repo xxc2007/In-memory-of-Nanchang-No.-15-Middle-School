@@ -42,7 +42,7 @@ This 35-second promo turns the real page into one short viewing path: the emblem
 
 Open the player below to watch online.
 
-https://github.com/user-attachments/assets/90cc920b-9beb-4f9d-93ca-069deec357b2
+https://github.com/user-attachments/assets/368cc8d5-2605-4444-949f-fe6b7a017408
 
 ▶️ [Open the 1080p HD player](https://xxc2007.me/promo/) · [Open the 1080p source video directly](https://raw.githubusercontent.com/xxc2007/In-memory-of-Nanchang-No.-15-Middle-School/main/docs/promo/nanchang15-promo.mp4)
 

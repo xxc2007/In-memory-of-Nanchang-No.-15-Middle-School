@@ -45,7 +45,7 @@
 
 点击下方播放器即可在线播放。
 
-https://github.com/user-attachments/assets/90cc920b-9beb-4f9d-93ca-069deec357b2
+https://github.com/user-attachments/assets/368cc8d5-2605-4444-949f-fe6b7a017408
 
 ▶️ [打开 1080p 高清播放器](https://xxc2007.me/promo/) · [直接打开 1080p 源视频](https://raw.githubusercontent.com/xxc2007/In-memory-of-Nanchang-No.-15-Middle-School/main/docs/promo/nanchang15-promo.mp4)
 
