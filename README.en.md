@@ -41,24 +41,17 @@ Pure HTML / CSS / vanilla JS with structure, style and behavior separated (`inde
 This 35-second promo turns the real page into one short viewing path: the emblem and hero first, then the history timeline, 25 campus photographs, the water tower across day and night, an eight-spot campus map, and a privacy-safe guestbook demo before the whole memorial comes back together. It uses real page captures and campus photography, with a restrained rhythmic score and paper-like transitions.
 
 <p align="center">
-  <strong>Use the player below to watch online — no sign-in required</strong>
+  <strong>Use the player below to watch online</strong>
 </p>
 
-https://github.com/user-attachments/assets/75696dc0-9825-4f96-a0af-ebcd60b1a23d
+<video controls playsinline preload="metadata" width="100%" poster="https://xxc2007.me/images/og-card.jpg">
+  <source src="https://raw.githubusercontent.com/xxc2007/In-memory-of-Nanchang-No.-15-Middle-School/main/docs/promo/nanchang15-promo.mp4" type="video/mp4">
+  Your browser does not support embedded video. <a href="https://raw.githubusercontent.com/xxc2007/In-memory-of-Nanchang-No.-15-Middle-School/main/docs/promo/nanchang15-promo.mp4">Open the 1080p MP4 directly</a>.
+</video>
 
 <p align="center"><sub>
-  720p README preview with the full soundtrack · <a href="https://xxc2007.me/promo/">Open the HD player</a> · <a href="https://raw.githubusercontent.com/xxc2007/In-memory-of-Nanchang-No.-15-Middle-School/main/docs/promo/nanchang15-promo.mp4">Open the 1080p MP4 directly</a>
+  The player uses the repository's 1080p source file · <a href="https://xxc2007.me/promo/">Open the standalone player</a>
 </sub></p>
-
-<p align="center">
-  <a href="https://xxc2007.me/promo/">
-    <img src="docs/screenshot-hero-en.png" alt="Promo player cover: emblem, serif headline, and hero metrics" width="100%">
-  </a>
-</p>
-
-<p align="center">
-  <a href="https://xxc2007.me/promo/">▶ Open the HD promo</a> · <a href="https://xxc2007.me">Open the live memorial</a>
-</p>
 
 ---
 
@@ -141,7 +134,7 @@ site/
 │   └── emblem-*.png    # School emblem (top bar / hero / footer / favicon)
 ├── maplibre/           # Self-hosted MapLibre GL v5 (no CDN dependency)
 ├── docs/               # README screenshots + [migration guide](docs/MIGRATION.en.md)
-│   └── promo/          # Public player page, 1080p master, and README preview (live at /promo/)
+│   └── promo/          # Public player page and 1080p master (live at /promo/)
 ├── README.md / README.en.md   # Bilingual repository docs (this file and the Chinese original)
 ├── robots.txt / sitemap.xml / LICENSE / .gitattributes / .gitignore
 ```

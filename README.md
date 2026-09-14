@@ -44,24 +44,17 @@
 这支宣传片把网页里的真实内容重新编排成一条 35 秒的观看路径：从首屏的校徽与标题出发，经过沿革时间轴、25 张校园实景、水塔昼夜、八机位地图和脱敏留言墙，最后回到整本纪念册。画面使用真实网页截图与公开校园摄影，配以克制的节奏和纸页式转场。
 
 <p align="center">
-  <strong>点击下方播放器即可在线播放（无需登录）</strong>
+  <strong>点击下方播放器即可在线播放</strong>
 </p>
 
-https://github.com/user-attachments/assets/75696dc0-9825-4f96-a0af-ebcd60b1a23d
+<video controls playsinline preload="metadata" width="100%" poster="https://xxc2007.me/images/og-card.jpg">
+  <source src="https://raw.githubusercontent.com/xxc2007/In-memory-of-Nanchang-No.-15-Middle-School/main/docs/promo/nanchang15-promo.mp4" type="video/mp4">
+  您的浏览器不支持内嵌视频，请<a href="https://raw.githubusercontent.com/xxc2007/In-memory-of-Nanchang-No.-15-Middle-School/main/docs/promo/nanchang15-promo.mp4">直接打开 1080p MP4</a>观看。
+</video>
 
 <p align="center"><sub>
-  720p README 预览保留完整音轨 · <a href="https://xxc2007.me/promo/">打开高清在线播放器</a> · <a href="https://raw.githubusercontent.com/xxc2007/In-memory-of-Nanchang-No.-15-Middle-School/main/docs/promo/nanchang15-promo.mp4">直接打开 1080p MP4</a>
+  视频直接使用仓库中的 1080p 源文件 · <a href="https://xxc2007.me/promo/">打开独立播放器页面</a>
 </sub></p>
-
-<p align="center">
-  <a href="https://xxc2007.me/promo/">
-    <img src="docs/screenshot-hero.png" alt="宣传片播放器封面：首屏校徽、衬线标题与关键数字" width="100%">
-  </a>
-</p>
-
-<p align="center">
-  <a href="https://xxc2007.me/promo/">▶ 打开高清宣传片</a> · <a href="https://xxc2007.me">打开线上纪念册</a>
-</p>
 
 ---
 
@@ -149,7 +142,7 @@ site/
 │   └── emblem-*.png    # 校徽（顶栏 / 首屏 / 页脚 / favicon）
 ├── maplibre/           # MapLibre GL v5 自托管（不依赖 CDN）
 ├── docs/               # README 展示截图 + [迁移手册](docs/MIGRATION.md)
-│   └── promo/          # 公开在线播放页、1080p 完整片与 README 预览版（线上入口：/promo/）
+│   └── promo/          # 公开在线播放页与 1080p 完整片（线上入口：/promo/）
 ├── README.md / README.en.md   # 中英双语仓库说明（本文件与英文版）
 ├── robots.txt / sitemap.xml / LICENSE / .gitattributes / .gitignore
 ```
