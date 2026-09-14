@@ -134,6 +134,7 @@ site/
 │   └── emblem-*.png    # School emblem (top bar / hero / footer / favicon)
 ├── maplibre/           # Self-hosted MapLibre GL v5 (no CDN dependency)
 ├── docs/               # README screenshots + [migration guide](docs/MIGRATION.en.md)
+│   └── promo/          # Public player page and promo MP4 (live at /promo/)
 ├── README.md / README.en.md   # Bilingual repository docs (this file and the Chinese original)
 ├── robots.txt / sitemap.xml / LICENSE / .gitattributes / .gitignore
 ```

@@ -142,6 +142,7 @@ site/
 │   └── emblem-*.png    # 校徽（顶栏 / 首屏 / 页脚 / favicon）
 ├── maplibre/           # MapLibre GL v5 自托管（不依赖 CDN）
 ├── docs/               # README 展示截图 + [迁移手册](docs/MIGRATION.md)
+│   └── promo/          # 公开在线播放页与宣传片 MP4（线上入口：/promo/）
 ├── README.md / README.en.md   # 中英双语仓库说明（本文件与英文版）
 ├── robots.txt / sitemap.xml / LICENSE / .gitattributes / .gitignore
 ```
