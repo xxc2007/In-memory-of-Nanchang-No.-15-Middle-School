@@ -41,17 +41,16 @@ Pure HTML / CSS / vanilla JS with structure, style and behavior separated (`inde
 This 35-second promo turns the real page into one short viewing path: the emblem and hero first, then the history timeline, 25 campus photographs, the water tower across day and night, an eight-spot campus map, and a privacy-safe guestbook demo before the whole memorial comes back together. It uses real page captures and campus photography, with a restrained rhythmic score and paper-like transitions.
 
 <p align="center">
-  <video controls preload="metadata" poster="docs/screenshot-hero-en.png" width="100%">
-    <source src="https://raw.githubusercontent.com/xxc2007/In-memory-of-Nanchang-No.-15-Middle-School/main/docs/promo/nanchang15-promo.mp4" type="video/mp4">
-    <a href="docs/promo/nanchang15-promo.mp4">Download the promo (MP4)</a>
-  </video>
+  <a href="https://xxc2007.github.io/In-memory-of-Nanchang-No.-15-Middle-School/promo/">
+    <img src="docs/screenshot-hero-en.png" alt="Open the promo player: emblem, serif headline, and hero metrics" width="100%">
+  </a>
 </p>
 <p align="center"><sub>
-  ▲ 35-second promo · real page states, campus photography, and a privacy-safe guestbook demo
+  ▲ Click the cover to open the 35-second promo player · no login required
 </sub></p>
 
 <p align="center">
-  <a href="docs/promo/nanchang15-promo.mp4">Download MP4</a> · <a href="https://xxc2007.me">Open the live memorial</a>
+  <a href="https://xxc2007.github.io/In-memory-of-Nanchang-No.-15-Middle-School/promo/">▶ Play the promo</a> · <a href="https://raw.githubusercontent.com/xxc2007/In-memory-of-Nanchang-No.-15-Middle-School/main/docs/promo/nanchang15-promo.mp4">Open the MP4 directly</a> · <a href="https://xxc2007.me">Open the live memorial</a>
 </p>
 
 ---
