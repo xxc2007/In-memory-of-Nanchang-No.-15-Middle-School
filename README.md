@@ -68,7 +68,7 @@ README 原生预览保持 1920×1080 分辨率；独立播放器与源视频链�
 ### 🗺 校园寻踪（时光漫游 + 定位图）
 
 - **全幅照片漫游**：8 个机位、8 张全幅照片，箭头 / 圆点 / 键盘方向键切换，Ken Burns 缓推镜头
-- **中文定位图**：OSM 栅格底图（含中文地名），8 个机位标记与漫游联动，点击标记镜头飞至该位置
+- **中文定位图**：高德地图（AutoNavi）中文栅格底图，8 个机位标记与漫游联动，点击标记镜头飞至该位置
 - 滚动临近才按需加载 MapLibre，首屏零地图开销；机位数据集中在 `assets/map.js` 的 `SPOTS` 数组，一眼可改
 
 <p align="center">
@@ -76,13 +76,6 @@ README 原生预览保持 1920×1080 分辨率；独立播放器与源视频链�
 </p>
 <p align="center"><sub>
   ▲ 伍 · MAP 时光漫游 · 老水塔机位 · 底部渐影字幕与 5/8 计数
-</sub></p>
-
-<p align="center">
-  <img src="docs/screenshot-map.png" alt="中文定位图：OSM 底图与八个机位标记" width="86%">
-</p>
-<p align="center"><sub>
-  ▲ 中文定位图 · 点击标记，漫游镜头飞至该位置 · 学校定位至 OSM way 260420791
 </sub></p>
 
 ### 💬 留言墙（Artalk 自托管）
@@ -118,7 +111,7 @@ README 原生预览保持 1920×1080 分辨率；独立播放器与源视频链�
 
 ```text
 site/
-├── index.html          # 简体中文页（语义 HTML；仅三处内联脚本：JSON-LD、交错动画序号、地图惰性加载器）
+├── index.html          # 简体中文页（语义 HTML；仅两处内联脚本：JSON-LD、地图惰性加载器）
 ├── zh-Hant/index.html  # 繁體中文頁（台湾用语习惯：暱稱/登入/載入/網路/郵遞區號）
 ├── en/index.html       # English page (assets shared via ../ relative paths, file:// friendly)
 ├── ja/index.html       # 日本語ページ（「おわりに」「通りすがり」など自然な日本語文体）
@@ -150,7 +143,7 @@ site/
 | 层 | 选型 |
 |------|------|
 | 前端 | 纯 HTML / CSS / Vanilla JS，结构·样式·行为三分离，零框架无构建 |
-| 地图 | [MapLibre GL](https://maplibre.org) v5 + OSM 栅格底图（自托管，不依赖 CDN） |
+| 地图 | [MapLibre GL](https://maplibre.org) v5 自托管 + 高德地图（AutoNavi）中文栅格瓦片 |
 | 留言 | [Artalk](https://artalk.js.org) v2.10 自托管 + SQLite |
 | 服务 | nginx 反向代理 `/comment/` → systemd 常驻 |
 | 部署 | Azure VM · Cloudflare DNS · Let's Encrypt |

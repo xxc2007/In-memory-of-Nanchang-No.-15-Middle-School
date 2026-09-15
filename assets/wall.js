@@ -26,7 +26,7 @@
     ariaAvatar: 'Upload a custom avatar',
     ariaLike: 'Upvote this message', ariaReplyTo: 'Reply to ',
     replyLabel: 'Reply', cancelLabel: 'Cancel', postLabel: 'Post',
-    ipLabel: 'IP: ',
+    ipLabel: 'IP region: ',
     replyAtPrefix: 'Reply @',
     replyPlaceholderPrefix: 'Reply to @',
     count: function (n) { return n + ' / 500'; },
@@ -46,7 +46,7 @@
     guest: '通りすがり', guestChar: '通',
     avatarAltOf: 'のアイコン', myAvatarAlt: '自分のアイコン',
     ariaAvatar: 'アイコンをアップロード',
-    ariaLike: 'このメッセージに賛成', ariaReplyTo: '返信先：',
+    ariaLike: 'このメッセージに「いいね」', ariaReplyTo: '返信先：',
     replyLabel: '返信', cancelLabel: 'キャンセル', postLabel: '送信',
     ipLabel: 'IP地域：',
     replyAtPrefix: '返信先 @',
@@ -111,9 +111,9 @@
     guest: 'Гость', guestChar: 'Г',
     avatarAltOf: ' — аватар', myAvatarAlt: 'Мой аватар',
     ariaAvatar: 'Загрузить свой аватар',
-    ariaLike: 'Одобрить сообщение', ariaReplyTo: 'Ответ для ',
+    ariaLike: 'Отметить сообщение как понравившееся', ariaReplyTo: 'Ответ для ',
     replyLabel: 'Ответить', cancelLabel: 'Отмена', postLabel: 'Отправить',
-    ipLabel: 'IP: ',
+    ipLabel: 'Регион IP: ',
     replyAtPrefix: 'Ответ @',
     replyPlaceholderPrefix: 'Ответить @',
     count: function (n) { return n + ' / 500'; },
@@ -135,7 +135,7 @@
     ariaAvatar: 'Subir un avatar propio',
     ariaLike: 'Me gusta este mensaje', ariaReplyTo: 'Responder a ',
     replyLabel: 'Responder', cancelLabel: 'Cancelar', postLabel: 'Publicar',
-    ipLabel: 'IP: ',
+    ipLabel: 'Región IP: ',
     replyAtPrefix: 'Responder @',
     replyPlaceholderPrefix: 'Responder a @',
     count: function (n) { return n + ' / 500'; },
@@ -155,9 +155,9 @@
     guest: 'Un camarade de passage', guestChar: 'C',
     avatarAltOf: ' — avatar', myAvatarAlt: 'Mon avatar',
     ariaAvatar: 'Téléverser votre avatar',
-    ariaLike: 'Approuver ce message', ariaReplyTo: 'Répondre à ',
+    ariaLike: 'J’aime ce message', ariaReplyTo: 'Répondre à ',
     replyLabel: 'Répondre', cancelLabel: 'Annuler', postLabel: 'Publier',
-    ipLabel: 'IP : ',
+    ipLabel: 'Région IP : ',
     replyAtPrefix: 'Répondre @',
     replyPlaceholderPrefix: 'Répondre à @',
     count: function (n) { return n + ' / 500'; },
@@ -179,7 +179,7 @@
     ariaAvatar: 'Enviar seu próprio avatar',
     ariaLike: 'Curtir esta mensagem', ariaReplyTo: 'Responder a ',
     replyLabel: 'Responder', cancelLabel: 'Cancelar', postLabel: 'Publicar',
-    ipLabel: 'IP: ',
+    ipLabel: 'Região de IP: ',
     replyAtPrefix: 'Responder @',
     replyPlaceholderPrefix: 'Responder a @',
     count: function (n) { return n + ' / 500'; },
@@ -201,7 +201,7 @@
     ariaAvatar: 'رفع صورة رمزية مخصصة',
     ariaLike: 'إعجاب بهذه الرسالة', ariaReplyTo: 'رد على ',
     replyLabel: 'رد', cancelLabel: 'إلغاء', postLabel: 'نشر',
-    ipLabel: 'الموقع: ',
+    ipLabel: 'منطقة عنوان IP: ',
     replyAtPrefix: 'رد @',
     replyPlaceholderPrefix: 'رد على @',
     count: function (n) { return n + ' / 500'; },
@@ -240,6 +240,19 @@
     avatarProcessFail: '头像处理失败，请换一张图片。',
     months: null   /* 中文走「年月日」分支 */
   };
+
+  /* 本地静态预览没有同源 Artalk 反向代理；直接说明限制，而不是给出永远不会成功的“重试”。 */
+  var LOCAL_ONLY = EN ? 'The guestbook is available on the live site; this local preview has no comment service.'
+    : JA ? '留言板は公開サイトで利用できます。ローカルプレビューにはコメントサービスがありません。'
+    : ZHT ? '留言板可在正式網站使用；此本機預覽沒有留言服務。'
+    : KO ? '방명록은 공개 사이트에서 이용할 수 있습니다. 이 로컬 미리보기에는 댓글 서비스가 없습니다.'
+    : RU ? 'Гостевая книга доступна на опубликованном сайте; в локальном предпросмотре нет сервиса комментариев.'
+    : ES ? 'El muro de mensajes está disponible en el sitio publicado; esta vista local no incluye el servicio de comentarios.'
+    : FR ? 'Le livre d’or est disponible sur le site en ligne ; cet aperçu local ne comprend pas le service de commentaires.'
+    : PT ? 'O mural de recados está disponível no site publicado; esta pré-visualização local não inclui o serviço de comentários.'
+    : AR ? 'يتوفر دفتر الرسائل على الموقع المنشور؛ ولا تتضمن هذه المعاينة المحلية خدمة التعليقات.'
+    : '留言墙可在正式网站使用；此本地预览未配置评论服务。';
+  var IS_LOCAL_PREVIEW = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
 
   var AVATAR_GRADS = [
     'linear-gradient(135deg,#D97757,#B05633)',
@@ -356,9 +369,16 @@
   myAvatar.setAttribute('role', 'button');
   myAvatar.setAttribute('tabindex', '0');
   myAvatar.setAttribute('aria-label', T.ariaAvatar);
-  myAvatar.addEventListener('click', function () { fileInput.click(); });
+  myAvatar.addEventListener('click', function () {
+    if (IS_LOCAL_PREVIEW) { showNotice(LOCAL_ONLY); return; }
+    fileInput.click();
+  });
   myAvatar.addEventListener('keydown', function (ev) {
-    if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); fileInput.click(); }
+    if (ev.key === 'Enter' || ev.key === ' ') {
+      ev.preventDefault();
+      if (IS_LOCAL_PREVIEW) { showNotice(LOCAL_ONLY); return; }
+      fileInput.click();
+    }
   });
   fileInput.addEventListener('change', function () {
     var f = fileInput.files && fileInput.files[0];
@@ -487,6 +507,7 @@
     submit.addEventListener('click', function () {
       var text = ta.value.trim();
       if (!text) { ta.focus(); return; }
+      if (IS_LOCAL_PREVIEW) { showNotice(LOCAL_ONLY); return; }
       submit.disabled = true;
       var name = guestName(nickInput.value);
       var email = (nickInput.value || '').trim()
@@ -565,6 +586,14 @@
   /* limit=100 为单次拉取上限，超出后老留言暂不做分页（纪念册体量足够）；
      total 为服务端真实计数，有则优先显示，防止「全部留言」口径失真 */
   function load() {
+    if (IS_LOCAL_PREVIEW) {
+      var localEl = document.getElementById('cmtLoading');
+      localEl.hidden = false;
+      localEl.removeAttribute('data-failed');
+      localEl.style.cursor = 'default';
+      localEl.textContent = LOCAL_ONLY;
+      return;
+    }
     fetchJSON(API + '/comments?page_key=' + encodeURIComponent(PAGE) + '&site_name=' + encodeURIComponent(SITE) + '&limit=100')
       .then(function (d) {
         document.getElementById('cmtLoading').hidden = true;
@@ -592,6 +621,7 @@
     if (submitting) return;
     var text = ta.value.trim();
     if (!text) { ta.focus(); return; }
+    if (IS_LOCAL_PREVIEW) { showNotice(LOCAL_ONLY); return; }
     submitting = true;
     document.getElementById('cmtSubmit').disabled = true;
     var name = guestName(nickInput.value);

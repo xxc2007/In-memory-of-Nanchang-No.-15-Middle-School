@@ -64,9 +64,9 @@ The English standalone player and source link use the complete 1920×1080 master
 
 ### 🗺 Campus Tour (photo tour + MapLibre location map)
 
-- The school is pinned to OSM way `260420791` (Qingshanhu campus, 28.7208°N, 115.9322°E)
+- The school is located at the Qingshanhu campus (28.7208°N, 115.9322°E); map coordinates are converted for the Gaode tile system at runtime.
 - **Full-frame photo tour**: 8 spots, 8 photographs, switchable via arrows/dots/keyboard, with a slow Ken Burns push
-- **Chinese-labeled location map**: OSM raster basemap, 8 markers linked with the tour — click a marker and the camera flies there
+- **Chinese-labeled location map**: AutoNavi / Gaode raster basemap, 8 markers linked with the tour — click a marker and the camera flies there
 - MapLibre loads on demand as you scroll near the map section; all spots live in one `SPOTS` array in `assets/map.js` — easy to edit
 
 <p align="center">
@@ -75,10 +75,6 @@ The English standalone player and source link use the complete 1920×1080 master
 <p align="center"><sub>
   ▲ A Tour Through Time · The Old Water Tower spot (5 / 8) with Ken Burns push and English caption
 </sub></p>
-
-<p align="center">
-  <img src="docs/screenshot-map-en.png" alt="English edition location map: grayscale basemap with eight camera-spot markers, linked with the photo tour" width="86%">
-</p>
 
 ### 💬 Guestbook (self-hosted Artalk)
 
@@ -142,7 +138,7 @@ site/
 | Layer | Choice |
 |------|------|
 | Frontend | Pure HTML / CSS / vanilla JS, structure·style·behavior separated, no build |
-| Map | [MapLibre GL](https://maplibre.org) v5 + OSM raster basemap (Chinese labels), lazy-loaded |
+| Map | Self-hosted [MapLibre GL](https://maplibre.org) v5 + AutoNavi / Gaode raster basemap (Chinese labels), lazy-loaded |
 | Guestbook | [Artalk](https://artalk.js.org) v2.10 self-hosted + SQLite |
 | Serving | nginx reverse proxy `/comment/` → systemd service |
 | Deployment | Azure VM · Cloudflare DNS · Let's Encrypt |
@@ -162,7 +158,7 @@ python -m http.server 8000   # or any static server; open http://localhost:8000
 ## 📝 Design notes
 
 - **Visual direction**: Claude / Anthropic visual language (cream paper + terracotta + serif), specified by the site owner at the very beginning; every iteration grows within this direction. The background stays a pure cream paper surface with no decorative layers — motion always yields to content.
-- **Ten-language architecture**: ten static pages (`/` `/zh-Hant/` `/en/` `/ja/`) rather than runtime translation — each page owns its full semantic content and SEO metadata, mutually recognised via hreflang and sitemap alternates; `wall.js`/`map.js`/`main.js` switch dynamic copy by `<html lang>`, and all ten versions share one guestbook (same page_key), so messages in any language land on the same wall.
+- **Ten-language architecture**: ten static pages (`/`, `/zh-Hant/`, `/en/`, `/ja/`, `/ko/`, `/ru/`, `/es/`, `/fr/`, `/pt/`, `/ar/`) rather than runtime translation — each page owns its full semantic content and SEO metadata, mutually recognised via hreflang and sitemap alternates; `wall.js`/`map.js`/`main.js` switch dynamic copy by `<html lang>`, and all ten versions share one guestbook (same page_key), so messages in any language land on the same wall.
 - **Desktop inertial scrolling is intentional**: the wheel is driven through inertial interpolation (Oryzo/Lusion feel), enabled only on fine-pointer devices; browser zoom (Ctrl+wheel), the map canvas, inputs and the lightbox are never hijacked, and touch devices / `prefers-reduced-motion` users keep native scrolling. Not a bug.
 - **Browser support matrix**: modern evergreen browsers only (Chrome / Edge / Firefox / Safari, last two years). IE and Legacy Edge are explicitly unsupported; no polyfills.
 - **Guestbook fetch cap**: at most 100 comments per request (plenty for a memorial page); the counter prefers the server-side total. All network requests carry a 15-second timeout fallback.

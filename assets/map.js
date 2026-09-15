@@ -128,10 +128,10 @@
       es: { n: 'El campo, primer día', d: 'A las 7:18 de la mañana, la pista roja recibió la primera fotografía de un estudiante nuevo.' },
       fr: { n: 'Le stade, le premier jour', d: 'À 7 h 18 du matin, la piste rouge a accueilli le premier cliché d\'un nouvel élève.' },
       pt: { n: 'O campo, primeiro dia', d: 'Às 7h18 da manhã, a pista vermelha recebeu a primeira foto de um aluno novo.' },
-      ar: { n: 'الملعب في اليوم الأول', d: 'في الساعة 7:18 صباحاً، رحبت الحلبة الحمراء بأول صورة لطالب جديد.' }
+      ar: { n: 'الملعب في اليوم الأول', d: 'في الساعة 7:18 صباحاً، رحّب المضمار الأحمر بأول صورة لطالب جديد.' }
     },
     '04-teaching-building-winter-dusk.jpg': {
-      ko: { n: '붉은 벽돌 교사 · 겨울 황혼', d: '겨울 황혼 속의 붉은 벽돌 교사와 유리 계단실.' },
+      ko: { n: '붉은 벽돌 학교 건물 · 겨울 황혼', d: '겨울 황혼 속 붉은 벽돌 학교 건물과 유리 계단실.' },
       ru: { n: 'Краснокирпичный корпус · зимние сумерки', d: 'Краснокирпичный корпус и стеклянная лестничная клетка в зимних сумерках.' },
       es: { n: 'Edificio de ladrillo rojo · crepúsculo de invierno', d: 'El edificio de ladrillo rojo y su escalera de cristal al anochecer de invierno.' },
       fr: { n: 'Bâtiment de brique rouge · crépuscule d\'hiver', d: 'Le bâtiment de brique rouge et sa cage d\'escalier de verre au crépuscule d\'hiver.' },
@@ -139,7 +139,7 @@
       ar: { n: 'مبنى التدريس · شفق الشتاء', d: 'مبنى التدريس الأحمر وبرج السلالم الزجاجي في شفق الشتاء.' }
     },
     '09-camphor-grove.jpg': {
-      ko: { n: '녹나무 숲과 오래된 교사', d: '녹나무 새 잎이 붉고 초록으로 물들고, 오래된 교사가 나무 아래 고요히 서 있습니다.' },
+      ko: { n: '녹나무 숲과 오래된 학교 건물', d: '녹나무 새 잎이 붉고 초록으로 물들고, 오래된 학교 건물이 나무 아래 고요히 서 있습니다.' },
       ru: { n: 'Роща камфорных деревьев и старый корпус', d: 'Новая листва краснеет и зеленеет, старый корпус тихо стоит под ними.' },
       es: { n: 'La arboleda y el edificio antiguo', d: 'Los brotes nuevos en rojo y verde, el edificio antiguo descansa bajo ellos.' },
       fr: { n: 'Le bosquet et le vieux bâtiment', d: 'Les jeunes feuilles se teintent de rouge et de vert, le vieux bâtiment repose sous eux.' },
@@ -147,7 +147,7 @@
       ar: { n: 'بستان الكافور والمبنى القديم', d: 'أوراق جديدة بالأحمر والأخضر، المبنى القديم يستريح تحتها.' }
     },
     '11-water-tower.jpg': {
-      ko: { n: '오래된 급수탑', d: '모든 교사보다 연장인 구조물이, 수업의 시작과 끝을 기억해 줍니다.' },
+      ko: { n: '오래된 급수탑', d: '모든 학교 건물보다 더 오래된 구조물이 수업의 시작과 끝을 기억해 줍니다.' },
       ru: { n: 'Старая водонапорная башня', d: 'Сооружение старше всех корпусов помнит начало и конец каждого урока.' },
       es: { n: 'La vieja torre de agua', d: 'Una estructura más vieja que todos los edificios recuerda el inicio y el fin de las clases.' },
       fr: { n: 'Le vieux château d\'eau', d: 'Une structure plus âgée que tous les bâtiments se souvient du début et de la fin des cours.' },
@@ -171,7 +171,7 @@
       ar: { n: 'الساحة · تمثال الهلال', d: 'ساحة العطلة فارغة، وتمثال الهلال لا يزال يشير إلى السماء.' }
     },
     '19-library-building-sky.jpg': {
-      ko: { n: '종합교사를 올려다보며', d: '종합교사를 올려다보면 푸른 하늘에 큰 적란운이 떠 있습니다.' },
+      ko: { n: '종합동을 올려다보며', d: '종합동을 올려다보면 푸른 하늘에 큰 적란운이 떠 있습니다.' },
       ru: { n: 'Многофункциональный корпус снизу вверх', d: 'Взгляд вверх — большие кучевые облака в синем небе.' },
       es: { n: 'El edificio polivalente desde abajo', d: 'Mirando hacia arriba, grandes cúmulos en el cielo azul.' },
       fr: { n: 'Le bâtiment polyvalent vu d\'en bas', d: 'Vue vers le haut — gros cumulus dans un ciel bleu.' },
@@ -217,7 +217,7 @@
     : PT
     ? { viewSpot: 'Ponto de foto: ', tourTo: 'Ir para: ', prev: 'Foto anterior', next: 'Próxima foto', mapRegion: 'Mapa do campus de Qingshanhu da Escola n.º 15 de Nanchang, oito pontos fotográficos', attribution: '© AutoNavi (Gaode)' }
     : AR
-    ? { viewSpot: 'نقطة التصوير: ', tourTo: 'الانتقال إلى: ', prev: 'الصورة السابقة', next: 'الصورة التالية', mapRegion: 'خريطة حرم تشينغشان هو للمدرسة الثانوية الخامسة عشرة بنانشان، ثماني نقاط تصوير', attribution: '© AutoNavi (Gaode)' }
+    ? { viewSpot: 'نقطة التصوير: ', tourTo: 'الانتقال إلى: ', prev: 'الصورة السابقة', next: 'الصورة التالية', mapRegion: 'خريطة حرم تشينغشان هو للمدرسة الثانوية الخامسة عشرة بنانتشانغ، ثماني نقاط تصوير', attribution: '© AutoNavi (Gaode)' }
     : { viewSpot: '查看机位：', tourTo: '漫游到：', prev: '上一张', next: '下一张', mapRegion: '南昌市第十五中学青山湖校区定位图，标注八个照片拍摄位置', attribution: '底图 © 高德地图' };
 
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;

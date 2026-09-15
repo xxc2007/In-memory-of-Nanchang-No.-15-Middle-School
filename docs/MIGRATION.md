@@ -47,7 +47,7 @@
    bash replace-domain.sh 新域名            # 预览：列出会改哪些文件、各多少行，不改动任何文件
    bash replace-domain.sh 新域名 --apply    # 确认无误后执行
    ```
-   口径 **20 个文件 311 行**（脚本会打印准确数字）：十个语言页各 16 行（canonical + hreflang×12 + og:url + og:image + JSON-LD + 页脚签名）、`sitemap.xml` 120 行、`robots.txt` 2 行（含 Sitemap 声明，功能行必改）、双语 README 各 4 行、`404.html` 页脚签名 1 行、`assets/wall.js` 4 行（匿名邮箱域 `local.xxc2007.me`，仅作身份串不渲染，漏改不影响功能，建议顺手改齐）、`docs/promo/*` 各 4 行，以及**这份迁移手册自己**（示例命令里的域名也要改，否则下次照着敲会打回旧站）。
+   替换范围以脚本每次打印的**准确文件数与命中行数**为准：十个语言页各 16 行（canonical + hreflang×12 + og:url + og:image + JSON-LD + 页脚签名）、`sitemap.xml`、`robots.txt`（含 Sitemap 声明，功能行必改）、双语 README、`404.html` 页脚签名、`assets/wall.js`（匿名邮箱域 `local.xxc2007.me`，仅作身份串不渲染，漏改不影响功能，建议顺手改齐）、`docs/promo/*`，以及**这份迁移手册自己**（示例命令里的域名也要改，否则下次照着敲会打回旧站）。
    替换后务必 `git diff` 逐项核对，重点看 `canonical` / `hreflang` / `og:url` / `sitemap.xml`。改完提交。
 5. **替换旧留言里的头像链接**（存量数据存的是绝对 URL）：
    ```bash
