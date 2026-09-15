@@ -42,12 +42,13 @@
 1. **DNS**：Cloudflare 添加新域名的 A 记录 → 同一台服务器 IP。
 2. **证书**：`sudo certbot --nginx -d 新域名 -d www.新域名 --expand`。
 3. **nginx**：`server_name` 加上新域名，`nginx -t && sudo systemctl reload nginx`。
-4. **改代码里的域名标识**（一条命令找全，2026-09-13 复核口径 **18 个文件 301 行**）：
+4. **改代码里的域名标识** —— 用仓库根目录的一键脚本（2026-09-15 新增，替代此前的手工 grep + 逐个改）：
    ```bash
-   grep -rn "xxc2007.me" --include="*.html" --include="*.xml" --include="*.md" --include="*.js" --include="*.txt" .
+   bash replace-domain.sh 新域名            # 预览：列出会改哪些文件、各多少行，不改动任何文件
+   bash replace-domain.sh 新域名 --apply    # 确认无误后执行
    ```
-   其中**站点本体 16 个文件 293 行**：十个语言页各 16 行（canonical + hreflang×11（十语+x-default）+ og:url + og:image + JSON-LD + 页脚签名）、`sitemap.xml` 十个 URL 与交替链接共 120 行、双语 README 各 3 行、`robots.txt` 2 行（含 Sitemap 声明，功能行必改）、`404.html` 页脚签名 1 行、`assets/wall.js` 4 行（匿名邮箱域 `local.xxc2007.me`，仅作身份串不渲染，漏改不影响功能，建议顺手改齐）。
-   剩下 **2 个文件 8 行**是这份迁移手册自己（`docs/MIGRATION.md` 与 `docs/MIGRATION.en.md` 各 4 行）——手册里的示例命令写着旧域名，**也要一并改**，否则下次照着敲会打回旧站。改完提交。
+   口径 **20 个文件 311 行**（脚本会打印准确数字）：十个语言页各 16 行（canonical + hreflang×12 + og:url + og:image + JSON-LD + 页脚签名）、`sitemap.xml` 120 行、`robots.txt` 2 行（含 Sitemap 声明，功能行必改）、双语 README 各 4 行、`404.html` 页脚签名 1 行、`assets/wall.js` 4 行（匿名邮箱域 `local.xxc2007.me`，仅作身份串不渲染，漏改不影响功能，建议顺手改齐）、`docs/promo/*` 各 4 行，以及**这份迁移手册自己**（示例命令里的域名也要改，否则下次照着敲会打回旧站）。
+   替换后务必 `git diff` 逐项核对，重点看 `canonical` / `hreflang` / `og:url` / `sitemap.xml`。改完提交。
 5. **替换旧留言里的头像链接**（存量数据存的是绝对 URL）：
    ```bash
    sudo python3 infra/replace-comment-domain.py https://旧域名 https://新域名 --apply
