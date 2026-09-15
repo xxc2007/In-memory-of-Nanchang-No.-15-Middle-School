@@ -29,6 +29,38 @@
     return src.replace(/assets\/map\.js.*$/, '');
   })();
 
+  /* ---------- 坐标系：WGS84 → GCJ-02 ----------
+     底图源从 OSM（WGS84）换成高德（GCJ-02 国测局加密坐标）后，所有经纬度都要做
+     同样的偏移，否则整组标记会偏离实际位置约 500 米。下面是标准 GCJ-02 正算。 */
+  var gcj02 = (function () {
+    var A = 6378245.0, EE = 0.00669342162296594323;
+    function outsideChina(lng, lat) { return !(lng > 73.66 && lng < 135.05 && lat > 3.86 && lat < 53.55); }
+    function dLat(x, y) {
+      var r = -100 + 2 * x + 3 * y + 0.2 * y * y + 0.1 * x * y + 0.2 * Math.sqrt(Math.abs(x));
+      r += (20 * Math.sin(6 * x * Math.PI) + 20 * Math.sin(2 * x * Math.PI)) * 2 / 3;
+      r += (20 * Math.sin(y * Math.PI) + 40 * Math.sin(y / 3 * Math.PI)) * 2 / 3;
+      r += (160 * Math.sin(y / 12 * Math.PI) + 320 * Math.sin(y * Math.PI / 30)) * 2 / 3;
+      return r;
+    }
+    function dLng(x, y) {
+      var r = 300 + x + 2 * y + 0.1 * x * x + 0.1 * x * y + 0.1 * Math.sqrt(Math.abs(x));
+      r += (20 * Math.sin(6 * x * Math.PI) + 20 * Math.sin(2 * x * Math.PI)) * 2 / 3;
+      r += (20 * Math.sin(x * Math.PI) + 40 * Math.sin(x / 3 * Math.PI)) * 2 / 3;
+      r += (150 * Math.sin(x / 12 * Math.PI) + 300 * Math.sin(x / 30 * Math.PI)) * 2 / 3;
+      return r;
+    }
+    return function (lng, lat) {
+      if (outsideChina(lng, lat)) return [lng, lat];
+      var a = dLat(lng - 105, lat - 35), b = dLng(lng - 105, lat - 35);
+      var radLat = lat / 180 * Math.PI, magic = Math.sin(radLat);
+      magic = 1 - EE * magic * magic;
+      var sq = Math.sqrt(magic);
+      a = (a * 180) / ((A * (1 - EE)) / (magic * sq) * Math.PI);
+      b = (b * 180) / (A / sq * Math.cos(radLat) * Math.PI);
+      return [lng + b, lat + a];
+    };
+  })();
+
   /* ---------- 机位数据（维护者只改这里；name/desc 简体，Hant 繁體，En 英文，Ja 日文） ---------- */
   var SPOTS = [
     { name: '校门 · 门柱铭牌',       nameHant: '校門 · 門柱銘牌',           nameEn: 'The Gate · Nameplate',            nameJa: '校門・門柱の銘板',
@@ -169,24 +201,24 @@
     return s.desc;
   }
   var ARIA = EN
-    ? { viewSpot: 'View spot: ', tourTo: 'Tour to: ', prev: 'Previous', next: 'Next', mapRegion: 'Location map of the Qingshanhu campus, marking eight photo positions', attribution: 'Basemap © OpenStreetMap contributors' }
+    ? { viewSpot: 'View spot: ', tourTo: 'Tour to: ', prev: 'Previous', next: 'Next', mapRegion: 'Location map of the Qingshanhu campus, marking eight photo positions', attribution: 'Basemap © AutoNavi (Gaode)' }
     : JA
-    ? { viewSpot: '撮影スポット：', tourTo: 'この場所へ：', prev: '前の写真', next: '次の写真', mapRegion: '青山湖キャンパスの位置マップ（8つの撮影地点を表示）', attribution: '地図 © OpenStreetMap 貢献者' }
+    ? { viewSpot: '撮影スポット：', tourTo: 'この場所へ：', prev: '前の写真', next: '次の写真', mapRegion: '青山湖キャンパスの位置マップ（8つの撮影地点を表示）', attribution: '地図 © 高徳地図（AutoNavi）' }
     : ZHT
-    ? { viewSpot: '查看機位：', tourTo: '漫遊到：', prev: '上一張', next: '下一張', mapRegion: '南昌市第十五中學青山湖校區定位圖，標注八個照片拍攝位置', attribution: '底圖 © OpenStreetMap 貢獻者' }
+    ? { viewSpot: '查看機位：', tourTo: '漫遊到：', prev: '上一張', next: '下一張', mapRegion: '南昌市第十五中學青山湖校區定位圖，標注八個照片拍攝位置', attribution: '底圖 © 高德地圖' }
     : KO
-    ? { viewSpot: '촬영 지점: ', tourTo: '이곳으로: ', prev: '이전 사진', next: '다음 사진', mapRegion: '난창시 제15중학교 칭산후 캠퍼스 위치 지도, 촬영 지점 8곳 표시', attribution: '© OpenStreetMap 기여자' }
+    ? { viewSpot: '촬영 지점: ', tourTo: '이곳으로: ', prev: '이전 사진', next: '다음 사진', mapRegion: '난창시 제15중학교 칭산후 캠퍼스 위치 지도, 촬영 지점 8곳 표시', attribution: '© 가오더 지도 (AutoNavi)' }
     : RU
-    ? { viewSpot: 'Точка съёмки: ', tourTo: 'Перейти к: ', prev: 'Предыдущее фото', next: 'Следующее фото', mapRegion: 'Карта кампуса Циншаньху Средней школы № 15 Наньчана, восемь точек съёмки', attribution: '© Авторы OpenStreetMap' }
+    ? { viewSpot: 'Точка съёмки: ', tourTo: 'Перейти к: ', prev: 'Предыдущее фото', next: 'Следующее фото', mapRegion: 'Карта кампуса Циншаньху Средней школы № 15 Наньчана, восемь точек съёмки', attribution: '© AutoNavi (Gaode)' }
     : ES
-    ? { viewSpot: 'Punto de foto: ', tourTo: 'Ir a: ', prev: 'Foto anterior', next: 'Foto siguiente', mapRegion: 'Mapa del campus de Qingshanhu de la Escuela n.º 15 de Nanchang, ocho puntos fotográficos', attribution: '© Colaboradores de OpenStreetMap' }
+    ? { viewSpot: 'Punto de foto: ', tourTo: 'Ir a: ', prev: 'Foto anterior', next: 'Foto siguiente', mapRegion: 'Mapa del campus de Qingshanhu de la Escuela n.º 15 de Nanchang, ocho puntos fotográficos', attribution: '© AutoNavi (Gaode)' }
     : FR
-    ? { viewSpot: 'Point de vue : ', tourTo: 'Aller à : ', prev: 'Photo précédente', next: 'Photo suivante', mapRegion: 'Plan du campus de Qingshanhu du lycée n° 15 de Nanchang, huit points de vue', attribution: '© Contributeurs OpenStreetMap' }
+    ? { viewSpot: 'Point de vue : ', tourTo: 'Aller à : ', prev: 'Photo précédente', next: 'Photo suivante', mapRegion: 'Plan du campus de Qingshanhu du lycée n° 15 de Nanchang, huit points de vue', attribution: '© AutoNavi (Gaode)' }
     : PT
-    ? { viewSpot: 'Ponto de foto: ', tourTo: 'Ir para: ', prev: 'Foto anterior', next: 'Próxima foto', mapRegion: 'Mapa do campus de Qingshanhu da Escola n.º 15 de Nanchang, oito pontos fotográficos', attribution: '© Contribuidores do OpenStreetMap' }
+    ? { viewSpot: 'Ponto de foto: ', tourTo: 'Ir para: ', prev: 'Foto anterior', next: 'Próxima foto', mapRegion: 'Mapa do campus de Qingshanhu da Escola n.º 15 de Nanchang, oito pontos fotográficos', attribution: '© AutoNavi (Gaode)' }
     : AR
-    ? { viewSpot: 'نقطة التصوير: ', tourTo: 'الانتقال إلى: ', prev: 'الصورة السابقة', next: 'الصورة التالية', mapRegion: 'خريطة حرم تشينغشان هو للمدرسة الثانوية الخامسة عشرة بنانشان، ثماني نقاط تصوير', attribution: '© مساهمو OpenStreetMap' }
-    : { viewSpot: '查看机位：', tourTo: '漫游到：', prev: '上一张', next: '下一张', mapRegion: '南昌市第十五中学青山湖校区定位图，标注八个照片拍摄位置', attribution: '底图 © OpenStreetMap 贡献者' };
+    ? { viewSpot: 'نقطة التصوير: ', tourTo: 'الانتقال إلى: ', prev: 'الصورة السابقة', next: 'الصورة التالية', mapRegion: 'خريطة حرم تشينغشان هو للمدرسة الثانوية الخامسة عشرة بنانشان، ثماني نقاط تصوير', attribution: '© AutoNavi (Gaode)' }
+    : { viewSpot: '查看机位：', tourTo: '漫游到：', prev: '上一张', next: '下一张', mapRegion: '南昌市第十五中学青山湖校区定位图，标注八个照片拍摄位置', attribution: '底图 © 高德地图' };
 
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var viewer = document.getElementById('tourViewer');
@@ -238,8 +270,9 @@
     paint();
     var s = SPOTS[cur];
     if (window.__campusMap) {
-      if (!reduceMotion) __campusMap.flyTo({ center: [s.lng, s.lat], zoom: 16.5, duration: 1600, essential: true });
-      else __campusMap.jumpTo({ center: [s.lng, s.lat], zoom: 16.5 });
+      /* 底图是 GCJ-02，漫游目标点也要做同样偏移，否则相机与标记会错位 */
+      if (!reduceMotion) __campusMap.flyTo({ center: gcj02(s.lng, s.lat), zoom: 16.5, duration: 1600, essential: true });
+      else __campusMap.jumpTo({ center: gcj02(s.lng, s.lat), zoom: 16.5 });
     }
   }
   var prevBtn = document.getElementById('tourPrev');
@@ -281,19 +314,28 @@
         style: {
           version: 8,
           sources: {
-            osm: {
+            /* 底图源：高德栅格瓦片（国内可直连、中文地名注记）。
+               原先用 tile.openstreetmap.org —— 境外服务，国内移动网络（尤其微信内置
+               浏览器）取不到瓦片，地图只剩空白底 + 标记点（2026-09-15 用户实测）。
+               注意高德用 GCJ-02 坐标，故 center 与所有 marker 都要先过 gcj02()。 */
+            base: {
               type: 'raster',
-              tiles: ['https://tile.openstreetmap.org/{z}/{x}/{y}.png'],
-              tileSize: 256, maxzoom: 19,
+              tiles: [
+                'https://webrd01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}',
+                'https://webrd02.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}',
+                'https://webrd03.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}',
+                'https://webrd04.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}'
+              ],
+              tileSize: 256, maxzoom: 18,
               attribution: ARIA.attribution
             }
           },
           layers: [
             { id: 'bg', type: 'background', paint: { 'background-color': '#EDEAE0' } },
-            { id: 'osm', type: 'raster', source: 'osm' }
+            { id: 'base', type: 'raster', source: 'base' }
           ]
         },
-        center: [115.93216, 28.72078],
+        center: gcj02(115.93216, 28.72078),
         zoom: 15.6, pitch: 0, bearing: 0,
         attributionControl: false
       });
@@ -307,7 +349,7 @@
         pin.className = 'mm-pin';
         pin.title = spotName(s);
         pin.setAttribute('aria-label', ARIA.viewSpot + spotName(s));
-        var mk = new maplibregl.Marker({ element: pin, anchor: 'center' }).setLngLat([s.lng, s.lat]).addTo(map);
+        var mk = new maplibregl.Marker({ element: pin, anchor: 'center' }).setLngLat(gcj02(s.lng, s.lat)).addTo(map);
         mmMarkers.push({ el: pin, m: mk, s: s });
         pin.addEventListener('click', function (ev) {
           ev.stopPropagation();
