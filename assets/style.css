@@ -596,6 +596,22 @@ html[lang^="es"] #campusMap[data-map-failed]::after{content:"El mapa necesita We
 html[lang^="fr"] #campusMap[data-map-failed]::after{content:"Le plan nécessite WebGL et ne peut pas s'afficher dans cet environnement"}
 html[lang^="pt"] #campusMap[data-map-failed]::after{content:"O mapa precisa de WebGL e não pode ser exibido neste ambiente"}
 html[lang^="ar"] #campusMap[data-map-failed]::after{content:"خريطة الموقع تتطلب WebGL ولا يمكن عرضها في هذه البيئة"}
+/* 惰性加载超时：弱网下 1.1MB 的 maplibre-gl.js 可能长时间既不 load 也不 error，
+   此时容器会一直空白。给出与上面同级的可见提示，而不是让访客对着空白猜。 */
+#campusMap[data-map-timeout]{display:flex;align-items:center;justify-content:center;padding:0 18px}
+#campusMap[data-map-timeout]::after{
+  content:"定位图加载超时，请检查网络后刷新重试";
+  font-size:13px;color:var(--muted);letter-spacing:.08em;text-align:center;line-height:1.9;
+}
+html[lang^="en"] #campusMap[data-map-timeout]::after{content:"The location map took too long to load — check your connection and refresh"}
+html[lang^="ja"] #campusMap[data-map-timeout]::after{content:"位置マップの読み込みがタイムアウトしました。通信環境をご確認のうえ再読み込みしてください"}
+html[lang^="zh-Hant"] #campusMap[data-map-timeout]::after{content:"定位圖載入逾時，請檢查網路後重新整理"}
+html[lang^="ko"] #campusMap[data-map-timeout]::after{content:"위치 지도 로딩 시간이 초과되었습니다. 네트워크를 확인한 뒤 새로고침하세요"}
+html[lang^="ru"] #campusMap[data-map-timeout]::after{content:"Время загрузки карты истекло — проверьте соединение и обновите страницу"}
+html[lang^="es"] #campusMap[data-map-timeout]::after{content:"El mapa tardó demasiado en cargar — comprueba tu conexión y actualiza"}
+html[lang^="fr"] #campusMap[data-map-timeout]::after{content:"Le plan a mis trop de temps à charger — vérifiez votre connexion puis actualisez"}
+html[lang^="pt"] #campusMap[data-map-timeout]::after{content:"O mapa demorou demais para carregar — verifique sua conexão e atualize"}
+html[lang^="ar"] #campusMap[data-map-timeout]::after{content:"استغرق تحميل الخريطة وقتاً طويلاً — تحقق من اتصالك ثم أعد التحميل"}
 
 /* ============ 柒 · WALL 留言墙 ============ */
 .wall{position:relative}

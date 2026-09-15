@@ -35,7 +35,7 @@
 <link rel="icon" type="image/png" href="../images/emblem-64.png">
 <link rel="apple-touch-icon" href="../images/emblem-180.png">
 <link rel="stylesheet" href="../assets/fonts/noto-serif-sc/wght.css">
-<link rel="stylesheet" href="../assets/style.css?v=20260915c">
+<link rel="stylesheet" href="../assets/style.css?v=20260915d">
 <link rel="preload" as="image" href="../images/full/18-plaza-summer.jpg" fetchpriority="high">
 <noscript>
 <style>
@@ -83,28 +83,54 @@
 }
 </script>
 <script>
-/* Inicialización diferida del mapa: el CSS y el JS de MapLibre se cargan solo cuando la sección del mapa se acerca a la vista */
+/* 惰性初始化定位图：滚动临近地图区才加载 MapLibre 的 CSS 与 JS（省首屏渲染阻塞与瓦片流量）。
+   2026-09-15 加固：原实现只依赖 IntersectionObserver，一旦该 API 缺失或回调不触发
+   （部分国产浏览器 / 内置 WebView 内核 / rootMargin 兼容性差异），地图会永久静默不加载，
+   且连"加载失败"的提示都不会出现——移动端「地图显示不出来」正是这个形态。
+   现改为 IO + scroll 双通道触发，并对 1.1MB 的 maplibre 脚本加超时兜底。 */
 window.addEventListener('DOMContentLoaded', function () {
-  if (!('IntersectionObserver' in window)) return;
   var mapSection = document.getElementById('map');
   if (!mapSection) return;
-  var io = new IntersectionObserver(function (entries) {
-    if (entries.some(function (e) { return e.isIntersecting; })) {
-      io.disconnect();
-      var l = document.createElement('link');
-      l.rel = 'stylesheet';
-      l.href = '../maplibre/maplibre-gl.css?v=20260907f';
-      document.head.appendChild(l);
-      var s = document.createElement('script');
-      s.src = '../maplibre/maplibre-gl.js?v=20260907f';
-      /* map.js 须在 maplibre 之后执行（定位图要用它），但绝不能只在 onload 里执行：
-         maplibre 被墙 / 404 时 onload 不触发，时光漫游会整段静默消失。onerror 也接上。 */
-      s.onload = function () { if (window.__initCampusMap) window.__initCampusMap(); };
-      s.onerror = function () { var mm = document.getElementById('campusMap'); if (mm) mm.setAttribute('data-map-failed', '1'); };
-      document.body.appendChild(s);
-    }
-  }, { rootMargin: '600px 0px' });
-  io.observe(mapSection);
+  var started = false;
+
+  function loadMapDeps() {
+    if (started) return;
+    started = true;
+    window.removeEventListener('scroll', onScroll);
+    var l = document.createElement('link');
+    l.rel = 'stylesheet';
+    l.href = '../maplibre/maplibre-gl.css?v=20260907f';
+    document.head.appendChild(l);
+    var s = document.createElement('script');
+    s.src = '../maplibre/maplibre-gl.js?v=20260907f';
+    /* map.js 须在 maplibre 之后执行（定位图要用它），但绝不能只在 onload 里执行：
+       maplibre 被墙 / 404 时 onload 不触发，时光漫游会整段静默消失。onerror 也接上。 */
+    s.onload = function () { if (window.__initCampusMap) window.__initCampusMap(); };
+    s.onerror = function () { var mm = document.getElementById('campusMap'); if (mm) mm.setAttribute('data-map-failed', '1'); };
+    document.body.appendChild(s);
+    /* 弱网下 1.1MB 的 maplibre 可能既不 load 也不 error，容器会一直空白；
+       到点仍未就绪就给出可见提示（文案见 style.css 的 [data-map-timeout]）。 */
+    setTimeout(function () {
+      var mm = document.getElementById('campusMap');
+      if (mm && typeof window.maplibregl === 'undefined' && !mm.getAttribute('data-map-failed') && !mm.getAttribute('data-map-ready')) {
+        mm.setAttribute('data-map-timeout', '1');
+      }
+    }, 20000);
+  }
+
+  function onScroll() {
+    var r = mapSection.getBoundingClientRect();
+    if (r.top < window.innerHeight + 800 && r.bottom > -800) loadMapDeps();
+  }
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      if (entries.some(function (e) { return e.isIntersecting; })) { io.disconnect(); loadMapDeps(); }
+    }, { rootMargin: '600px 0px' });
+    io.observe(mapSection);
+  }
+  /* 双保险：scroll 通道始终挂上（IO 缺失或回调不触发时地图仍能加载） */
+  window.addEventListener('scroll', onScroll, { passive: true });
 });
 </script>
 </head>
