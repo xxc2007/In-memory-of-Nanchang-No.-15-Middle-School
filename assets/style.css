@@ -462,7 +462,12 @@ footer{border-top:1px solid var(--line);margin-top:90px}
 .footer-inner img{width:44px;height:44px;border-radius:50%;box-shadow:0 2px 8px rgba(31,30,29,.15);margin-bottom:14px}
 .footer-inner .f-brand{font-family:var(--serif);font-size:16px;color:var(--ink)}
 .footer-inner .right{text-align:right}
-.footer-inner .right .f-coord{font-variant-numeric:tabular-nums;letter-spacing:.06em}
+/* 坐标行强制 LTR：阿语等 RTL 页面下，若跟随外层文字方向，`28.7208° N, 115.9322° E`
+   会被双向算法重排成 `N. 115.9322° E 28.7208°`（数字与方位字母顺序错乱）。
+   这里用 direction + unicode-bidi:isolate 把「坐标 + 拉丁字母」这段从 RTL 上下文中
+   隔离出来；末尾的当地语言地名是独立的 RTL 片段，仍按自身方向正常显示。
+   对 zh/en/ja 等本来就是 LTR 的页面无副作用。 */
+.footer-inner .right .f-coord{font-variant-numeric:tabular-nums;letter-spacing:.06em;direction:ltr;unicode-bidi:isolate}
 .footer-inner a{color:var(--muted);text-decoration:none}
 .footer-inner a:hover{color:var(--terra-ink)}
 .f-social{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:10px;margin:14px 0 12px}
