@@ -465,7 +465,7 @@ footer{border-top:1px solid var(--line);margin-top:90px}
 .footer-inner .right .f-coord{font-variant-numeric:tabular-nums;letter-spacing:.06em}
 .footer-inner a{color:var(--muted);text-decoration:none}
 .footer-inner a:hover{color:var(--terra-ink)}
-.f-social{display:flex;justify-content:flex-end;gap:10px;margin:14px 0 16px}
+.f-social{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:10px;margin:14px 0 12px}
 .f-social a{
   width:44px;height:44px;display:flex;align-items:center;justify-content:center;
   border:1px solid var(--line);color:var(--muted);
@@ -473,6 +473,7 @@ footer{border-top:1px solid var(--line);margin-top:90px}
 }
 .f-social a svg{width:16px;height:16px}
 .f-social a:hover{border-color:var(--terra);color:var(--terra-ink)}
+.f-open{margin:0 0 12px;letter-spacing:.02em}
 
 /* ============ 灯箱 ============ */
 .lightbox{
@@ -741,19 +742,33 @@ html[lang^="ar"] #campusMap[data-map-failed]::after{content:"خريطة المو
   .lb-hint{display:none}
 }
 @media (max-width:640px){
-  .topbar-inner{padding:0 18px;gap:12px}
-  .brand{gap:8px}
-  .brand img{width:24px;height:24px}
+  /* ---- 顶栏改两行：品牌 + 语言按钮占第一行，7 个章节导航整行平分、全部可见。
+     原实现 nav.toc 横向滚动且 ::-webkit-scrollbar 被隐藏，390px 屏上
+     「寻踪 / 寄语 / 留言」三项完全落在屏幕外、又没有任何可滑动提示——
+     留言墙入口因此几乎无法被发现（2026-09-15 实测）。 */
+  .topbar-inner{height:auto;padding:9px 14px 0;gap:0 10px;row-gap:0;flex-wrap:wrap;align-items:center}
+  .brand{gap:8px;order:1;flex:1 1 auto;min-width:0}
+  .brand img{width:26px;height:26px}
   .brand b{font-size:16px}
   .brand span{display:none}
+  /* display:contents 让 .topbar-right 自身的盒子消失，它内部的章节导航与语言按钮
+     直接参与 .topbar-inner 的 flex 流——导航才能真正换到第二行；
+     否则被包在 .topbar-right 里，会把第一行一起撑高到 ~140px。 */
+  .topbar-right{display:contents}
   /* 语言切换收为「地球 + 母语简称」图标按钮，菜单仍是完整语言名 */
-  .lang-nav{margin-left:6px;padding-left:6px}
+  .lang-nav{order:2;margin-left:6px;padding-left:6px}
+  nav.toc{
+    order:3;flex:1 1 100%;overflow-x:visible;gap:0;
+    justify-content:space-between;padding:0 0 4px;margin-top:1px;
+  }
+  nav.toc a{flex:1 1 auto;text-align:center;font-size:13px;padding:9px 2px;border-radius:8px}
+  html{scroll-padding-top:112px}
   .lang-current{display:none}
   .lang-current-short{display:inline}
   .lang-caret{display:none}
   .lang-btn{gap:5px;padding:7px 11px;font-size:13px}
   .lang-menu{min-width:152px}
-  .hero{padding-top:120px}
+  .hero{padding-top:152px}
   section.block{padding:72px 18px 20px}
   .hero-figure,.scroll-hint{padding-left:18px;padding-right:18px}
   .gallery-grid{grid-template-columns:1fr}
@@ -779,4 +794,33 @@ html[lang^="ar"] #campusMap[data-map-failed]::after{content:"خريطة المو
   #cmtNick{flex:1;width:auto;min-width:0}
   #cmtCount{margin-left:auto}
   #cmtSubmit{white-space:nowrap;flex:none;padding:8px 28px}
+  /* ---------- 移动端触摸目标与输入体验（2026-09-15 实测修复） ----------
+     痛点（390px 视口实测）：① 点赞/回复按钮只有 26×16px，手指几乎点不中，
+     留言墙在手机上"像坏了一样"；② 输入框字号 13–15px，iOS Safari 对 <16px
+     的输入框聚焦时会自动放大整页，观感直接崩掉。
+     下面统一修到可用下限（触摸热区 ≥44px、输入字号 ≥16px），桌面端不受影响。 */
+  .bili-actions{gap:0;margin-top:4px}
+  .bili-like,.bili-reply-btn{min-height:44px;padding:0 9px;font-size:13px}
+  .bili-like:first-child{margin-left:-9px}
+  .bili-reply-cancel,.bili-reply-submit{min-height:44px;padding:0 16px;font-size:14px}
+  .bili-reply-editor textarea{font-size:16px;min-height:76px}
+  #cmtInput{font-size:16px}
+  #cmtNick{font-size:16px;min-height:40px;padding:8px 2px}
+  #cmtSubmit{min-height:44px;padding:11px 28px;font-size:15px}
+  .bili-editor-row .bili-avatar{width:44px;height:44px;font-size:17px}
+  .wall-admin{min-height:44px;padding:0 14px;font-size:13px}
+  .lang-btn{min-height:44px}
+  /* 巡游机位点：原 22×22px，手机上点不中。放大到 44×44 再用负 margin 抵消，
+     视觉上的小圆点位置与整行总宽保持完全不变（::before 的偏移同步重算）。 */
+  .tour-dots button{width:44px;height:44px;margin:0 -11px}
+  .tour-dots button::before{left:18.5px;top:18.5px}
+  .tour-dots button.on::before{left:11px}
+  /* 页脚链接（开源行 + 回到顶部）：热区用伪元素撑到 44px，零排版影响 */
+  .f-open a,footer .right>div:last-child a{position:relative}
+  .f-open a::after,footer .right>div:last-child a::after{
+    content:"";position:absolute;left:-6px;right:-6px;top:-13px;bottom:-13px;
+  }
+  .bili-like,.bili-reply-btn,.bili-reply-cancel,.bili-reply-submit,#cmtSubmit,.wall-admin,.lang-btn{
+    touch-action:manipulation;
+  }
 }
