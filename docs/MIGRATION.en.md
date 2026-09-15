@@ -39,11 +39,12 @@
 1. **DNS**: add the new domain's A record in Cloudflare → same server IP.
 2. **Certificate**: `sudo certbot --nginx -d new.domain -d www.new.domain --expand`.
 3. **nginx**: append the new domain to `server_name`, then `nginx -t && sudo systemctl reload nginx`.
-4. **Update domain identity in code** — find every occurrence with
+4. **Update domain identity in code** — one script in the repo root does it all (added 2026-09-15, replacing the previous manual grep-and-edit):
    ```bash
-   grep -rn "xxc2007.me" --include="*.html" --include="*.xml" --include="*.md" --include="*.js" --include="*.txt" .
+   bash replace-domain.sh new.domain            # preview: lists every file and its line count, changes nothing
+   bash replace-domain.sh new.domain --apply    # apply once you have confirmed
    ```
-   Covers **18 files / 301 lines** in total (recounted 2026-09-13), of which **16 files / 293 lines are the site itself**: 16 lines in each of the ten language pages (canonical + hreflang×11 (ten languages + x-default) + og:url + og:image + JSON-LD + footer signature), 120 lines for the ten URLs and alternates in `sitemap.xml`, 3 lines in each bilingual README, 2 lines in `robots.txt` (including the Sitemap declaration — a functional line, must change), 1 line in the `404.html` footer, and 4 lines in `assets/wall.js` (the anonymous-email domain `local.xxc2007.me` — identity string only, never rendered; a miss breaks nothing, but fix it for tidiness). The remaining **2 files / 8 lines are this migration guide itself** (`docs/MIGRATION.md` and `docs/MIGRATION.en.md`, 4 lines each) — the example commands in here carry the old domain and **must be updated too**, or the next migration will point back at the old site. Commit the changes.
+   Current scope is **20 files / 311 lines** (the script prints the exact numbers): 16 lines in each of the ten language pages (canonical + hreflang×12 + og:url + og:image + JSON-LD + footer signature), 120 lines in `sitemap.xml`, 2 lines in `robots.txt` (including the Sitemap declaration — a functional line, must change), 4 lines in each bilingual README, 1 line in the `404.html` footer, 4 lines in `assets/wall.js` (the anonymous-email domain `local.xxc2007.me` — identity string only, never rendered; a miss breaks nothing, but fix it for tidiness), 4 lines in each of `docs/promo/*`, and **this migration guide itself** (its example commands carry the old domain and must be updated too, or the next migration will point back at the old site). Always review the result with `git diff` — check `canonical` / `hreflang` / `og:url` / `sitemap.xml` in particular — then commit.
 5. **Rewrite avatar links stored in old comments** (legacy rows hold absolute URLs):
    ```bash
    sudo python3 infra/replace-comment-domain.py https://old.domain https://new.domain --apply
