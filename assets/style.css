@@ -517,6 +517,9 @@ footer{border-top:1px solid var(--line);margin-top:90px}
   background:rgba(250,249,245,.06);border:1px solid #4A4744;color:#EFEBE0;
   width:52px;height:52px;border-radius:50%;cursor:pointer;
   display:flex;align-items:center;justify-content:center;
+  /* 灯箱图片带 transform，会建立新的叠层；导航必须显式高于图片。
+     否则按 DOM 顺序，位于图片之前的上一张按钮会被大图盖住，而下一张仍可见。 */
+  z-index:2;
   transition:border-color .2s, background .2s;
 }
 .lb-nav:hover{border-color:var(--terra);background:rgba(217,119,87,.15)}
