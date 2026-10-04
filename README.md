@@ -113,7 +113,7 @@ README 原生预览保持 1920×1080 分辨率；独立播放器与源视频链�
   <img src="https://api.star-history.com/svg?repos=xxc2007/In-memory-of-Nanchang-No.-15-Middle-School&type=Date" alt="Star History 星际历史：本仓库 GitHub Stars 随时间增长的曲线" width="100%">
 </p>
 <p align="center"><sub>
-  ▲ 曲线由 <a href="https://star-history.com">star-history.com</a> 实时生成，每次打开都是最新数据；仓库还年轻，星数会随时间自然生长。
+  ▲ 曲线由 <a href="https://star-history.com">star-history.com</a> 动态生成，星数一变曲线就跟着长（GitHub 走图片代理缓存，更新会有几小时延迟）；仓库还年轻，这条线会从第一个星标开始有内容。
 </sub></p>
 
 ## 🗂 站点结构
