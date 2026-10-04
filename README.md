@@ -27,7 +27,7 @@
 
 纯 HTML / CSS / Vanilla JS，结构·样式·行为三分离（`index.html` + `assets/`），零框架、无构建步骤。克隆下来，起个静态服务器就能打开。
 
-[在线访问](https://xxc2007.me) · [特色](#-特色) · [站点结构](#-站点结构) · [技术栈](#️-技术栈) · [本地运行](#-本地运行) · [设计笔记](#-设计笔记) · [迁移手册](docs/MIGRATION.md)
+[在线访问](https://xxc2007.me) · [特色](#-特色) · [星际历史](#-star-history) · [站点结构](#-站点结构) · [技术栈](#️-技术栈) · [本地运行](#-本地运行) · [设计笔记](#-设计笔记) · [迁移手册](docs/MIGRATION.md)
 
 </div>
 
@@ -106,6 +106,15 @@ README 原生预览保持 1920×1080 分辨率；独立播放器与源视频链�
 | 画廊渐显与微倾 | 图片加载后柔和渐显；桌面端卡片随光标 3D 微倾 |
 
 所有动画共用一个 rAF 驱动的滚动循环，并在系统开启「减弱动态效果」时整体降级。
+
+## 📈 Star History
+
+<p align="center">
+  <img src="https://api.star-history.com/svg?repos=xxc2007/In-memory-of-Nanchang-No.-15-Middle-School&type=Date" alt="Star History 星际历史：本仓库 GitHub Stars 随时间增长的曲线" width="100%">
+</p>
+<p align="center"><sub>
+  ▲ 曲线由 <a href="https://star-history.com">star-history.com</a> 实时生成，每次打开都是最新数据；仓库还年轻，星数会随时间自然生长。
+</sub></p>
 
 ## 🗂 站点结构
 
