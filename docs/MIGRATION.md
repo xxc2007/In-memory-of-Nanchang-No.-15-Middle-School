@@ -34,7 +34,7 @@
    ```
 3. **DNS 切换**：Cloudflare 把 A 记录指向新服务器 IP（橙色云代理开启，切换几乎无感）。
 4. **签发证书**：`sudo certbot --nginx -d xxc2007.me -d www.xxc2007.me`（脚本若未自动完成）。
-5. **更新本地 deploy.sh** 第 8 行附近的 `SERVER="xxc@<新IP>"`，此后照常 `bash deploy.sh "..."`。
+5. **更新本地 deploy.sh** 第 8 行附近的 `SERVER="<ssh-user>@<新IP>"`，此后照常 `bash deploy.sh "..."`。
 6. **重建每日备份**：新服务器上重复私有仓库 `infra/README.md` 里的 cron 配置（每日 04:30）。
 
 ## 场景 B：只换域名（服务器不变）

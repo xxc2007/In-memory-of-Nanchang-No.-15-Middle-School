@@ -31,7 +31,7 @@
    ```
 3. **DNS cutover**: point the Cloudflare A record to the new server IP (proxy on, cutover is seamless).
 4. **Certificate**: `sudo certbot --nginx -d xxc2007.me -d www.xxc2007.me` if the bootstrap didn't already.
-5. **Update `deploy.sh`**: set `SERVER="xxc@<new IP>"`, then keep deploying as usual.
+5. **Update `deploy.sh`**: set `SERVER="<ssh-user>@<new IP>"`, then keep deploying as usual.
 6. **Rebuild the daily backup**: re-create the 04:30 cron on the new server (see `infra/README.md` in the private repo).
 
 ## Scenario B: New domain only (server unchanged)
