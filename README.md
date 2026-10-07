@@ -6,7 +6,7 @@
 
 > *「所谓母校，就是那座你离开之后才开始无限怀念的校园。」*
 
-[![Live Site](https://img.shields.io/badge/🌐_线上访问-xxc2007.me-D97757)](https://xxc2007.me)
+[![Live Site](https://img.shields.io/badge/🌐_线上访问-xxc2007.me-D97757)](https://xxc2007.me/nc15/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Vanilla JS](https://img.shields.io/badge/依赖-Vanilla_JS-orange)](#️-技术栈)
 [![Self-hosted](https://img.shields.io/badge/留言墙-Artalk_自托管-blueviolet)](#-特色)
@@ -27,7 +27,7 @@
 
 纯 HTML / CSS / Vanilla JS，结构·样式·行为三分离（`index.html` + `assets/`），零框架、无构建步骤。克隆下来，起个静态服务器就能打开。
 
-[在线访问](https://xxc2007.me) · [特色](#-特色) · [站点结构](#-站点结构) · [技术栈](#️-技术栈) · [本地运行](#-本地运行) · [设计笔记](#-设计笔记) · [星际历史](#-star-history) · [迁移手册](docs/MIGRATION.md)
+[在线访问](https://xxc2007.me/nc15/) · [特色](#-特色) · [站点结构](#-站点结构) · [技术栈](#️-技术栈) · [本地运行](#-本地运行) · [设计笔记](#-设计笔记) · [星际历史](#-star-history) · [迁移手册](docs/MIGRATION.md)
 
 </div>
 
@@ -50,7 +50,7 @@
 
 https://github.com/user-attachments/assets/368cc8d5-2605-4444-949f-fe6b7a017408
 
-▶️ [打开 1080p 高清播放器](https://xxc2007.me/promo/) · [直接打开 1080p 源视频](https://raw.githubusercontent.com/xxc2007/In-memory-of-Nanchang-No.-15-Middle-School/main/docs/promo/nanchang15-promo.mp4)
+▶️ [打开 1080p 高清播放器](https://xxc2007.me/nc15/promo/) · [直接打开 1080p 源视频](https://raw.githubusercontent.com/xxc2007/In-memory-of-Nanchang-No.-15-Middle-School/main/docs/promo/nanchang15-promo.mp4)
 
 README 原生预览保持 1920×1080 分辨率；独立播放器与源视频链接继续直接使用仓库中的 1080p 完整片。
 
@@ -186,5 +186,5 @@ python -m http.server 8000   # 或任意静态服务器；浏览器打开 http:/
 ---
 
 <div align="center">
-  <sub>献给青山湖畔的红砖楼、香樟与老水塔。<br><a href="https://xxc2007.me">xxc2007.me</a></sub>
+  <sub>献给青山湖畔的红砖楼、香樟与老水塔。<br><a href="https://xxc2007.me/nc15/">xxc2007.me</a></sub>
 </div>

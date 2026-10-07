@@ -25,7 +25,7 @@
      file://、子目录部署三种情形都对。取不到时退回原逻辑。 */
   var BASE = (function () {
     var src = document.currentScript && document.currentScript.src;
-    if (!src) return location.pathname === '/' ? '' : '../';
+    if (!src) return (location.pathname === '/' || location.pathname === '/nc15/' || location.pathname === '/nc15/index.html') ? '' : '../';
     return src.replace(/assets\/map\.js.*$/, '');
   })();
 

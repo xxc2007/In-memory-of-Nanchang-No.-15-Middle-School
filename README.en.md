@@ -6,7 +6,7 @@
 
 > *"The alma mater is the campus you only start to miss after you've left it."*
 
-[![Live Site](https://img.shields.io/badge/🌐_Live-xxc2007.me-D97757)](https://xxc2007.me)
+[![Live Site](https://img.shields.io/badge/🌐_Live-xxc2007.me-D97757)](https://xxc2007.me/nc15/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Vanilla JS](https://img.shields.io/badge/Dependencies-Vanilla_JS-orange)](#️-tech-stack)
 [![Self-hosted](https://img.shields.io/badge/Guestbook-Artalk_Self--hosted-blueviolet)](#-guestbook)
@@ -27,7 +27,7 @@ This is a memorial page for Nanchang No. 15 Middle School: **25 photographs of t
 
 Pure HTML / CSS / vanilla JS with structure, style and behavior separated (`index.html` + `assets/`) — zero frameworks, no build step.
 
-[Live Site](https://xxc2007.me/en/) · [English promo player](https://xxc2007.me/promo/en/) · [Structure](#-site-structure) · [Highlights](#-highlights) · [Tech Stack](#️-tech-stack) · [Run Locally](#-run-locally) · [Migration guide](docs/MIGRATION.en.md)
+[Live Site](https://xxc2007.me/nc15/en/) · [English promo player](https://xxc2007.me/nc15/promo/en/) · [Structure](#-site-structure) · [Highlights](#-highlights) · [Tech Stack](#️-tech-stack) · [Run Locally](#-run-locally) · [Migration guide](docs/MIGRATION.en.md)
 
 </div>
 
@@ -47,7 +47,7 @@ Open the English player below to watch online.
 
 https://github.com/user-attachments/assets/efec42a7-b3dd-4846-99dd-66c758d12db4
 
-▶️ [Open the English 1080p HD player](https://xxc2007.me/promo/en/) · [Open the English 1080p source video directly](https://raw.githubusercontent.com/xxc2007/In-memory-of-Nanchang-No.-15-Middle-School/main/docs/promo/nanchang15-promo-en.mp4)
+▶️ [Open the English 1080p HD player](https://xxc2007.me/nc15/promo/en/) · [Open the English 1080p source video directly](https://raw.githubusercontent.com/xxc2007/In-memory-of-Nanchang-No.-15-Middle-School/main/docs/promo/nanchang15-promo-en.mp4)
 
 The English standalone player and source link use the complete 1920×1080 master; the README preview is a high-quality 1080p copy prepared for GitHub's inline playback limits.
 
@@ -172,5 +172,5 @@ python -m http.server 8000   # or any static server; open http://localhost:8000
 ---
 
 <div align="center">
-  <sub>Dedicated to the red-brick buildings, the camphor trees and the old water tower by Qingshan Lake.<br><a href="https://xxc2007.me">xxc2007.me</a></sub>
+  <sub>Dedicated to the red-brick buildings, the camphor trees and the old water tower by Qingshan Lake.<br><a href="https://xxc2007.me/nc15/">xxc2007.me</a></sub>
 </div>
