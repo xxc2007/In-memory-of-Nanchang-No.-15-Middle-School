@@ -172,5 +172,5 @@ python -m http.server 8000   # or any static server; open http://localhost:8000
 ---
 
 <div align="center">
-  <sub>Dedicated to the red-brick buildings, the camphor trees and the old water tower by Qingshan Lake.<br><a href="https://xxc2007.me/nc15/">xxc2007.me</a></sub>
+  <sub>Dedicated to the red-brick buildings, the camphor trees and the old water tower by Qingshan Lake.<br><a href="https://xxc2007.me/nc15/">xxc2007.me/nc15/</a></sub>
 </div>

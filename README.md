@@ -186,5 +186,5 @@ python -m http.server 8000   # 或任意静态服务器；浏览器打开 http:/
 ---
 
 <div align="center">
-  <sub>献给青山湖畔的红砖楼、香樟与老水塔。<br><a href="https://xxc2007.me/nc15/">xxc2007.me</a></sub>
+  <sub>献给青山湖畔的红砖楼、香樟与老水塔。<br><a href="https://xxc2007.me/nc15/">xxc2007.me/nc15/</a></sub>
 </div>
