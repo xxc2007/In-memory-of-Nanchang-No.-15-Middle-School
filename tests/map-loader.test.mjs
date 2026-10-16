@@ -1,0 +1,2 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';import {readFileSync} from 'node:fs';
+test('all language pages load the common map loader from the correct directory',()=>{for(const lang of ['','en','zh-Hant','ja','ko','ru','es','fr','pt','ar']){const html=readFileSync(new URL('../'+(lang?lang+'/':'')+'index.html',import.meta.url),'utf8');assert.ok(html.includes('src="'+(lang?'../':'')+'assets/map-loader.js?v='));assert.ok(!html.includes('maplibre-gl.js'));}});

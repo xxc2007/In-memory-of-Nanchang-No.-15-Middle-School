@@ -270,15 +270,25 @@
   function fetchJSON(url, opts, timeoutMs) {
     var ctrl = new AbortController();
     var timer = setTimeout(function () { ctrl.abort(); }, timeoutMs || 15000);
-    opts = opts || {};
-    opts.signal = ctrl.signal;
+    opts = Object.assign({}, opts, { signal: ctrl.signal });
     return fetch(url, opts).then(function (r) {
-      clearTimeout(timer);
-      return r.json();
-    }, function (err) {
-      clearTimeout(timer);
-      throw err;
-    });
+      return r.text().then(function (text) {
+        var data;
+        try { data = JSON.parse(text); }
+        catch (cause) {
+          var invalid = new Error('HTTP ' + r.status + ': invalid JSON response');
+          invalid.status = r.status;
+          throw invalid;
+        }
+        if (!r.ok) {
+          var error = new Error(typeof data.msg === 'string' ? data.msg : 'HTTP ' + r.status);
+          error.status = r.status;
+          if (r.status < 500 && typeof data.msg === 'string') error.publicMessage = data.msg.slice(0, 200);
+          throw error;
+        }
+        return data;
+      });
+    }).finally(function () { clearTimeout(timer); });
   }
   function randToken() {
     /* 匿名邮箱唯一化：crypto 随机，无 Math.random */
@@ -408,7 +418,7 @@
                 showNotice(T.avatarFailPrefix + esc(d.msg || ''));
               }
             })
-            .catch(function () { showNotice(T.avatarNetFail); });
+            .catch(function (err) { showNotice(err && err.publicMessage ? T.avatarFailPrefix + esc(err.publicMessage) : T.avatarNetFail); });
         }, 'image/jpeg', 0.85);
       };
       img.onerror = function () { showNotice(T.avatarReadFail); };
@@ -523,7 +533,7 @@
         })
         .catch(function (err) {
           submit.disabled = false;
-          showNotice(err && err.name === 'AbortError' ? T.timeout : T.netFail);
+          showNotice(err && err.name === 'AbortError' ? T.timeout : err && err.publicMessage ? T.postFail + esc(err.publicMessage) : T.netFail);
         });
     });
     anchorBar.insertAdjacentElement('afterend', ed);

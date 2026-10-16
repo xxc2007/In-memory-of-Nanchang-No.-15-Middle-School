@@ -3,3 +3,9 @@
 .DS_Store
 Thumbs.db
 giscus-theme.css
+
+node_modules/
+.tmp/
+.deploy.env
+*.pem
+*.key
