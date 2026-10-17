@@ -656,7 +656,7 @@
       .catch(function (err) {
         submitting = false;
         document.getElementById('cmtSubmit').disabled = false;
-        showNotice(err && err.name === 'AbortError' ? T.timeout : T.netFail);
+        showNotice(err && err.name === 'AbortError' ? T.timeout : err && err.publicMessage ? T.postFail + esc(err.publicMessage) : T.netFail);
       });
   });
 
