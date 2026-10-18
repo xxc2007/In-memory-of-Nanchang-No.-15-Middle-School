@@ -846,9 +846,10 @@ html[lang^="ar"] #campusMap[data-map-timeout]::after{content:"استغرق تح�
   .lang-btn{min-height:44px}
   /* 巡游机位点：原 22×22px，手机上点不中。放大到 44×44 再用负 margin 抵消，
      视觉上的小圆点位置与整行总宽保持完全不变（::before 的偏移同步重算）。 */
-  .tour-dots button{width:44px;height:44px;margin:0 -11px}
-  .tour-dots button::before{left:18.5px;top:18.5px}
-  .tour-dots button.on::before{left:11px}
+  /* Preserve the 22px dot spacing; overlapping 44px targets stole adjacent taps. */
+  .tour-dots button{width:22px;height:44px;margin:0;flex:none}
+  .tour-dots button::before{left:7.5px;top:18.5px}
+  .tour-dots button.on::before{left:0}
   /* 页脚链接（开源行 + 回到顶部）：热区用伪元素撑到 44px，零排版影响 */
   .f-open a,footer .right>div:last-child a{position:relative}
   .f-open a::after,footer .right>div:last-child a::after{
