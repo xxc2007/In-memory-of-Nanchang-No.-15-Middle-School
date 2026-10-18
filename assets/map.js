@@ -229,13 +229,27 @@
     SPOTS.forEach(function (s) {
       var img = document.createElement('img');
       img.className = 'slide';
-      img.src = BASE + 'images/full/' + s.img;
       img.alt = spotName(s);
-      img.loading = 'lazy';
+      img.loading = 'eager';
+      img.decoding = 'async';
+      img.setAttribute('data-src', BASE + 'images/full/' + s.img);
+      img.addEventListener('load', function () {
+        img.setAttribute('data-loaded', '1');
+        if (slides[cur] === img) warmNeighbours();
+      });
       img.addEventListener('error', function () { img.style.display = 'none'; });  /* 加载失败隐藏该帧，漫游跳到其他机位 */
       viewer.insertBefore(img, viewer.querySelector('.veil'));
     });
     slides = Array.prototype.slice.call(viewer.querySelectorAll('img.slide'));
+  }
+  function loadSlide(i) {
+    var img = slides[(i + SPOTS.length) % SPOTS.length];
+    if (img && !img.getAttribute('src')) img.src = img.getAttribute('data-src');
+  }
+  function warmNeighbours() { loadSlide(cur - 1); loadSlide(cur + 1); }
+  function loadCurrent() {
+    loadSlide(cur);
+    if (slides[cur] && slides[cur].getAttribute('data-loaded')) warmNeighbours();
   }
   var dotsWrap = document.getElementById('tourDots');
   var dots = [];
@@ -267,6 +281,7 @@
   }
   function go(i) {
     cur = (i + SPOTS.length) % SPOTS.length;
+    loadCurrent();
     paint();
     var s = SPOTS[cur];
     if (window.__campusMap) {
@@ -282,7 +297,12 @@
   /* 方向键仅在漫游区临近视口时接管，避免在页面其他位置误触不可见的漫游 */
   var mapNear = false;
   if ('IntersectionObserver' in window && viewer) {
-    new IntersectionObserver(function (entries) { mapNear = entries[0].isIntersecting; }, { rootMargin: '120px' }).observe(viewer);
+    new IntersectionObserver(function (entries) {
+      mapNear = entries[0].isIntersecting;
+      if (mapNear) loadCurrent();
+    }, { rootMargin: '120px' }).observe(viewer);
+  } else if (viewer) {
+    loadCurrent();
   }
   document.addEventListener('keydown', function (ev) {
     if (!mapNear || document.body.classList.contains('lb-lock')) return;   /* 灯箱开启或不在地图区时让位 */

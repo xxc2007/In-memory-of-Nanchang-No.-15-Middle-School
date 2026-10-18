@@ -528,7 +528,7 @@
         body: JSON.stringify({ page_key: PAGE, page_title: '留言墙', site_name: SITE, name: name, email: email, link: toLink(avatarURL), content: text, rid: cm.id })
       })
         .then(function (d) {
-          if (d.id) { ed.remove(); showNotice(T.replySubmitted); load(); }
+          if (d.id) { ed.remove(); showNotice(T.replySubmitted); load(true); }
           else { submit.disabled = false; showNotice(T.replyFail + esc(d.msg || '')); }
         })
         .catch(function (err) {
@@ -595,7 +595,12 @@
 
   /* limit=100 为单次拉取上限，超出后老留言暂不做分页（纪念册体量足够）；
      total 为服务端真实计数，有则优先显示，防止「全部留言」口径失真 */
-  function load() {
+  var listRequest = null, refreshAfterRequest = false;
+  function load(fresh) {
+    if (listRequest) {
+      if (fresh === true) refreshAfterRequest = true;
+      return listRequest;
+    }
     if (IS_LOCAL_PREVIEW) {
       var localEl = document.getElementById('cmtLoading');
       localEl.hidden = false;
@@ -604,7 +609,7 @@
       localEl.textContent = LOCAL_ONLY;
       return;
     }
-    fetchJSON(API + '/comments?page_key=' + encodeURIComponent(PAGE) + '&site_name=' + encodeURIComponent(SITE) + '&limit=100')
+    listRequest = fetchJSON(API + '/comments?page_key=' + encodeURIComponent(PAGE) + '&site_name=' + encodeURIComponent(SITE) + '&limit=100', {cache:'no-store'})
       .then(function (d) {
         document.getElementById('cmtLoading').hidden = true;
         render(d.comments || [], d.total);
@@ -615,7 +620,11 @@
         el.setAttribute('data-failed', '1');
         el.style.cursor = 'pointer';
         el.textContent = T.loadFail;
+      }).finally(function () {
+        listRequest = null;
+        if (refreshAfterRequest) { refreshAfterRequest = false; load(); }
       });
+    return listRequest;
   }
   document.getElementById('cmtLoading').addEventListener('click', function () {
     if (this.getAttribute('data-failed') === '1') {
@@ -648,7 +657,7 @@
         if (d.id) {
           ta.value = ''; count.textContent = T.count(0);
           showNotice(T.submitted);
-          load();
+          load(true);
         } else {
           showNotice(T.postFail + esc(d.msg || ''));
         }
@@ -660,5 +669,28 @@
       });
   });
 
-  load();
+  (function () {
+    var section = document.getElementById('wall'), started = false, observer;
+    function start() {
+      if (started) return;
+      started = true;
+      if (observer) observer.disconnect();
+      window.removeEventListener('hashchange', hashIntent);
+      document.removeEventListener('click', clickIntent);
+      load();
+    }
+    function hashIntent() { if (location.hash === '#wall') start(); }
+    function clickIntent(ev) {
+      var link = ev.target && ev.target.closest ? ev.target.closest('a[href="#wall"]') : null;
+      if (link) start();
+    }
+    if (!section || !('IntersectionObserver' in window)) { start(); return; }
+    observer = new IntersectionObserver(function (entries) {
+      if (entries.some(function (entry) { return entry.isIntersecting; })) start();
+    }, {rootMargin:'400px 0px'});
+    observer.observe(section);
+    window.addEventListener('hashchange', hashIntent);
+    document.addEventListener('click', clickIntent);
+    hashIntent();
+  })();
 })();
