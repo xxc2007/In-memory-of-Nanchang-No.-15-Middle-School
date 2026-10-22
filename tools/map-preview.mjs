@@ -23,11 +23,13 @@ export function createMapPreviewServer({root,config={},fetchImpl=fetch,basePath=
     }
     if(url.pathname.startsWith('/_AMapService/')) {
       if(!config.amap?.key||!config.amap?.securityCode)return fail(503,'Map proxy is not configured');
-      if(req.headers.origin && req.headers.origin!=='http://'+req.headers.host)return fail(403,'Origin not allowed');
+      if(req.headers.origin && !['http://'+req.headers.host,'https://'+req.headers.host].includes(req.headers.origin))return fail(403,'Origin not allowed');
       const path=url.pathname.slice('/_AMapService'.length);
-      const host=path.startsWith('/v4/map/styles')?'webapi.amap.com':path.startsWith('/v3/vectormap')?'fmap01.amap.com':'restapi.amap.com';
-      const upstream=new URL(path,'https://'+host);
-      if(upstream.hostname!==host)return fail(400,'Invalid proxy path');
+      if(!path.startsWith('/')||path.startsWith('//')||path.includes('\\'))return fail(400,'Invalid proxy path');
+      // The URL authority is always a literal; client input can only set path and query.
+      const upstream=path.startsWith('/v4/map/styles')?new URL('https://webapi.amap.com/'):
+        path.startsWith('/v3/vectormap')?new URL('https://fmap01.amap.com/'):new URL('https://restapi.amap.com/');
+      upstream.pathname=path;
       upstream.search=url.search;
       upstream.searchParams.set('key',config.amap.key);
       upstream.searchParams.set('jscode',config.amap.securityCode);
