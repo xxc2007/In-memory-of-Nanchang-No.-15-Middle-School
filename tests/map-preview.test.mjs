@@ -33,6 +33,7 @@ test('proxy fixes the upstream destination and injects credentials only server-s
   assert.equal(request.options.redirect,'error');
   assert.equal((await fetch(base+'/_AMapService//untrusted.example/')).status,400);
   assert.equal((await fetch(base+'/_AMapService/v3/vectormap',{headers:{Origin:'https://untrusted.example'}})).status,403);
+  assert.equal((await fetch(base+'/_AMapService/v3/vectormap',{headers:{Origin:base.replace('http:','https:')}})).status,200);
 });
 
 test('vendor errors cannot echo the security code back to the browser',async t=>{
