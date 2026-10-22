@@ -5,7 +5,7 @@ import {createMapPreviewServer} from '../tools/map-preview.mjs';
 
 async function server(t,fetchImpl) {
   const app=createMapPreviewServer({root:resolve(import.meta.dirname,'..'),
-    config:{amap:{key:'public-browser-key',securityCode:'private-test-value'},tencent:{key:'public-tencent-key'}},fetchImpl});
+    config:{amap:{key:'public-browser-key',securityCode:'private-test-value'},tencent:{key:'public-tencent-key'},baidu:{key:'public-baidu-key'}},fetchImpl});
   await new Promise(r=>app.listen(0,'127.0.0.1',r));
   t.after(()=>new Promise(r=>app.close(r)));
   return 'http://127.0.0.1:'+app.address().port;
@@ -15,7 +15,7 @@ test('runtime configuration contains the public key and proxy path, never the se
   const base=await server(t);
   const response=await fetch(base+'/map-runtime.json');const body=await response.text();
   assert.equal(response.headers.get('cache-control'),'no-store');
-  assert.deepEqual(JSON.parse(body),{amap:{key:'public-browser-key',serviceHost:'/_AMapService'},tencent:{key:'public-tencent-key'}});
+  assert.deepEqual(JSON.parse(body),{amap:{key:'public-browser-key',serviceHost:'/_AMapService'},tencent:{key:'public-tencent-key'},baidu:{key:'public-baidu-key'}});
   assert.ok(!body.includes('private-test-value'));
   for(const path of ['/.map-dev.env','/.git/config','/%2e%2e/.map-dev.env']) {
     assert.equal((await fetch(base+path)).status,404,path);

@@ -13,9 +13,9 @@ if(!keys.AMAP_BROWSER_KEY||!keys.AMAP_SECURITY_CODE)throw Error('Missing AMap cr
 const files={
   'map-preview.mjs':readFileSync('tools/map-preview.mjs','utf8'),
   'server.mjs':`import {createMapPreviewServer} from './map-preview.mjs';
-const config={amap:{key:process.env.AMAP_BROWSER_KEY,securityCode:process.env.AMAP_SECURITY_CODE},tencent:{key:process.env.TENCENT_BROWSER_KEY}};
+const config={amap:{key:process.env.AMAP_BROWSER_KEY,securityCode:process.env.AMAP_SECURITY_CODE},tencent:{key:process.env.TENCENT_BROWSER_KEY},baidu:{key:process.env.BAIDU_BROWSER_KEY}};
 createMapPreviewServer({root:'/var/www/nc15',config,basePath:'/nc15'}).listen(4186,'127.0.0.1');\n`,
-  'map.env':Object.entries(keys).filter(([k])=>['AMAP_BROWSER_KEY','AMAP_SECURITY_CODE','TENCENT_BROWSER_KEY'].includes(k)).map(([k,v])=>k+'='+v).join('\n')+'\n'
+  'map.env':Object.entries(keys).filter(([k])=>['AMAP_BROWSER_KEY','AMAP_SECURITY_CODE','TENCENT_BROWSER_KEY','BAIDU_BROWSER_KEY'].includes(k)).map(([k,v])=>k+'='+v).join('\n')+'\n'
 };
 const unit=`[Unit]
 Description=NC15 official map security proxy

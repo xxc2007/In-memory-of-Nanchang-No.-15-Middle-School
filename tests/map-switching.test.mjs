@@ -49,7 +49,7 @@ function harness(lang = 'zh-CN', key = '', native = false) {
   const window = {matchMedia:()=>({matches:true}),addEventListener(){}};
   const nativeSessions = [];
   if(native){
-    window.CampusNativeConfig={amap:{key:'0123456789abcdef0123456789abcdef',serviceHost:'/_AMapService'}};
+    window.CampusNativeConfig={amap:{key:'0123456789abcdef0123456789abcdef',serviceHost:'/_AMapService'},baidu:{key:'a'.repeat(32)}};
     window.CampusNativeMaps={mount(host,provider,camera,spots,onPick,ready,failed){
       const session={provider,ready,failed,onPick,destroyed:false,
         camera(){return camera;},select(){},home(){},
@@ -184,4 +184,19 @@ test('all three modes initially use official AMap when runtime configuration is 
   h.mode('satellite');assert.equal(h.el.getAttribute('data-map-provider'),'amap-satellite');
   h.mode('3d');assert.equal(h.el.getAttribute('data-map-provider'),'amap-3d');
   h.mode('road');assert.equal(h.el.getAttribute('data-map-provider'),'amap-road');
+});
+
+test('Baidu can be selected in each mode while AMap remains the initial default',()=>{
+  const h=harness('zh-CN','',true);
+  for(const mode of ['road','satellite','3d']) {
+    h.mode(mode);assert.equal(h.el.getAttribute('data-map-provider'),'amap-'+mode);
+    h.source('baidu-'+mode);assert.equal(h.el.getAttribute('data-map-engine'),'baidu');
+    const session=h.nativeSessions.at(-1);session.ready();
+    assert.equal(h.el.getAttribute('data-map-state'),'ready');
+    const feedback=h.section.children.find(n=>n.className==='map-feedback');
+    assert.match(feedback.children[0].textContent,/地图已就绪/,'SDK initialization must not claim that all imagery tiles have loaded');
+    session.onPick(5);h.source('amap-'+mode);
+    assert.equal(session.destroyed,true);
+    session.failed();assert.equal(h.el.getAttribute('data-map-state'),'loading');
+  }
 });

@@ -81,3 +81,15 @@ test('Tencent SDK providers require a valid public key and preserve campus coord
     assert.ok(Math.abs(restored[0]-source[0])<1e-7 && Math.abs(restored[1]-source[1])<1e-7);
   }
 });
+
+test('Baidu JSAPI GL providers use BD09 and preserve WGS84 photo positions',()=>{
+  const r=resources();
+  assert.equal(r.providers('',{baidu:{key:'invalid'}}).length,4);
+  const options=r.providers('',{baidu:{key:'a'.repeat(32)}}).filter(p=>p.engine==='baidu');
+  assert.deepEqual(Array.from(options,p=>p.mode),['road','satellite','3d']);
+  for(const p of options) {
+    assert.equal(p.crs,'bd09');
+    const source=[115.93216,28.72078],restored=r.fromMap(p,r.toMap(p,source));
+    assert.ok(Math.abs(restored[0]-source[0])<1e-7 && Math.abs(restored[1]-source[1])<1e-7);
+  }
+});

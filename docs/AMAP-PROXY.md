@@ -12,6 +12,8 @@ node tools/map-preview.mjs
 
 同一预览现也支持「腾讯地图 · JS API」。本地 `.map-dev.env` 中的 `TENCENT_BROWSER_KEY` 作为公开浏览器 Key 返回在 `map-runtime.json` 的 `tencent.key` 中；腾讯 SDK 仅在选中后加载，不使用高德的安全代理。生产运行时 JSON 可按相同结构追加 `"tencent":{"key":"YOUR_TENCENT_BROWSER_KEY"}`。腾讯卫星使用官方 satellite 底图及 road 标注，3D 使用官方矢量建筑；可用清晰度、楼块覆盖和使用许可取决于平台数据与账号权益。官方说明：https://lbs.qq.com/webApi/javascriptGL/glGuide/glBasic 。
 
+百度来源使用 `.map-dev.env` 中的 `BAIDU_BROWSER_KEY`，在运行时返回 `baidu.key`，通过同一服务部署脚本同步到服务器受保护的环境文件。它是浏览器端 AK，不是服务端 AK。百度 SDK 只在选择来源后载入独立 iframe，保留原厂版权和审图信息。界面状态「地图已就绪」表示 SDK 已完成初始化，瓦片与文字可继续异步细化，不能理解为所有网络请求均已完成。
+
 本地 .map-dev.env 已配置浏览器 Key 与安全密钥，该文件被 .gitignore 排除。程序仅监听 127.0.0.1。map-runtime.json 只返回浏览器 Key 与同源代理路径；安全密钥只在本地服务向高德请求时追加，不发送给浏览器。静态文件路由禁止读取隐藏文件与工作区外路径，代理固定上游地址、拒绝跨域调用并拒绝安全密钥回显。
 
 原来的纯静态预览（例如端口 4175）没有此运行时配置，继续提供已有的高德栅格、天地图、Esri 和开放建筑来源，不显示无法使用的官方 SDK 来源。

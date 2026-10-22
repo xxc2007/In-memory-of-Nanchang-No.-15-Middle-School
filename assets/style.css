@@ -583,6 +583,7 @@ body.lb-lock{overflow:hidden}
 .campus-native-map[hidden]{display:none}
 .campus-tencent-pins{position:absolute;inset:0;pointer-events:none;z-index:5;overflow:hidden}
 .campus-tencent-pins .mm-pin{position:absolute;pointer-events:auto;transform:translate(-50%,-50%)}
+.campus-baidu-frame{display:block;width:100%;height:100%;border:0}
 #campusMap[data-map-engine] > .maplibregl-canvas-container,
 #campusMap[data-map-engine] > .maplibregl-control-container{visibility:hidden}
 /* 道路图保留纸墨视觉；卫星影像使用原色，便于辨认校园细节。 */
