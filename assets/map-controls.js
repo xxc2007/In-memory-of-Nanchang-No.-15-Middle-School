@@ -25,6 +25,7 @@
     pt:['Edifícios 3D','OpenFreeMap · Edifícios e imagens','Os edifícios e alturas vêm de dados abertos; algumas alturas são estimadas. Esta representação não é um modelo fotorrealista do campus.'],
     ar:['مبانٍ ثلاثية الأبعاد','OpenFreeMap · مبانٍ وصور','حدود المباني وارتفاعاتها من بيانات مفتوحة وبعض الارتفاعات تقديرية. هذا تصور للمباني وليس نموذجاً واقعياً للحرم.']
   };
+  var nativeReady = {zh:'地图已就绪','zh-hant':'地圖已就緒',en:'Map ready',ja:'地図の準備ができました',ko:'지도 준비 완료',ru:'Карта готова',es:'Mapa listo',fr:'Carte prête',pt:'Mapa pronto',ar:'الخريطة جاهزة'};
   function localeKey(locale) {
     locale = (locale || 'zh').toLowerCase();
     return /^zh-(hant|tw)/.test(locale) ? 'zh-hant' : locale.split('-')[0];
@@ -86,7 +87,7 @@
     container.parentNode.insertBefore(feedback, container.nextSibling);
     container.parentNode.insertBefore(note, feedback.nextSibling);
 
-    function title(p) { return p.engine === 'tencent' ? (/^zh/i.test(document.documentElement.lang) ? '腾讯地图' : 'Tencent Maps') + ' · JS API' : p.engine === 'amap' ? t[9] + ' · JS API' : p.mode === '3d' ? (p.id === 'tianditu-3d' ? t[12] + ' + OpenFreeMap' : three[1]) : p.id === 'gaode' ? t[9] : p.id === 'esri' ? t[10] : p.published ? t[11] : t[12]; }
+    function title(p) { return p.engine === 'baidu' ? (/^zh/i.test(document.documentElement.lang) ? '百度地图' : 'Baidu Maps') + ' · JS API GL' : p.engine === 'tencent' ? (/^zh/i.test(document.documentElement.lang) ? '腾讯地图' : 'Tencent Maps') + ' · JS API' : p.engine === 'amap' ? t[9] + ' · JS API' : p.mode === '3d' ? (p.id === 'tianditu-3d' ? t[12] + ' + OpenFreeMap' : three[1]) : p.id === 'gaode' ? t[9] : p.id === 'esri' ? t[10] : p.published ? t[11] : t[12]; }
     function updateUI() {
       road.setAttribute('aria-pressed', String(provider.mode === 'road'));
       satellite.setAttribute('aria-pressed', String(provider.mode === 'satellite'));
@@ -104,7 +105,8 @@
     function setState(state) {
       el.setAttribute('data-map-state', state);
       el.setAttribute('aria-busy', String(state === 'loading'));
-      status.textContent = title(provider) + ' · ' + t[state === 'ready' ? 6 : state === 'failed' ? 7 : 5];
+      var message = state === 'ready' && provider.engine === 'baidu' ? (nativeReady[localeKey(document.documentElement.lang)] || nativeReady.en) : t[state === 'ready' ? 6 : state === 'failed' ? 7 : 5];
+      status.textContent = title(provider) + ' · ' + message;
       retry.hidden = state !== 'failed';
       if (state !== 'loading') clearTimeout(timer);
     }

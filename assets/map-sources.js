@@ -16,10 +16,23 @@
     var rad = lat/180*Math.PI, magic = 1 - EE*Math.pow(Math.sin(rad), 2), sq = Math.sqrt(magic);
     return [lng + b*180/(A/sq*Math.cos(rad)*Math.PI), lat + a*180/((A*(1-EE))/(magic*sq)*Math.PI)];
   }
-  function toMap(provider, point) { return provider.crs === 'gcj02' ? gcj02(point) : point.slice(); }
+  function bd09(point) {
+    var x = point[0], y = point[1], pi = Math.PI*3000/180;
+    var radius = Math.sqrt(x*x+y*y)+0.00002*Math.sin(y*pi);
+    var angle = Math.atan2(y,x)+0.000003*Math.cos(x*pi);
+    return [radius*Math.cos(angle)+0.0065,radius*Math.sin(angle)+0.006];
+  }
+  function toMap(provider, point) { return provider.crs === 'bd09' ? bd09(gcj02(point)) : provider.crs === 'gcj02' ? gcj02(point) : point.slice(); }
   function fromMap(provider, point) {
     var result = point.slice();
-    if (provider.crs === 'gcj02') {
+    if (provider.crs === 'bd09') {
+      result = [point[0]-0.0065,point[1]-0.006];
+      for (var b = 0; b < 5; b++) {
+        var baidu = bd09(result);result[0] -= baidu[0]-point[0];result[1] -= baidu[1]-point[1];
+      }
+      point = result.slice();
+    }
+    if (provider.crs === 'gcj02' || provider.crs === 'bd09') {
       for (var i = 0; i < 5; i++) {
         var projected = gcj02(result);
         result[0] -= projected[0] - point[0];
@@ -72,6 +85,12 @@
       ['road','satellite','3d'].forEach(function (mode) {
         items.push({id:'tencent-'+mode, mode:mode, crs:'gcj02', engine:'tencent', config:nativeConfig.tencent,
           info:'https://lbs.qq.com/webApi/javascriptGL/glGuide/glBasic'});
+      });
+    }
+    if (nativeConfig && nativeConfig.baidu && /^[a-z0-9]{32}$/i.test(nativeConfig.baidu.key || '')) {
+      ['road','satellite','3d'].forEach(function (mode) {
+        items.push({id:'baidu-'+mode, mode:mode, crs:'bd09', engine:'baidu', config:nativeConfig.baidu,
+          info:'https://lbs.baidu.com/docs/jsapi?title=jspopularGL/guide/maptype'});
       });
     }
     return items;

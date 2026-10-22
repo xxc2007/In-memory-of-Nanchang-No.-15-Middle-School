@@ -19,7 +19,8 @@ export function createMapPreviewServer({root,config={},fetchImpl=fetch,basePath=
     if(url.pathname==='/map-runtime.json') {
       const amap=config.amap?.key&&config.amap?.securityCode?{key:config.amap.key,serviceHost:basePath+'/_AMapService'}:undefined;
       const tencent=config.tencent?.key?{key:config.tencent.key}:undefined;
-      res.writeHead(200,{'Content-Type':'application/json'});return res.end(JSON.stringify({amap,tencent}));
+      const baidu=config.baidu?.key?{key:config.baidu.key}:undefined;
+      res.writeHead(200,{'Content-Type':'application/json'});return res.end(JSON.stringify({amap,tencent,baidu}));
     }
     if(url.pathname.startsWith('/_AMapService/')) {
       if(!config.amap?.key||!config.amap?.securityCode)return fail(503,'Map proxy is not configured');
@@ -59,7 +60,7 @@ export function createMapPreviewServer({root,config={},fetchImpl=fetch,basePath=
 if(process.argv[1] && resolve(process.argv[1])===fileURLToPath(import.meta.url)) {
   const root=resolve(import.meta.dirname,'..');
   const env=resolve(root,'.map-dev.env');if(existsSync(env))process.loadEnvFile(env);
-  const config={amap:{key:process.env.AMAP_BROWSER_KEY,securityCode:process.env.AMAP_SECURITY_CODE},tencent:{key:process.env.TENCENT_BROWSER_KEY}};
+  const config={amap:{key:process.env.AMAP_BROWSER_KEY,securityCode:process.env.AMAP_SECURITY_CODE},tencent:{key:process.env.TENCENT_BROWSER_KEY},baidu:{key:process.env.BAIDU_BROWSER_KEY}};
   const server=createMapPreviewServer({root,config});
   server.listen(4176,'127.0.0.1',()=>console.log('Map preview: http://127.0.0.1:4176/#map'));
 }
