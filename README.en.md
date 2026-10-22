@@ -143,6 +143,16 @@ site/
 | Serving | nginx reverse proxy `/comment/` → systemd service |
 | Deployment | Azure VM · Cloudflare DNS · Let's Encrypt |
 
+### How it works
+
+The diagram separates static reading, the map tour and the guestbook: photographs and text use static assets; the map loads on demand and follows the viewpoint data; messages use a separate service for storage and moderation. Green marks reader-visible results; amber marks moderation, failure handling or constraints.
+
+[![Campus memorial · Content, maps and guestbook](docs/architecture/flow.en.svg)](docs/architecture/flow.en.svg)
+
+Open the image to zoom in. Source references: [index.html](index.html) · [assets/main.js](assets/main.js) · [assets/map.js](assets/map.js) · [assets/map-sources.js](assets/map-sources.js) · [assets/wall.js](assets/wall.js) · [docs/MAP-SOURCES.md](docs/MAP-SOURCES.md) · [docs/MIGRATION.md](docs/MIGRATION.md).
+
+To update both diagrams, edit the bilingual labels in [`render.mjs`](docs/architecture/render.mjs) and run `node docs/architecture/render.mjs`.
+
 ## 🚀 Run locally
 
 Nothing to install:

@@ -148,6 +148,16 @@ site/
 | 服务 | nginx 反向代理 `/comment/` → systemd 常驻 |
 | 部署 | Azure VM · Cloudflare DNS · Let's Encrypt |
 
+### 底层原理与运行流程
+
+这张图把静态阅读、地图漫游和留言服务分成三条路径：照片与正文由静态资源提供；地图按需加载并与机位数据联动；留言通过独立服务存储和审核。绿色表示读者可见结果，橙色表示审核、失败处理或约束。
+
+[![校园纪念册 · 内容、地图与留言如何协作](docs/architecture/flow.zh.svg)](docs/architecture/flow.zh.svg)
+
+点击图片可打开矢量原图放大阅读。实现依据：[index.html](index.html) · [assets/main.js](assets/main.js) · [assets/map.js](assets/map.js) · [assets/map-sources.js](assets/map-sources.js) · [assets/wall.js](assets/wall.js) · [docs/MAP-SOURCES.md](docs/MAP-SOURCES.md) · [docs/MIGRATION.md](docs/MIGRATION.md)。
+
+后续修改可编辑 [`render.mjs`](docs/architecture/render.mjs) 中的双语文字与节点，运行 `node docs/architecture/render.mjs` 同步生成两种语言的图。
+
 ## 🚀 本地运行
 
 无需安装任何东西：
