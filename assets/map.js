@@ -1,7 +1,7 @@
 /* =========================================================
    青山湖畔的纪念册 · 时光漫游 + 校园定位图（MapLibre GL）
-   依赖：maplibre/maplibre-gl.js（在此脚本之前加载）
-   双语：按 <html lang> 取 SPOTS 的中/英字段
+   依赖：map-loader.js 按需加载 MapLibre 与来源/控制模块
+   十语：按 <html lang> 选择照片说明与地图界面文案
    ========================================================= */
 (function () {
   'use strict';
@@ -27,38 +27,6 @@
     var src = document.currentScript && document.currentScript.src;
     if (!src) return (location.pathname === '/' || location.pathname === '/nc15/' || location.pathname === '/nc15/index.html') ? '' : '../';
     return src.replace(/assets\/map\.js.*$/, '');
-  })();
-
-  /* ---------- 坐标系：WGS84 → GCJ-02 ----------
-     底图源从 OSM（WGS84）换成高德（GCJ-02 国测局加密坐标）后，所有经纬度都要做
-     同样的偏移，否则整组标记会偏离实际位置约 500 米。下面是标准 GCJ-02 正算。 */
-  var gcj02 = (function () {
-    var A = 6378245.0, EE = 0.00669342162296594323;
-    function outsideChina(lng, lat) { return !(lng > 73.66 && lng < 135.05 && lat > 3.86 && lat < 53.55); }
-    function dLat(x, y) {
-      var r = -100 + 2 * x + 3 * y + 0.2 * y * y + 0.1 * x * y + 0.2 * Math.sqrt(Math.abs(x));
-      r += (20 * Math.sin(6 * x * Math.PI) + 20 * Math.sin(2 * x * Math.PI)) * 2 / 3;
-      r += (20 * Math.sin(y * Math.PI) + 40 * Math.sin(y / 3 * Math.PI)) * 2 / 3;
-      r += (160 * Math.sin(y / 12 * Math.PI) + 320 * Math.sin(y * Math.PI / 30)) * 2 / 3;
-      return r;
-    }
-    function dLng(x, y) {
-      var r = 300 + x + 2 * y + 0.1 * x * x + 0.1 * x * y + 0.1 * Math.sqrt(Math.abs(x));
-      r += (20 * Math.sin(6 * x * Math.PI) + 20 * Math.sin(2 * x * Math.PI)) * 2 / 3;
-      r += (20 * Math.sin(x * Math.PI) + 40 * Math.sin(x / 3 * Math.PI)) * 2 / 3;
-      r += (150 * Math.sin(x / 12 * Math.PI) + 300 * Math.sin(x / 30 * Math.PI)) * 2 / 3;
-      return r;
-    }
-    return function (lng, lat) {
-      if (outsideChina(lng, lat)) return [lng, lat];
-      var a = dLat(lng - 105, lat - 35), b = dLng(lng - 105, lat - 35);
-      var radLat = lat / 180 * Math.PI, magic = Math.sin(radLat);
-      magic = 1 - EE * magic * magic;
-      var sq = Math.sqrt(magic);
-      a = (a * 180) / ((A * (1 - EE)) / (magic * sq) * Math.PI);
-      b = (b * 180) / (A / sq * Math.cos(radLat) * Math.PI);
-      return [lng + b, lat + a];
-    };
   })();
 
   /* ---------- 机位数据（维护者只改这里；name/desc 简体，Hant 繁體，En 英文，Ja 日文） ---------- */
@@ -223,6 +191,8 @@
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var viewer = document.getElementById('tourViewer');
   var cur = 4, mmMarkers = [], slides = [];
+  var mapSources, mapProvider;
+  function mapPoint(spot) { return mapSources.toMap(mapProvider, [spot.lng, spot.lat]); }
 
   /* ---------- 全幅照片漫游 ---------- */
   if (viewer) {
@@ -284,10 +254,11 @@
     loadCurrent();
     paint();
     var s = SPOTS[cur];
+    if (window.__campusNativeFocus) { window.__campusNativeFocus(s); return; }
     if (window.__campusMap) {
-      /* 底图是 GCJ-02，漫游目标点也要做同样偏移，否则相机与标记会错位 */
-      if (!reduceMotion) __campusMap.flyTo({ center: gcj02(s.lng, s.lat), zoom: 16.5, duration: 1600, essential: true });
-      else __campusMap.jumpTo({ center: gcj02(s.lng, s.lat), zoom: 16.5 });
+      /* 按当前来源转换机位坐标，切换来源后保持照片与地图联动。 */
+      if (!reduceMotion) window.__campusMap.flyTo({ center: mapPoint(s), zoom: Math.max(17.3, window.__campusMap.getZoom()), duration: 1600, essential: true });
+      else window.__campusMap.jumpTo({ center: mapPoint(s), zoom: Math.max(17.3, window.__campusMap.getZoom()) });
     }
   }
   var prevBtn = document.getElementById('tourPrev');
@@ -309,12 +280,15 @@
     var langMenu = document.getElementById('langMenu');
     if (langMenu && !langMenu.hidden) return;   /* 语言菜单展开时，←→ 归菜单用，不切漫游照片 */
     var tag = (ev.target && ev.target.tagName) || '';
-    if (tag === 'TEXTAREA' || tag === 'INPUT' || (ev.target && ev.target.isContentEditable)) return;
+    if (tag === 'TEXTAREA' || tag === 'INPUT' || tag === 'SELECT' || (ev.target && ev.target.isContentEditable)) return;
+    if (ev.target && ev.target.closest && ev.target.closest('.map-toolbar, .map-feedback')) return;
+    var mapElement = document.getElementById('campusMap');
+    if (mapElement && mapElement.contains(ev.target)) return;
     if (ev.key === 'ArrowLeft') go(cur - 1);
     if (ev.key === 'ArrowRight') go(cur + 1);
   });
 
-  /* ---------- 定位图（MapLibre 矢量底图：OSM 栅格 + 中文地名，2D 俯视最清晰） ---------- */
+  /* ---------- 校园多源地图（道路 / 当前卫星 / 历史卫星） ---------- */
   /* 先把「照片漫游」落地：它只依赖上面的 slides / dots 与机位数据，
      不能被定位图连坐——WebGL 不可用、瓦片被墙或 MapLibre 缺失时定位图会失败，
      但漫游必须照常显示（paint 原先排在定位图之后，会一起静默消失）。 */
@@ -326,42 +300,23 @@
     var el = document.getElementById('campusMap');
     if (!el || el.getAttribute('data-map-ready')) return;
     if (typeof maplibregl === 'undefined') return;   /* maplibre 还在惰性加载，等 onload 再进来；真失败由加载器 onerror 标记 */
+    if (!window.CampusMapSources || !window.CampusMapControls) return;
+    mapSources = window.CampusMapSources;
+    var providers = mapSources.providers(el.getAttribute('data-tianditu-key'), window.CampusNativeConfig);
+    mapProvider = providers[0];
     el.setAttribute('data-map-ready', '1');
 
     try {
       var map = new maplibregl.Map({
         container: el,
-        style: {
-          version: 8,
-          sources: {
-            /* 底图源：高德栅格瓦片（国内可直连、中文地名注记）。
-               原先用 tile.openstreetmap.org —— 境外服务，国内移动网络（尤其微信内置
-               浏览器）取不到瓦片，地图只剩空白底 + 标记点（2026-09-15 用户实测）。
-               注意高德用 GCJ-02 坐标，故 center 与所有 marker 都要先过 gcj02()。 */
-            base: {
-              type: 'raster',
-              tiles: [
-                'https://webrd01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}',
-                'https://webrd02.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}',
-                'https://webrd03.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}',
-                'https://webrd04.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}'
-              ],
-              tileSize: 256, maxzoom: 18,
-              attribution: ARIA.attribution
-            }
-          },
-          layers: [
-            { id: 'bg', type: 'background', paint: { 'background-color': '#EDEAE0' } },
-            { id: 'base', type: 'raster', source: 'base' }
-          ]
-        },
-        center: gcj02(115.93216, 28.72078),
-        zoom: 15.6, pitch: 0, bearing: 0,
+        style: mapSources.style(mapProvider, 'base-0'),
+        center: mapSources.toMap(mapProvider, [115.93216, 28.72078]),
+        zoom: 17.3, minZoom: 3, maxZoom: 19, pitch: 0, bearing: 0,
         attributionControl: false
       });
       window.__campusMap = map;
       map.addControl(new maplibregl.AttributionControl({ compact: true }));
-      map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
+      map.addControl(new maplibregl.NavigationControl({ showCompass: true, visualizePitch: true }), 'top-right');
 
       SPOTS.forEach(function (s, i) {
         var pin = document.createElement('button');
@@ -369,7 +324,7 @@
         pin.className = 'mm-pin';
         pin.title = spotName(s);
         pin.setAttribute('aria-label', ARIA.viewSpot + spotName(s));
-        var mk = new maplibregl.Marker({ element: pin, anchor: 'center' }).setLngLat(gcj02(s.lng, s.lat)).addTo(map);
+        var mk = new maplibregl.Marker({ element: pin, anchor: 'center' }).setLngLat(mapPoint(s)).addTo(map);
         mmMarkers.push({ el: pin, m: mk, s: s });
         pin.addEventListener('click', function (ev) {
           ev.stopPropagation();
@@ -377,12 +332,10 @@
         });
       });
 
-      var tilesLoaded = false, tileErrors = 0;
-      map.on('data', function (e) { if (e && e.tile) tilesLoaded = true; });
-      map.on('error', function (e) { if (e && e.tile) tileErrors++; });
-      setTimeout(function () {
-        if (!tilesLoaded && tileErrors >= 3) el.setAttribute('data-map-tiles-failed', '1');
-      }, 10000);
+      window.CampusMapControls.mount(map, el, providers, function (provider) {
+        mapProvider = provider;
+        mmMarkers.forEach(function (mm) { mm.m.setLngLat(mapPoint(mm.s)); });
+      }, reduceMotion, {spots:SPOTS.map(function (s) { return Object.assign({title:spotName(s)},s); }),onPick:go,current:function () { return SPOTS[cur]; }});
 
       window.addEventListener('load', function () { map.resize(); });
     } catch (err) {

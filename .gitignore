@@ -6,6 +6,9 @@ giscus-theme.css
 
 node_modules/
 .tmp/
+.playwright-cli/
+output/playwright/
 .deploy.env
+.map-dev.env
 *.pem
 *.key

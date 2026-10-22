@@ -66,7 +66,7 @@ The English standalone player and source link use the complete 1920×1080 master
 
 - The school is located at the Qingshanhu campus (28.7208°N, 115.9322°E); map coordinates are converted for the Gaode tile system at runtime.
 - **Full-frame photo tour**: 8 spots, 8 photographs, switchable via arrows/dots/keyboard, with a slow Ken Burns push
-- **Chinese-labeled location map**: AutoNavi / Gaode raster basemap, 8 markers linked with the tour — click a marker and the camera flies there
+- **Multiple basemaps**: switch between Gaode roads, configured Tianditu roads/imagery, current Esri satellite imagery and a 2023 Wayback edition while keeping all 8 photo markers linked to the tour. A 3D view overlays OpenFreeMap building footprints and estimated heights on Esri or Tianditu imagery; these are not surveyed heights or a photorealistic campus model. Includes campus reset, loading status and retry. See [map source configuration](docs/MAP-SOURCES.md).
 - MapLibre loads on demand as you scroll near the map section; all spots live in one `SPOTS` array in `assets/map.js` — easy to edit
 
 <p align="center">

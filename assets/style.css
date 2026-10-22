@@ -564,10 +564,29 @@ body.lb-lock{overflow:hidden}
 .mm-head{display:flex;align-items:baseline;gap:12px;margin:4px 0 10px}
 .mm-head b{font-family:var(--serif);font-size:17px;color:var(--ink)}
 .mm-head span{font-size:12px;color:var(--muted)}
-.minimap{position:relative;border:1px solid var(--line);border-radius:12px;overflow:hidden;height:280px}
-#campusMap{height:280px;font-family:var(--sans)}
-/* OSM 标准底图饱和度偏高，灰调滤镜让它退回到纸墨视觉语言里，突出赤陶橙机位钉 */
-#campusMap .maplibregl-canvas{filter:grayscale(.85) sepia(.12) contrast(.92) brightness(1.02)}
+.map-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin:12px 0;font-family:var(--sans)}
+.map-modes{display:flex;flex-wrap:wrap;gap:4px;padding:4px;border:1px solid var(--line);border-radius:10px;background:var(--cream,#F0EEE6)}
+.map-button{appearance:none;min-height:44px;padding:9px 14px;border:1px solid var(--line);border-radius:7px;background:transparent;color:var(--ink);font:inherit;font-size:13px;cursor:pointer}
+.map-modes .map-button{border-color:transparent}
+.map-button[aria-pressed="true"]{background:var(--terra-deep);color:#fff}
+.map-button:hover{border-color:var(--terra-deep)}
+.map-button:focus-visible,.map-source-select:focus-visible,.map-source-details:focus-visible{outline:2px solid var(--terra-deep);outline-offset:3px}
+.map-source-label{display:flex;align-items:center;flex-wrap:wrap;gap:8px;min-width:0;font-size:12px;color:var(--muted)}
+.map-source-select{min-height:44px;max-width:100%;padding:8px;border:1px solid var(--line);border-radius:7px;background:#FAF9F5;color:var(--ink);font:inherit;font-size:13px}
+.map-feedback{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin-top:12px;min-height:24px;font-size:12px;color:var(--muted)}
+.map-feedback [hidden]{display:none}
+.map-source-details{margin-inline-start:auto;text-decoration:underline;text-underline-offset:3px;color:var(--terra-deep)}
+.map-source-note{font-size:12px;line-height:1.7;color:var(--muted);margin:6px 0 0}
+.minimap{position:relative;border:1px solid var(--line);border-radius:12px;overflow:hidden;height:420px}
+#campusMap{height:100%;font-family:var(--sans)}
+.campus-native-map{position:absolute;inset:0;z-index:3}
+.campus-native-map[hidden]{display:none}
+.campus-tencent-pins{position:absolute;inset:0;pointer-events:none;z-index:5;overflow:hidden}
+.campus-tencent-pins .mm-pin{position:absolute;pointer-events:auto;transform:translate(-50%,-50%)}
+#campusMap[data-map-engine] > .maplibregl-canvas-container,
+#campusMap[data-map-engine] > .maplibregl-control-container{visibility:hidden}
+/* 道路图保留纸墨视觉；卫星影像使用原色，便于辨认校园细节。 */
+#campusMap[data-map-mode="road"] .maplibregl-canvas{filter:grayscale(.85) sepia(.12) contrast(.92) brightness(1.02)}
 #campusMap .mm-pin{width:16px;height:16px;border-radius:50%;background:rgba(250,249,245,.88);
   border:1px solid rgba(0,0,0,.4);cursor:pointer;transition:all .25s;box-sizing:border-box;position:relative}
 #campusMap .mm-pin::after{content:"";position:absolute;inset:-14px}  /* 触控扩展区：外扩至约 44px（移动端可点中） */
@@ -719,7 +738,7 @@ html[lang^="ar"] #campusMap[data-map-timeout]::after{content:"استغرق تح�
 @media print{
   body{background:#fff;color:#000;font-size:11.5pt}
   .topbar,.progress,.scroll-hint,.skip-link,.lightbox,.wall-admin,
-  .tour-viewer,.tour-dots,.mm-head,.minimap,.map-note,
+  .tour-viewer,.tour-dots,.mm-head,.minimap,.map-note,.map-toolbar,.map-feedback,.map-source-note,
   .bili-editor-row,.bili-notice,.bili-actions{display:none!important}
   .hero{padding-top:0}
   .hero-emblem{animation:none}
@@ -819,7 +838,10 @@ html[lang^="ar"] #campusMap[data-map-timeout]::after{content:"استغرق تح�
   .tour-viewer .arr{width:42px;height:42px}
   .tour-viewer .arr.prev{left:10px}.tour-viewer .arr.next{right:10px}
   .minimap{height:230px}
-  #campusMap{height:230px}
+  .minimap{height:340px}
+  .map-toolbar{gap:8px}
+  .map-source-label{flex:1 1 100%;align-items:stretch;flex-direction:column}
+  .map-source-select{width:100%}
   .bili-comments{padding:16px 14px}
   .bili-editor-row{gap:10px}
   .bili-avatar{width:34px;height:34px;font-size:15px}
