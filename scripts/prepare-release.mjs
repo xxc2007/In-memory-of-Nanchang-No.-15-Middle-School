@@ -2,7 +2,17 @@
 import {readFileSync,writeFileSync} from 'node:fs';
 import {execFileSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
-const files=execFileSync('git',['ls-files'],{encoding:'utf8'}).trim().split('\n');
+const files=execFileSync('git',['ls-files','--cached','--others','--exclude-standard'],{encoding:'utf8'}).trim().split('\n');
+// Lazy modules have immutable caching too; version them before hashing the loader.
+const loaderPath='assets/map-loader.js';const oldLoader=readFileSync(loaderPath,'utf8');let loader=oldLoader;
+for(const path of ['assets/map-sources.js','assets/map-controls.js','assets/map-native.js']) {
+  const moduleVersion=createHash('sha256').update(readFileSync(path)).digest('hex').slice(0,8);
+  loader=loader.replace(new RegExp('('+path.replaceAll('.','\\.')+'\\?v=)[0-9a-z]+','g'),'$1'+moduleVersion);
+}
+if(loader!==oldLoader) {
+  if(process.argv.includes('--check'))throw Error('Stale map modules: run node scripts/prepare-release.mjs');
+  writeFileSync(loaderPath,loader);
+}
 const hash=createHash('sha256');
 for(const path of files.filter(p=>/^(assets|images|maplibre)\//.test(p)&&!p.endsWith('.html')).sort()){hash.update(path);hash.update(readFileSync(path));}
 const version=hash.digest('hex').slice(0,8);let stale=[];

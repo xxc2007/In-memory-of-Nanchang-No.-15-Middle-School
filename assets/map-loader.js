@@ -18,7 +18,19 @@
       var timeout = setTimeout(function () {
         if (el && !el.hasAttribute('data-map-ready')) el.setAttribute('data-map-timeout', '1');
       }, 20000);
-      import(new URL('maplibre/maplibre-gl.mjs?v=6.14.0', base).href).then(function (lib) {
+      var runtimeController = new AbortController();
+      var runtimeTimeout = setTimeout(function () { runtimeController.abort(); }, 2000);
+      Promise.all([
+        import(new URL('assets/map-sources.js?v=4585efcf', base).href),
+        import(new URL('assets/map-controls.js?v=afd7f8cd', base).href),
+        import(new URL('maplibre/maplibre-gl.mjs?v=6.14.0', base).href),
+        import(new URL('assets/map-native.js?v=935ad6c7', base).href),
+        fetch(new URL('map-runtime.json', base), {cache:'no-store',signal:runtimeController.signal}).then(function (response) {
+          return response.ok ? response.json() : {};
+        }).catch(function () { return {}; }).finally(function () { clearTimeout(runtimeTimeout); })
+      ]).then(function (modules) {
+        var lib = modules[2];
+        window.CampusNativeConfig = modules[4];
         lib.setWorkerUrl(new URL('maplibre/maplibre-gl-worker.mjs?v=6.14.0', base).href);
         lib.setWorkerCount(1);
         window.maplibregl = lib;

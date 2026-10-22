@@ -35,7 +35,7 @@
 <link rel="icon" type="image/png" href="images/emblem-64.png">
 <link rel="apple-touch-icon" href="images/emblem-180.png">
 <link rel="stylesheet" href="assets/fonts/noto-serif-sc/wght.css">
-<link rel="stylesheet" href="assets/style.css?v=06f47809">
+<link rel="stylesheet" href="assets/style.css?v=2cf4364e">
 <link rel="preload" as="image" href="images/full/18-plaza-summer.jpg" fetchpriority="high">
 <noscript>
 <style>
@@ -81,7 +81,7 @@
   }
 }
 </script>
-<script defer src="assets/map-loader.js?v=06f47809"></script>
+<script defer src="assets/map-loader.js?v=2cf4364e"></script>
 </head>
 <body>
 <span id="top" aria-hidden="true"></span>
@@ -454,11 +454,13 @@
     </div>
     <div class="tour-dots" id="tourDots"></div>
 
+    <div class="map-explorer">
     <div class="mm-head reveal"><b>定位图</b><span>点击标记，漫游到那个位置</span></div>
     <div class="minimap reveal">
-      <div id="campusMap" role="region" aria-label="南昌市第十五中学青山湖校区定位图，标注八个照片拍摄位置"></div>
+      <div id="campusMap" data-tianditu-key="e8ce5db008604b6237a35fed190e55ea" role="region" aria-label="南昌市第十五中学青山湖校区定位图，标注八个照片拍摄位置"></div>
     </div>
-    <p class="map-note reveal">底图 © 高德地图（栅格瓦片含中文地名）</p>
+    <p class="map-note reveal">地图来源及版权见图内标注。</p>
+    </div>
   </section>
 
   <!-- ===================== 寄语 ===================== -->
@@ -558,9 +560,9 @@
   </div>
 </div>
 
-<script src="assets/main.js?v=06f47809" defer></script>
-<script src="assets/wall.js?v=06f47809" defer></script>
-<script src="assets/map.js?v=06f47809" defer></script>
+<script src="assets/main.js?v=2cf4364e" defer></script>
+<script src="assets/wall.js?v=2cf4364e" defer></script>
+<script src="assets/map.js?v=2cf4364e" defer></script>
 <!-- 定位图（map.js）由 head 内的惰性初始化器在滚动临近时按需加载 MapLibre ESM -->
 </body>
 </html>
