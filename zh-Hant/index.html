@@ -35,8 +35,9 @@
 <link rel="icon" type="image/png" href="../images/emblem-64.png">
 <link rel="apple-touch-icon" href="../images/emblem-180.png">
 <link rel="stylesheet" href="../assets/fonts/noto-serif-sc/wght.css">
-<link rel="stylesheet" href="../assets/style.css?v=b2877b8b">
-<link rel="preload" as="image" href="../images/full/18-plaza-summer.jpg" fetchpriority="high">
+<link rel="stylesheet" href="../assets/style.css?v=b2f4eba0">
+<link rel="preload" as="image" href="../images/full/18-plaza-summer-800.webp" type="image/webp" media="(max-width: 600px)" fetchpriority="high">
+<link rel="preload" as="image" href="../images/full/18-plaza-summer.jpg" media="(min-width: 601px)" fetchpriority="high">
 <noscript>
 <style>
 /* JS 不可用時的保底：所有依賴 JS 揭示的內容直接可見 */
@@ -81,7 +82,7 @@
   }
 }
 </script>
-<script defer src="../assets/map-loader.js?v=b2877b8b"></script>
+<script defer src="../assets/map-loader.js?v=b2f4eba0"></script>
 </head>
 <body>
 <span id="top" aria-hidden="true"></span>
@@ -145,7 +146,7 @@
     </div>
   </section>
   <figure class="hero-figure">
-    <span class="hero-img-wrap"><img src="../images/full/18-plaza-summer.jpg" width="1600" height="1200" alt="暑假裡空曠的校園廣場，香樟與雪松環抱辦公樓" fetchpriority="high"></span>
+    <span class="hero-img-wrap"><picture><source media="(max-width: 600px)" type="image/webp" srcset="../images/full/18-plaza-summer-800.webp"><img src="../images/full/18-plaza-summer.jpg" width="1600" height="1200" alt="暑假裡空曠的校園廣場，香樟與雪松環抱辦公樓" fetchpriority="high"></picture></span>
     <figcaption><span>暑假的廣場 · 辦公樓與月牙雕塑靜立</span><span>2025年8月23日</span></figcaption>
   </figure>
   <div class="scroll-hint">向下滾動</div>
@@ -560,9 +561,9 @@
   </div>
 </div>
 
-<script src="../assets/main.js?v=b2877b8b" defer></script>
-<script src="../assets/wall.js?v=b2877b8b" defer></script>
-<script src="../assets/map.js?v=b2877b8b" defer></script>
+<script src="../assets/main.js?v=b2f4eba0" defer></script>
+<script src="../assets/wall.js?v=b2f4eba0" defer></script>
+<script src="../assets/map.js?v=b2f4eba0" defer></script>
 <!-- 定位圖（map.js）由 head 內的惰性初始化器在滾動臨近時按需載入 MapLibre ESM -->
 </body>
 </html>
