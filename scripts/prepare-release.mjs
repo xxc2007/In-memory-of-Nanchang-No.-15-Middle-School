@@ -13,6 +13,17 @@ if(loader!==oldLoader) {
   if(process.argv.includes('--check'))throw Error('Stale map modules: run node scripts/prepare-release.mjs');
   writeFileSync(loaderPath,loader);
 }
+// Section interactions also use immutable URLs; hash them before their loader.
+const sectionLoaderPath='assets/section-loader.js';
+const oldSectionLoader=readFileSync(sectionLoaderPath,'utf8');let sectionLoader=oldSectionLoader;
+for(const path of ['assets/map.js','assets/wall.js']) {
+  const moduleVersion=createHash('sha256').update(readFileSync(path)).digest('hex').slice(0,8);
+  sectionLoader=sectionLoader.replace(new RegExp('('+path.replaceAll('.','\\.')+'\\?v=)[0-9a-z]+','g'),'$1'+moduleVersion);
+}
+if(sectionLoader!==oldSectionLoader) {
+  if(process.argv.includes('--check'))throw Error('Stale section modules: run node scripts/prepare-release.mjs');
+  writeFileSync(sectionLoaderPath,sectionLoader);
+}
 const hash=createHash('sha256');
 for(const path of files.filter(p=>/^(assets|images|maplibre)\//.test(p)&&!p.endsWith('.html')).sort()){hash.update(path);hash.update(readFileSync(path));}
 const version=hash.digest('hex').slice(0,8);let stale=[];
