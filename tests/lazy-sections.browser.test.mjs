@@ -11,11 +11,12 @@ test('real browser: lazy tour, navigation, wall refresh race, and no-JS fallback
   const {chromium}=await import(pathToFileURL(resolve(modulePath,'index.mjs')).href);
   const browser=await chromium.launch({channel:'chrome',headless:true});
   const root=resolve(import.meta.dirname,'..');
-  const mime={'.html':'text/html','.js':'text/javascript','.mjs':'text/javascript','.css':'text/css','.jpg':'image/jpeg','.png':'image/png','.woff2':'font/woff2'};
+  const mime={'.html':'text/html','.js':'text/javascript','.mjs':'text/javascript','.css':'text/css','.jpg':'image/jpeg','.avif':'image/avif','.webp':'image/webp','.png':'image/png','.woff2':'font/woff2'};
   try {
     for(const width of [1280,390]){
       const context=await browser.newContext({viewport:{width,height:800},reducedMotion:'reduce',hasTouch:true});
-      const page=await context.newPage();const errors=[],gets=[],writes=[];let heldFirst=null;
+      const page=await context.newPage();const errors=[],gets=[],writes=[],requests=[];let heldFirst=null;
+      page.on('request',request=>requests.push(request.url()));
       page.on('pageerror',e=>errors.push(e.message));
       await page.route('**/*',async route=>{
         const url=new URL(route.request().url());
@@ -33,6 +34,15 @@ test('real browser: lazy tour, navigation, wall refresh race, and no-JS fallback
       });
       await page.goto('https://memorial.test/nc15/',{waitUntil:'load'});
       assert.equal(await page.locator('img.slide[src]').count(),0,'first screen must not fetch tour images');
+      assert.equal(requests.some(url=>/assets\/(map|wall)\.js/.test(url)),false,'first screen must not fetch section interactions');
+      const hero=page.locator('.hero-img-wrap img');
+      assert.equal(await hero.evaluate(img=>img.complete&&img.naturalWidth>0),true);
+      assert.ok((await hero.evaluate(img=>img.currentSrc)).endsWith(width<601?'18-plaza-summer-800.avif':'18-plaza-summer.avif'));
+      await page.locator('.ph-img img').first().scrollIntoViewIfNeeded();
+      await page.waitForFunction(()=>{const img=document.querySelector('.ph-img img');return img.complete&&img.naturalWidth>0;});
+      assert.ok((await page.locator('.ph-img img').first().evaluate(img=>img.currentSrc)).endsWith('.avif'));
+      const photoBox=await page.locator('.ph-img img').first().boundingBox();
+      assert.ok(photoBox.width>100&&photoBox.height>100,'picture wrapper preserves photo layout');
       assert.equal(gets.length,0,'first screen must not fetch comments');
       await page.locator('#tourViewer').scrollIntoViewIfNeeded();
       await page.waitForFunction(()=>document.querySelectorAll('img.slide[src]').length===3);
