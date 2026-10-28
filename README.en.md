@@ -147,11 +147,11 @@ site/
 
 The diagram separates static reading, the map tour and the guestbook: photographs and text use static assets; the map loads on demand and follows the viewpoint data; messages use a separate service for storage and moderation. Green marks reader-visible results; amber marks moderation, failure handling or constraints.
 
-[![Campus memorial · Content, maps and guestbook](docs/architecture/flow.en.svg)](docs/architecture/flow.en.svg)
+[![Campus memorial · Content, maps and guestbook](docs/architecture/flow.en.f4b5cfe43280.png)](https://raw.githubusercontent.com/xxc2007/In-memory-of-Nanchang-No.-15-Middle-School/main/docs/architecture/flow.en.f4b5cfe43280.png)
 
-Open the image to zoom in. Source references: [index.html](index.html) · [assets/main.js](assets/main.js) · [assets/map.js](assets/map.js) · [assets/map-sources.js](assets/map-sources.js) · [assets/wall.js](assets/wall.js) · [docs/MAP-SOURCES.md](docs/MAP-SOURCES.md) · [docs/MIGRATION.md](docs/MIGRATION.md).
+Click the image to open the 3600 px PNG directly, then click again to view it at its original size. [Editable SVG source](docs/architecture/flow.en.svg). Source references: [index.html](index.html) · [assets/main.js](assets/main.js) · [assets/map.js](assets/map.js) · [assets/map-sources.js](assets/map-sources.js) · [assets/wall.js](assets/wall.js) · [docs/MAP-SOURCES.md](docs/MAP-SOURCES.md) · [docs/MIGRATION.md](docs/MIGRATION.md).
 
-To update both diagrams, edit the bilingual labels in [`render.mjs`](docs/architecture/render.mjs) and run `node docs/architecture/render.mjs`.
+To update both diagrams, install the documentation tool with `npm ci --prefix docs/architecture`, edit the bilingual labels in [`render.mjs`](docs/architecture/render.mjs), and run `node docs/architecture/render.mjs` to regenerate the SVG sources and high-resolution PNGs. See the [export notes](docs/architecture/README.md).
 
 ## 🚀 Run locally
 

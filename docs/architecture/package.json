@@ -1,0 +1,9 @@
+{
+  "name": "nc15-architecture-diagrams",
+  "private": true,
+  "type": "module",
+  "diagramRepository": "xxc2007/In-memory-of-Nanchang-No.-15-Middle-School",
+  "dependencies": {
+    "@resvg/resvg-js": "2.6.2"
+  }
+}
