@@ -4,12 +4,12 @@
 
 # Memorial by Qingshan Lake
 
-> *"The alma mater is the campus you only start to miss after you've left it."*
+> *“An alma mater is the campus you only begin to miss endlessly after you have left it.”*
 
-[![Live Site](https://img.shields.io/badge/🌐_Live-xxc2007.me-D97757)](https://xxc2007.me/nc15/)
+[![Live Site](https://img.shields.io/badge/🌐_Live-xxc2007.me%2Fnc15-D97757)](https://xxc2007.me/nc15/en/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Vanilla JS](https://img.shields.io/badge/Dependencies-Vanilla_JS-orange)](#️-tech-stack)
-[![Self-hosted](https://img.shields.io/badge/Guestbook-Artalk_Self--hosted-blueviolet)](#-guestbook)
+[![Self-hosted](https://img.shields.io/badge/Guestbook-Artalk_Self--hosted-blueviolet)](#guestbook-self-hosted-artalk)
 [![GitHub](https://img.shields.io/badge/GitHub-@xxc2007-1F1E1D)](https://github.com/xxc2007)
 [![Douyin](https://img.shields.io/badge/Douyin-抖音-1F1E1D)](https://www.douyin.com/user/MS4wLjABAAAA-AYW1RCpFjwJmoMTnZy1vKmOQopmBOUjPLN9phlDpjI)
 [![Xiaohongshu](https://img.shields.io/badge/Xiaohongshu-小红书-D97757)](https://www.xiaohongshu.com/user/profile/63bac6500000000026006c47)
@@ -17,170 +17,195 @@
 [![X](https://img.shields.io/badge/X-@xxc2007-1F1E1D)](https://x.com/xxc2007)
 [![YouTube](https://img.shields.io/badge/YouTube-@xxc2007-D97757)](https://www.youtube.com/@xxc2007)
 
-<br>
+**Keeping three years of school life at an address you can always return to.**
 
-**A private memorial of one school — putting three years of time at an address you can always return to.**
+A private digital chronicle dedicated to **Nanchang No. 15 Middle School**—
 
-<br>
 
-This is a memorial page for Nanchang No. 15 Middle School: **25 photographs of the campus**, a **photo tour with a clickable Chinese-labeled location map (MapLibre GL)**, a **login-free anonymous guestbook**, and a full set of interactions polished for reading — reading progress bar, section-aware navigation, count-up numbers, a growing timeline, and a zoom-and-pan lightbox.
+featuring **25 original campus photographs**, an **eight-viewpoint Tour Through Time**, a **multi-source campus map (MapLibre GL)**,
 
-Pure HTML / CSS / vanilla JS with structure, style and behavior separated (`index.html` + `assets/`) — zero frameworks, no build step.
 
-[Live Site](https://xxc2007.me/nc15/en/) · [English promo player](https://xxc2007.me/nc15/promo/en/) · [Structure](#-site-structure) · [Highlights](#-highlights) · [Tech Stack](#️-tech-stack) · [Run Locally](#-run-locally) · [Migration guide](docs/MIGRATION.en.md)
+and a **login-free anonymous guestbook** where alumni can leave a note from anywhere in the world.
+
+Built in pure HTML, CSS, and vanilla JavaScript with structure, style, and behavior cleanly separated (`index.html` + `assets/`)—
+
+
+zero frameworks, zero build step. Clone the repo, start any static server, and open the album.
+
+[Live Site](https://xxc2007.me/nc15/en/) · [Promo Film](#-promo-showcase) · [Highlights](#-highlights) · [Site Structure](#-site-structure) · [Tech Stack](#️-tech-stack) · [Run Locally](#-run-locally) · [Design Notes](#-design-notes) · [Migration Guide](docs/MIGRATION.en.md)
 
 </div>
 
----
-
 <p align="center">
-  <img src="docs/screenshot-hero-en.png" alt="English edition hero: emblem, serif headline “By Qingshan Lake, the red bricks and camphor trees remember.” and key numbers" width="100%">
+<img src="docs/screenshot-hero-en.png" alt="English edition hero: emblem, serif headline “By Qingshan Lake, the red bricks and camphor trees remember.” and key numbers" width="100%">
 </p>
+<p align="center"><sub>
+▲ Hero · warm cream paper (#F0EEE6), terracotta accents (#D97757), and serif display typography
+</sub></p>
 
----
-
-## 🎬 Promo showcase
+## 🎬 Promo Showcase
 
 This 35-second English cut mirrors the original film shot for shot: the emblem and hero first, then the history timeline, 25 campus photographs, the water tower across day and dusk, an eight-point campus map, and a privacy-safe guestbook demo before the whole memorial comes back together. It uses the English page captures and the same real campus photography, rhythm and paper-like transitions.
 
 Open the English player below to watch online.
 
-https://github.com/user-attachments/assets/efec42a7-b3dd-4846-99dd-66c758d12db4
+https://raw.githubusercontent.com/xxc2007/In-memory-of-Nanchang-No.-15-Middle-School/main/docs/promo/nanchang15-promo-en-readme.mp4
 
-▶️ [Open the English 1080p HD player](https://xxc2007.me/nc15/promo/en/) · [Open the English 1080p source video directly](https://raw.githubusercontent.com/xxc2007/In-memory-of-Nanchang-No.-15-Middle-School/main/docs/promo/nanchang15-promo-en.mp4)
+▶️ [Open the English 1080p HD player](https://xxc2007.me/promo/en/) · [Open the English 1080p source video directly](https://raw.githubusercontent.com/xxc2007/In-memory-of-Nanchang-No.-15-Middle-School/main/docs/promo/nanchang15-promo-en.mp4)
 
 The English standalone player and source link use the complete 1920×1080 master; the README preview is a high-quality 1080p copy prepared for GitHub's inline playback limits.
 
----
-
 ## ✨ Highlights
 
-### 📖 The memorial itself
+### 📖 A Printed-Album Reading Experience
 
-- **Seven sections**: School Overview → History → Campus Gallery (25 photographs in six themed groups) → The Water Tower → Campus Map → Epilogue → Guestbook
-- **Ten languages**: a globe-icon dropdown in the top bar (modelled on AMD's site: the menu lists 简体中文 / 繁體中文 / English / 日本語 in each language's own script, with a check on the current one) — the whole block carries `translate="no"` so bilingual translation extensions cannot expand it the way they used to blow the old single-character pills out of the viewport; `/` (Simplified Chinese), `/zh-Hant/` (Traditional), `/en/` (English), `/ja/` (Japanese), `/ko/` (한국어), `/ru/` (Русский), `/es/` (Español), `/fr/` (Français), `/pt/` (Português), `/ar/` (العربية); all ten pages carry mutual hreflang + sitemap alternates; dynamic copy in the tour, map and guestbook follows the page language, and all ten versions share one message wall
-- Claude visual language: cream paper background + terracotta accents + serif headlines, with consistent hairlines and rounded cards throughout
-- Fully responsive (three breakpoints), a print-for-binding stylesheet, and a `prefers-reduced-motion` fallback
+* **Seven curated chapters**: *Overview → History → Campus Gallery (25 photographs across six themes) → The Water Tower (a charcoal-dusk emotional interlude) → Campus Map → Epilogue → Guestbook*.
 
-### 🗺 Campus Tour (photo tour + MapLibre location map)
+* **Ten idiomatic language editions**: Dedicated static pages for Simplified Chinese (`/`), Traditional Chinese (`/zh-Hant/`), English (`/en/`), Japanese (`/ja/`), Korean (`/ko/`), Russian (`/ru/`), Spanish (`/es/`), French (`/fr/`), Portuguese (`/pt/`), and Arabic (`/ar/`, full RTL).
 
-- The school is located at the Qingshanhu campus (28.7208°N, 115.9322°E); map coordinates are converted for the Gaode tile system at runtime.
-- **Full-frame photo tour**: 8 spots, 8 photographs, switchable via arrows/dots/keyboard, with a slow Ken Burns push
-- **Multiple basemaps**: switch between Gaode roads, configured Tianditu roads/imagery, current Esri satellite imagery and a 2023 Wayback edition while keeping all 8 photo markers linked to the tour. A 3D view overlays OpenFreeMap building footprints and estimated heights on Esri or Tianditu imagery; these are not surveyed heights or a photorealistic campus model. Includes campus reset, loading status and retry. See [map source configuration](docs/MAP-SOURCES.md).
-- MapLibre loads on demand as you scroll near the map section; all spots live in one `SPOTS` array in `assets/map.js` — easy to edit
+  * The top-bar globe dropdown lists every language in its native script with a terracotta checkmark on the active edition, wrapped in `translate="no"` so browser translation extensions never distort the menu.
+
+  * All ten editions link mutually via `hreflang` and `sitemap.xml`, localize dynamic UI copy automatically via `<html lang>`, and converge on **one shared guestbook**.
+
+* **Warm editorial restraint**: Cream paper (`#F0EEE6`), terracotta brick red (`#D97757`), serif headlines, crisp hairlines, three responsive breakpoints, a print-for-binding stylesheet, and full `prefers-reduced-motion` support.
+
+### 🗺 Campus Tour (Photo Tour + Multi-Source Map)
+
+* **Eight-spot full-frame photo tour**: Eight campus viewpoints with a gentle Ken Burns push, navigable by arrows, dots, or keyboard keys.
+
+* **Multi-source MapLibre campus map**: Centered on the Qingshanhu campus (`28.7208°N, 115.9322°E`, with runtime Gaode coordinate conversion), switching seamlessly across Gaode roads, Tianditu roads/satellite, current Esri imagery, and **2023 Wayback historical imagery** while staying linked to all 8 viewpoints. An optional 3D view overlays OpenFreeMap building footprints and estimated heights *(illustrative, not surveyed heights)*, with campus reset, loading states, and retry handling. See [map source configuration](docs/MAP-SOURCES.md).
+
+* **Zero initial map overhead**: Self-hosted MapLibre GL v5 loads lazily only as you approach the map section; all viewpoint coordinates and 10-language captions live cleanly in the `SPOTS` array of `assets/map.js`.
 
 <p align="center">
-  <img src="docs/screenshot-tour-en.png" alt="English edition photo tour: full-frame slide of the old water tower with English caption, 5 / 8 counter and dots" width="86%">
+<img src="docs/screenshot-tour-en.png" alt="English edition photo tour: full-frame slide of the old water tower with English caption, 5 / 8 counter, and dots" width="86%">
 </p>
 <p align="center"><sub>
-  ▲ A Tour Through Time · The Old Water Tower spot (5 / 8) with Ken Burns push and English caption
+▲ A Tour Through Time · The Old Water Tower viewpoint (5 / 8) with Ken Burns motion and localized caption
 </sub></p>
 
-### 💬 Guestbook (self-hosted Artalk)
+### 💬 Guestbook (Self-Hosted Artalk)
 
-- **No login required**: leave a message without filling in nickname or email — the frontend fills in an anonymous identity automatically (same nickname, same identity)
-- **Moderated**: new messages enter a pending queue and only appear after the site owner approves them
-- Zero third-party dependency: the Artalk server runs on our own machine, the data stays ours
+* **No login required**: Leave a note even without entering a name or email—the frontend assigns a gentle anonymous identity automatically (consistent per nickname).
+
+* **Moderated for calm**: New notes enter a pending queue and appear publicly once approved by the site owner.
+
+* **Zero third-party tracking**: Artalk runs on a self-hosted server, keeping every message under your own roof.
 
 <p align="center">
-  <img src="docs/screenshot-guestbook-en.png" alt="English edition guestbook: anonymous comments with avatar, IP region and localized UI" width="86%">
+<img src="docs/screenshot-guestbook-en.png" alt="English edition guestbook: anonymous comments with avatar, IP region, and localized UI" width="86%">
 </p>
 
-### 🎬 Interactions (vanilla JS, zero dependencies)
+### 🎬 Tactile Interactions (Vanilla JS, Zero Dependencies)
 
-| Interaction | Details |
-|------|------|
-| Reading progress | A terracotta hairline under the top bar, `scaleX` follows scroll |
-| Language menu | Globe button opens the language dropdown: `Esc` closes, `↑↓`/`Home`/`End` move between options, clicking outside dismisses; falls back to a static pill row without JS |
-| Nav highlight | Scrollspy lights up the current section |
-| Count-up numbers | Hero key numbers 0 → 1958 / 51 / 2600+ / 25 with easeOutQuart |
-| Hero parallax | The hero image drifts at half scroll speed, `scale(1.09)` hides the edges |
-| Growing timeline | The history line draws itself downward; year nodes light up as it passes |
-| Lightbox | Cursor-centered wheel zoom 1–4×, double-click zoom, drag pan, pinch, clamped edges — coexists safely with swipe navigation |
-| Gallery fade & tilt | Images fade in as they load; desktop cards tilt subtly with the cursor |
+| Interaction | Craft & Behavior | 
+| ----- | ----- | 
+| **Reading progress** | A terracotta hairline beneath the top bar grows smoothly via `scaleX` as you read | 
+| **Language dropdown** | Keyboard-complete (`Esc`, `↑↓`, `Home`, `End`, outside-click dismiss); gracefully degrades to a static row without JS | 
+| **Section scrollspy** | Highlights the active chapter automatically as you move through the album | 
+| **Count-up figures** | Hero numbers ease cleanly from `0 → 1958 / 51 / 2600+ / 25` (`easeOutQuart`) | 
+| **Hero parallax** | The opening campus panorama drifts at `0.5×` scroll speed with `scale(1.09)` edge protection | 
+| **Growing timeline** | The historical rule draws itself downward, lighting up each milestone year as it passes | 
+| **Zoom-and-pan lightbox** | Cursor-centered `1–4×` wheel zoom, double-click zoom, drag pan, pinch zoom, and clamped bounds coexisting cleanly with swipe navigation | 
+| **Gallery fade & tilt** | Photographs fade in softly upon load; desktop cards tilt subtly beneath the cursor | 
 
-All animations share a single rAF-driven scroll loop and degrade gracefully when the system asks for reduced motion.
+All motion runs inside a single `requestAnimationFrame` scroll loop and steps back quietly whenever reduced motion is requested.
 
-## 🗂 Site structure
+## 🗂 Site Structure
 
-```text
+```
 site/
-├── index.html          # Simplified Chinese page (only two inline scripts: JSON-LD and the map lazy-loader)
-├── zh-Hant/index.html  # Traditional Chinese page (Taiwan usage: 暱稱/登入/載入/網路/郵遞區號)
-├── en/index.html       # English page (assets shared via ../ relative paths, file:// friendly)
-├── ja/index.html       # Japanese page (natural phrasing: おわりに, 通りすがり, メッセージウォール…)
-├── ko/index.html       # Korean page (natural Korean: 기념 앨범, 지나가던 학생, 방명록…)
-├── ru/index.html       # Russian page (natural Russian phrasing throughout)
-├── es/index.html       # Spanish page (idiomatic Spanish, not machine-translated)
-├── fr/index.html       # French page (idiomatic French formulations)
-├── pt/index.html       # Portuguese page (idiomatic Portuguese expressions)
-├── ar/index.html       # Arabic page (full RTL layout with Arabic font stacks)
-├── 404.html            # Self-contained 404 page (inline styles, zero external requests; links to the other nine languages)
+├── index.html          # Simplified Chinese edition (only two inline scripts: JSON-LD and map lazy-loader)
+├── zh-Hant/index.html  # Traditional Chinese edition (Taiwan lexical conventions)
+├── en/index.html       # English edition (shared assets via ../ relative paths, file:// friendly)
+├── ja/index.html       # Japanese edition (natural Japanese editorial phrasing)
+├── ko/index.html       # Korean edition (natural Korean phrasing)
+├── ru/index.html       # Russian edition (natural Russian phrasing & transliteration)
+├── es/index.html       # Spanish edition (idiomatic Spanish)
+├── fr/index.html       # French edition (idiomatic French)
+├── pt/index.html       # Portuguese edition (idiomatic Portuguese)
+├── ar/index.html       # Arabic edition (full RTL layout and Arabic font stack)
+├── 404.html            # Self-contained 404 page (inline styles, zero external requests, links to all editions)
 ├── assets/
-│   ├── style.css       # Site-wide styles (tokens, components, breakpoints, print, fallbacks)
-│   ├── main.js         # Main interactions: progress, scrollspy, parallax, inertia, lightbox
-│   ├── map.js          # Photo tour + location map (lazy-loaded MapLibre; spot data in ten languages)
-│   └── wall.js         # Guestbook (talks to self-hosted Artalk; dynamic copy in ten languages follows <html lang>)
+│   ├── style.css       # Full design system (tokens, components, breakpoints, print-for-binding, fallbacks)
+│   ├── main.js         # Core interactions (progress, scrollspy, language menu, parallax, inertia, lightbox)
+│   ├── map.js          # Photo tour & lazy-loaded MapLibre campus map (ten-language SPOTS data)
+│   └── wall.js         # Guestbook frontend talking to self-hosted Artalk (ten-language dynamic copy)
 ├── images/
-│   ├── full/           # 25 full-size photographs (plus 4 spare shots: 10/22/23/25, not yet exhibited)
-│   ├── thumbs/         # Matching thumbnails
-│   ├── og-card.jpg     # 1200×630 social share card (text-free — works for all languages)
-│   └── emblem-*.png    # School emblem (top bar / hero / footer / favicon)
-├── maplibre/           # Self-hosted MapLibre GL v5 (no CDN dependency)
-├── docs/               # README screenshots + [migration guide](docs/MIGRATION.en.md)
-│   └── promo/          # Chinese + English public players, 1080p showcase copies and full masters (live at /promo/ and /promo/en/)
-├── README.md / README.en.md   # Bilingual repository docs (this file and the Chinese original)
-├── robots.txt / sitemap.xml / LICENSE / .gitattributes / .gitignore
+│   ├── full/           # 25 exhibited photographs (plus 4 spare shots: 10 / 22 / 23 / 25)
+│   ├── thumbs/         # Matching lightweight thumbnails
+│   ├── og-card.jpg     # 1200 × 630 text-free share card shared across all ten languages
+│   └── emblem-*.png    # School emblem assets (header, hero, footer, favicon)
+├── maplibre/           # Self-hosted MapLibre GL v5 (zero external CDN dependency)
+├── docs/               # README screenshots + migration guide (docs/MIGRATION.en.md)
+│   └── promo/          # Chinese & English players, 1080p showcase cuts, and full masters (/promo/ & /promo/en/)
+├── README.md / README.en.md   # Bilingual repository documentation
+└── robots.txt / sitemap.xml / LICENSE / .gitattributes / .gitignore
+
 ```
 
-## ⚙️ Tech stack
+## ⚙️ Tech Stack
 
-| Layer | Choice |
-|------|------|
-| Frontend | Pure HTML / CSS / vanilla JS, structure·style·behavior separated, no build |
-| Map | Self-hosted [MapLibre GL](https://maplibre.org) v5 + AutoNavi / Gaode raster basemap (Chinese labels), lazy-loaded |
-| Guestbook | [Artalk](https://artalk.js.org) v2.10 self-hosted + SQLite |
-| Serving | nginx reverse proxy `/comment/` → systemd service |
-| Deployment | Azure VM · Cloudflare DNS · Let's Encrypt |
+| Layer | Selection | 
+| ----- | ----- | 
+| **Frontend** | Pure HTML / CSS / vanilla JS—structure, style, and behavior separated, zero build | 
+| **Mapping** | Self-hosted [MapLibre GL](https://maplibre.org) v5 + AutoNavi (Gaode) Chinese raster tiles, lazy-loaded | 
+| **Guestbook** | Self-hosted [Artalk](https://artalk.js.org) v2.10 + SQLite | 
+| **Serving** | Nginx reverse proxy `/comment/` → `systemd` daemon | 
+| **Hosting** | Azure VM · Cloudflare DNS · Let's Encrypt HTTPS | 
 
-### How it works
+### How It Works
 
-The diagram separates static reading, the map tour and the guestbook: photographs and text use static assets; the map loads on demand and follows the viewpoint data; messages use a separate service for storage and moderation. Green marks reader-visible results; amber marks moderation, failure handling or constraints.
+The diagram separates the memorial into three clear paths: static reading (photographs and prose), the on-demand map tour linked to viewpoint metadata, and the self-hosted guestbook with moderation. Green marks reader-visible results; amber marks moderation, failure fallbacks, or constraints.
 
-[![Campus memorial · Content, maps and guestbook](docs/architecture/flow.en.f4b5cfe43280.png)](https://raw.githubusercontent.com/xxc2007/In-memory-of-Nanchang-No.-15-Middle-School/main/docs/architecture/flow.en.f4b5cfe43280.png)
+[Campus memorial · Content, maps and guestbook](https://raw.githubusercontent.com/xxc2007/In-memory-of-Nanchang-No.-15-Middle-School/main/docs/architecture/flow.en.f4b5cfe43280.png)
 
-Click the image to open the 3600 px PNG directly, then click again to view it at its original size. [Editable SVG source](docs/architecture/flow.en.svg). Source references: [index.html](index.html) · [assets/main.js](assets/main.js) · [assets/map.js](assets/map.js) · [assets/map-sources.js](assets/map-sources.js) · [assets/wall.js](assets/wall.js) · [docs/MAP-SOURCES.md](docs/MAP-SOURCES.md) · [docs/MIGRATION.md](docs/MIGRATION.md).
+Click to open the 3600 px PNG, then click again for full resolution · [Editable SVG source](docs/architecture/flow.en.svg). Implementation references: [index.html](index.html) · [assets/main.js](assets/main.js) · [assets/map.js](assets/map.js) · [assets/map-sources.js](assets/map-sources.js) · [assets/wall.js](assets/wall.js) · [docs/MAP-SOURCES.md](docs/MAP-SOURCES.md) · [docs/MIGRATION.md](docs/MIGRATION.md).
 
-To update both diagrams, install the documentation tool with `npm ci --prefix docs/architecture`, edit the bilingual labels in [`render.mjs`](docs/architecture/render.mjs), and run `node docs/architecture/render.mjs` to regenerate the SVG sources and high-resolution PNGs. See the [export notes](docs/architecture/README.md).
+To update both bilingual diagrams, run `npm ci --prefix docs/architecture`, edit labels in [render.mjs](docs/architecture/render.mjs), and run `node docs/architecture/render.mjs` (see [export notes](docs/architecture/README.md)).
 
-## 🚀 Run locally
+## 🚀 Run Locally
 
-Nothing to install:
+Nothing to install—clone and open:
 
-```bash
+```
 git clone https://github.com/xxc2007/In-memory-of-Nanchang-No.-15-Middle-School.git
 cd In-memory-of-Nanchang-No.-15-Middle-School
 python -m http.server 8000   # or any static server; open http://localhost:8000
+
 ```
 
-> The guestbook needs the self-hosted Artalk service (`/comment/`); locally that area shows a load-failure notice while everything else works. Opening `index.html` directly via `file://` also works for browsing; only the map tiles and the guestbook need network.
+> The guestbook requires the self-hosted Artalk backend (`/comment/`), so that section shows a graceful load notice locally while every chapter, gallery, and interaction works in full. Opening `index.html` directly via `file://` also works; only online map tiles and the guestbook require a network connection.
 
-## 📝 Design notes
+## 📝 Design Notes
 
-- **Visual direction**: Claude / Anthropic visual language (cream paper + terracotta + serif), specified by the site owner at the very beginning; every iteration grows within this direction. The background stays a pure cream paper surface with no decorative layers — motion always yields to content.
-- **Ten-language architecture**: ten static pages (`/`, `/zh-Hant/`, `/en/`, `/ja/`, `/ko/`, `/ru/`, `/es/`, `/fr/`, `/pt/`, `/ar/`) rather than runtime translation — each page owns its full semantic content and SEO metadata, mutually recognised via hreflang and sitemap alternates; `wall.js`/`map.js`/`main.js` switch dynamic copy by `<html lang>`, and all ten versions share one guestbook (same page_key), so messages in any language land on the same wall.
-- **Desktop inertial scrolling is intentional**: the wheel is driven through inertial interpolation (Oryzo/Lusion feel), enabled only on fine-pointer devices; browser zoom (Ctrl+wheel), the map canvas, inputs and the lightbox are never hijacked, and touch devices / `prefers-reduced-motion` users keep native scrolling. Not a bug.
-- **Browser support matrix**: modern evergreen browsers only (Chrome / Edge / Firefox / Safari, last two years). IE and Legacy Edge are explicitly unsupported; no polyfills.
-- **Guestbook fetch cap**: at most 100 comments per request (plenty for a memorial page); the counter prefers the server-side total. All network requests carry a 15-second timeout fallback.
-- **The 404 page keeps pill-style language links** on purpose: `404.html` is fully self-contained (zero external requests, inline styles), so pulling in the site dropdown would drag in JS and more CSS. Two forms coexist; usability is unaffected.
-- **Spare shot pool**: `10-brick-building-court`, `22-running-track`, `23-library-gate` and `25-staff-lane` (in `images/full|thumbs`) are deliberately kept as spare material, not yet exhibited; reach for them first when adding or replacing photos.
+* **Visual direction**: Inspired by Claude / Anthropic’s warm editorial restraint (cream paper, terracotta, serif display) from day one. The paper canvas remains uncluttered—motion always yields to the photographs and memories.
+
+* **Static ten-language architecture**: Ten independent static HTML documents instead of runtime JS translation guarantee full semantic clarity and SEO metadata per language. Dynamic UI copy switches via `<html lang>`, while all ten editions share one `page_key` so alumni writing in any language meet on the same wall.
+
+* **Intentional desktop inertial scrolling**: Smooth wheel damping runs only on fine-pointer devices; browser zoom (`Ctrl + wheel`), the map canvas, form inputs, and the lightbox are never hijacked, while touch and reduced-motion users keep native scrolling.
+
+* **Browser support**: Built cleanly for modern evergreen browsers (Chrome, Edge, Firefox, Safari from the past two years) with zero polyfills and no IE / Legacy Edge support.
+
+* **Guestbook fetch cap & timeouts**: Fetches up to 100 comments per request (well suited to a school memorial) while displaying the true server-side total; all network calls carry a 15-second timeout fallback.
+
+* **Self-contained 404**: `404.html` intentionally keeps pill-style language links so it stays 100% self-contained with zero external script or style requests.
+
+* **Spare photograph pool**: `10-brick-building-court`, `22-running-track`, `23-library-gate`, and `25-staff-lane` in `images/full|thumbs` are curated reserves kept ready for future gallery updates.
 
 ## 📄 License
 
 [MIT](LICENSE) © 2026 Xiong Xinchen (熊鑫晨) · Campus photographs © Xiong Xinchen
 
----
+## 📈 Star History
+
+<p align="center">
+<img src="https://api.star-history.com/svg?repos=xxc2007/In-memory-of-Nanchang-No.-15-Middle-School&type=Date" alt="GitHub star history for the memorial repository" width="100%">
+</p>
+<p align="center"><sub>
+▲ Generated dynamically by <a href="https://star-history.com">star-history.com</a>; GitHub's image proxy may delay updates by a few hours.
+</sub></p>
 
 <div align="center">
-  <sub>Dedicated to the red-brick buildings, the camphor trees and the old water tower by Qingshan Lake.<br><a href="https://xxc2007.me/nc15/">xxc2007.me/nc15/</a></sub>
+<sub>Dedicated to the red-brick buildings, the camphor trees, and the old water tower by Qingshan Lake.<br><a href="https://xxc2007.me/nc15/en/">xxc2007.me/nc15/</a></sub>
 </div>
