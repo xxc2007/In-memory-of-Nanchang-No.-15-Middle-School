@@ -6,7 +6,7 @@
 
 > *「所谓母校，就是那座你离开之后才开始无限怀念的校园。」*
 
-[![Live Site](https://img.shields.io/badge/🌐_线上访问-xxc2007.me-D97757)](https://xxc2007.me/nc15/)
+[![Live Site](https://img.shields.io/badge/🌐_线上访问-xxc2007.me/nc15-D97757)](https://xxc2007.me/nc15/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Vanilla JS](https://img.shields.io/badge/依赖-Vanilla_JS-orange)](#️-技术栈)
 [![Self-hosted](https://img.shields.io/badge/留言墙-Artalk_自托管-blueviolet)](#-特色)
@@ -19,15 +19,13 @@
 
 <br>
 
-**把三年光阴放进一个可以随时回去的地址。**
+**把三年光阴，放进一个可以随时回去的地址。**
 
-<br>
+这是一本献给**南昌市第十五中学**的私人数字校史画册——<br>
+收录 **25 张亲手拍摄的校园实景**（支持 AVIF 极速呈现）、一段 **8 机位时光漫游**、一张 **多源中文定位图**，<br>
+以及一面 **无需登录、十语读者共写的匿名留言墙**。纯 HTML / CSS / Vanilla JS，零框架、无构建步骤。
 
-这是南昌市第十五中学的纪念页：**25 张校园实景摄影**、一段**八个机位的时光漫游**、一张**中文定位图**与一面**无需登录的匿名留言墙**。
-
-纯 HTML / CSS / Vanilla JS，结构·样式·行为三分离（`index.html` + `assets/`），零框架、无构建步骤。克隆下来，起个静态服务器就能打开。
-
-[在线访问](https://xxc2007.me/nc15/) · [特色](#-特色) · [站点结构](#-站点结构) · [技术栈](#️-技术栈) · [本地运行](#-本地运行) · [设计笔记](#-设计笔记) · [星际历史](#-star-history) · [迁移手册](docs/MIGRATION.md)
+[在线访问](https://xxc2007.me/nc15/) · [宣传片](#-宣传片展示) · [特色](#-特色) · [站点结构](#-站点结构) · [技术栈](#️-技术栈) · [本地运行](#-本地运行) · [设计笔记](#-设计笔记) · [迁移手册](docs/MIGRATION.md)
 
 </div>
 
@@ -36,162 +34,85 @@
 <p align="center">
   <img src="docs/screenshot-hero.png" alt="首屏：校徽、衬线大标题与关键数字" width="100%">
 </p>
-<p align="center"><sub>
-  ▲ 首屏 · 米白纸感 + 赤陶橙 + 衬线大标题
-</sub></p>
+<p align="center"><sub>▲ 首屏 · 米白纸感（#F0EEE6）+ 赤陶橙（#D97757）+ 衬线大标题</sub></p>
 
 ---
 
 ## 🎬 宣传片展示
 
-这支宣传片把网页里的真实内容重新编排成一条 35 秒的观看路径：从首屏的校徽与标题出发，经过沿革时间轴、25 张校园实景、水塔昼夜、八机位地图和脱敏留言墙，最后回到整本纪念册。画面使用真实网页截图与公开校园摄影，配以克制的节奏和纸页式转场。
+全新 **70 秒 · 1080p 60fps** 官方宣传片（同步提供中文版与英文版）：全部采用 2022–2025 年亲手拍摄的校园实景原图、真实南昌十五中校徽与实拍交互界面——从青山湖畔的红砖楼与月牙雕塑启封，走过校训教室、1958–2026 生长时间轴、六大光影画廊、深炭灰「老水塔昼夜双图」情绪转折、八机位地图与十语留言墙，最后在粉金色晚霞教学楼底纹中温暖落版。配以原创 88 BPM 毛毡钢琴与室内乐弦乐配乐及胶片快门音效。
 
-点击下方播放器即可在线播放。
+点击下方播放器即可在线观看：
 
-https://github.com/user-attachments/assets/368cc8d5-2605-4444-949f-fe6b7a017408
+https://github.com/user-attachments/assets/315a3688-17a8-451d-840a-e3a9e23013a9
 
-▶️ [打开 1080p 高清播放器](https://xxc2007.me/nc15/promo/) · [直接打开 1080p 源视频](https://raw.githubusercontent.com/xxc2007/In-memory-of-Nanchang-No.-15-Middle-School/main/docs/promo/nanchang15-promo.mp4)
-
-README 原生预览保持 1920×1080 分辨率；独立播放器与源视频链接继续直接使用仓库中的 1080p 完整片。
+▶️ [打开 1080p 高清播放器](https://xxc2007.me/nc15/promo/) · [中文版 1080p60 MP4](https://raw.githubusercontent.com/xxc2007/In-memory-of-Nanchang-No.-15-Middle-School/main/docs/promo/nanchang15-promo.mp4) · [英文版 1080p60 MP4](https://raw.githubusercontent.com/xxc2007/In-memory-of-Nanchang-No.-15-Middle-School/main/docs/promo/nanchang15-promo-en.mp4)
 
 ---
 
 ## ✨ 特色
 
-### 📖 纪念册本体
+### 📖 纸感画册与十语静态架构
 
-- **七个章节**：概况 → 沿革 → 光影（25 张摄影，六个专题组）→ 水塔 → 寻踪 → 寄语 → 留言墙
-- **十种语言**：顶栏右侧「地球图标 + 下拉语言菜单」（参照 AMD 官网的切换方式，菜单里是 简体中文 / 繁體中文 / English / 日本語 等十个完整本族名，当前语言赤陶橙高亮并打勾）——整块标记 `translate="no"` 与双语翻译插件隔离，不会像旧版单字药丸那样被插件扩写撑出可视区；`/`（简体）`/zh-Hant/`（繁體）`/en/`（English）`/ja/`（日本語）`/ko/`（한국어）`/ru/`（Русский）`/es/`（Español）`/fr/`（Français）`/pt/`（Português）`/ar/`（العربية）；十页互持 hreflang + sitemap 交替链接；时光漫游、定位图与留言墙的动态文案按页面语言自动切换，十版共用同一面留言墙
-- Claude 视觉语言：米白纸感底色 `#F0EEE6` + 赤陶橙 `#D97757` + 衬线标题，全站统一的发丝线与圆角卡片
-- 完整响应式（三档断点）、打印成册样式与 `prefers-reduced-motion` 降级
+- **七幕叙事**：`概况` → `沿革` → `光影`（25 张实景，六大专题组）→ `水塔`（深炭灰暗色专题）→ `寻踪` → `寄语` → `留言墙`。
+- **十种语言独立静态页**：覆盖简/繁/英/日/韩/俄/西/法/葡/阿（全 RTL）十份独立页面，顶栏地球下拉菜单以本族名呈现并标记 `translate="no"` 防插件错位，互持 `hreflang` 与 `sitemap` 交替链接，十版共用同一面留言墙。
+- **性能与排版细节**：全站采用米白纸感与赤陶橙视觉语言，支持 AVIF 校园摄影渐进加载、分节脚本按需延迟、三档响应式断点、纸质打印成册样式与 `prefers-reduced-motion` 降级。
 
-### 🗺 校园寻踪（时光漫游 + 定位图）
+### 🗺 校园寻踪与 💬 自托管留言墙
 
-- **全幅照片漫游**：8 个机位、8 张全幅照片，箭头 / 圆点 / 键盘方向键切换，Ken Burns 缓推镜头
-- **多源校园地图**：高德道路图 / 天地图道路及卫星 / Esri 当前卫星 / 2023 年历史影像切换，保留 8 个照片机位联动；3D 视图可在 Esri、天地图影像上叠加 OpenFreeMap 建筑轮廓与估计高度。提供回到校园、加载状态与失败重试，卫星保留原色。建筑高度不是测量成果。来源与配置见 [地图维护说明](docs/MAP-SOURCES.md)
-- 滚动临近才按需加载 MapLibre，首屏零地图开销；机位数据集中在 `assets/map.js` 的 `SPOTS` 数组，一眼可改
+- **八机位时光漫游 + 多源定位图**：8 张全幅摄影配 Ken Burns 缓推镜头；自托管 MapLibre GL v5 按需加载，支持高德道路、天地图卫星、Esri 实时卫星、**2023 年历史影像**与 OpenFreeMap 3D 建筑轮廓切换（配置见[地图维护说明](docs/MAP-SOURCES.md)）。
+- **免登录 Artalk 留言墙**：不填昵称邮箱亦可落笔，新留言先审后显，数据完全托管于个人服务器，零第三方追踪。
 
 <p align="center">
   <img src="docs/screenshot-tour.png" alt="时光漫游：八个机位的全幅照片漫游，Ken Burns 镜头" width="86%">
 </p>
-<p align="center"><sub>
-  ▲ 伍 · MAP 时光漫游 · 老水塔机位 · 底部渐影字幕与 5/8 计数
-</sub></p>
-
-### 💬 留言墙（Artalk 自托管）
-
-- **无需登录**：不填昵称邮箱也能留言，前端自动补全匿名身份（同昵称同身份）
-- **先审后显**：新留言进入待审队列，站长在后台审核通过后才对外展示
-- 零第三方依赖：Artalk 服务端跑在自己的服务器上，数据是自己的
+<p align="center"><sub>▲ 伍 · MAP 时光漫游 · 老水塔机位 · 底部渐影图注与 5/8 进度计数</sub></p>
 
 <p align="center">
-  <img src="docs/screenshot-guestbook.png" alt="留言墙：B站风格匿名评论区" width="86%">
+  <img src="docs/screenshot-guestbook.png" alt="留言墙：简洁克制的匿名评论区" width="86%">
 </p>
-<p align="center"><sub>
-  ▲ 柒 · WALL 留言墙 · 匿名留言 · 头像 / IP 属地 / 北京时间
-</sub></p>
+<p align="center"><sub>▲ 柒 · WALL 留言墙 · 免登录匿名留言 · 头像 / IP 属地 / 北京时间</sub></p>
 
-### 🎬 动态交互（原生 JS，零依赖）
+### 🎬 原生交互细节（零外部框架）
 
-| 交互 | 说明 |
-|------|------|
-| 阅读进度条 | 顶栏赤陶橙细线，`scaleX` 随滚动增长 |
-| 语言切换菜单 | 顶栏地球按钮展开十语下拉（AMD 式）：`Esc` 收起、`↑↓`/`Home`/`End` 在选项间移动、点击菜单外任意处关闭；无 JS 时降级为静态药丸行 |
-| 导航高亮 | scrollspy 自动点亮当前章节 |
-| 数字滚动 | 首屏关键数字 0 → 1958 / 51 / 2600+ / 25，easeOutQuart |
-| 大图视差 | 首图以 0.5× 速率反向移动 + 光标惯性视差，`scale(1.09)` 防露边 |
-| 惯性平滑滚动 | 桌面滚轮接管为惯性插值（Oryzo 手感），触屏 / 地图 / 灯箱不劫持 |
-| 时间线生长 | 沿革竖线随滚动画下，经过的年份节点依次点亮 |
-| 灯箱 | 滚轮以光标为中心缩放 1–4×、双击放大、拖拽平移、双指捏合、边界钳制 |
-| 画廊渐显与微倾 | 图片加载后柔和渐显；桌面端卡片随光标 3D 微倾 |
+| 交互 | 手感与实现 |
+|---|---|
+| **阅读进度 & 导航高亮** | 顶栏赤陶橙细线 `scaleX` 随滚动延展，scrollspy 自动点亮当前章节 |
+| **数字滚动 & 首图视差** | `0 → 1958 / 51 / 2600+ / 25` 缓动定格；首图 `0.5×` 反向视差与惯性平滑滚动 |
+| **时间线生长 & 灯箱缩放** | 沿革竖线随滚动徐徐画下；灯箱支持以光标为中心 `1–4×` 滚轮缩放、双击放大与双指捏合 |
 
-所有动画共用一个 rAF 驱动的滚动循环，并在系统开启「减弱动态效果」时整体降级。
+## 🗂 站点结构与 ⚙️ 技术栈
 
-## 🗂 站点结构
-
-```text
-site/
-├── index.html          # 简体中文页（语义 HTML；仅两处内联脚本：JSON-LD、地图惰性加载器）
-├── zh-Hant/index.html  # 繁體中文頁（台湾用语习惯：暱稱/登入/載入/網路/郵遞區號）
-├── en/index.html       # English page (assets shared via ../ relative paths, file:// friendly)
-├── ja/index.html       # 日本語ページ（「おわりに」「通りすがり」など自然な日本語文体）
-├── ko/index.html       # 한국어 페이지（「기념 앨범」「지나가던 학생」등 자연스러운 한국어 표현）
-├── ru/index.html       # Русская страница（памятный альбом, паллиативная транслитерация имён）
-├── es/index.html       # Página en español（lenguaje natural, no traducción automática）
-├── fr/index.html       # Page en français（formulations idiomatiques françaises）
-├── pt/index.html       # Página em português（expressões idiomáticas em português）
-├── 404.html            # 自包含 404 页（样式内联、零外部依赖，附英/日/繁语言入口）
-├── assets/
-│   ├── style.css       # 全站样式（设计令牌 + 组件 + 响应式 + 打印 + 降级）
-│   ├── main.js         # 主交互：进度条/scrollspy/语言下拉/视差/惯性滚动/灯箱
-│   ├── map.js          # 时光漫游 + 定位图（MapLibre，按需加载；机位数据含简/繁/英/日/韩/俄/西/法/葡十语字段）
-│   └── wall.js         # 留言墙（对接自托管 Artalk；动态文案按 <html lang> 十语切换）
-├── images/
-│   ├── full/           # 25 张全幅摄影（另有 4 张备用素材：10/22/23/25，暂未上墙）
-│   ├── thumbs/         # 对应缩略图
-│   ├── og-card.jpg     # 1200×630 分享卡（无文字，十语通用）
-│   └── emblem-*.png    # 校徽（顶栏 / 首屏 / 页脚 / favicon）
-├── maplibre/           # MapLibre GL v5 自托管（不依赖 CDN）
-├── docs/               # README 展示截图 + [迁移手册](docs/MIGRATION.md)
-│   └── promo/          # 公开在线播放页、1080p 展示副本与完整源片（线上入口：/promo/）
-├── README.md / README.en.md   # 中英双语仓库说明（本文件与英文版）
-├── robots.txt / sitemap.xml / LICENSE / .gitattributes / .gitignore
-```
-
-## ⚙️ 技术栈
-
-| 层 | 选型 |
-|------|------|
-| 前端 | 纯 HTML / CSS / Vanilla JS，结构·样式·行为三分离，零框架无构建 |
-| 地图 | [MapLibre GL](https://maplibre.org) v5 自托管 + 高德地图（AutoNavi）中文栅格瓦片 |
-| 留言 | [Artalk](https://artalk.js.org) v2.10 自托管 + SQLite |
-| 服务 | nginx 反向代理 `/comment/` → systemd 常驻 |
-| 部署 | Azure VM · Cloudflare DNS · Let's Encrypt |
+- **结构**：根目录及 `zh-Hant/` `en/` `ja/` `ko/` `ru/` `es/` `fr/` `pt/` `ar/` 十份独立静态页；`assets/`（`style.css` / `main.js` / `map.js` / `wall.js` / `section-loader.js`）；`images/`（25 张全幅实景 + 4 张备用底片 + 校徽）；`maplibre/` 自托管引擎；`docs/promo/` 双语宣传片。
+- **技术栈**：纯 HTML / CSS / Vanilla JS（零构建）· 自托管 [MapLibre GL](https://maplibre.org) v5 + 高德/天地图/Esri 瓦片 · 自托管 [Artalk](https://artalk.js.org) v2.10 + SQLite · Nginx + Azure VM + Cloudflare。
 
 ### 底层原理与运行流程
 
-这张图把静态阅读、地图漫游和留言服务分成三条路径：照片与正文由静态资源提供；地图按需加载并与机位数据联动；留言通过独立服务存储和审核。绿色表示读者可见结果，橙色表示审核、失败处理或约束。
-
 [![校园纪念册 · 内容、地图与留言如何协作](docs/architecture/flow.zh.897ac732d190.png)](https://raw.githubusercontent.com/xxc2007/In-memory-of-Nanchang-No.-15-Middle-School/main/docs/architecture/flow.zh.897ac732d190.png)
 
-点击图片直接打开 3600 像素宽的 PNG 原图，再次点击可按原尺寸放大查看。[可编辑 SVG 源文件](docs/architecture/flow.zh.svg)。实现依据：[index.html](index.html) · [assets/main.js](assets/main.js) · [assets/map.js](assets/map.js) · [assets/map-sources.js](assets/map-sources.js) · [assets/wall.js](assets/wall.js) · [docs/MAP-SOURCES.md](docs/MAP-SOURCES.md) · [docs/MIGRATION.md](docs/MIGRATION.md)。
+<sub>点击打开 3600px 高清原图 · [可编辑 SVG 源文件](docs/architecture/flow.zh.svg) · 迁移步骤见 [MIGRATION.md](docs/MIGRATION.md)。</sub>
 
-后续修改可编辑 [`render.mjs`](docs/architecture/render.mjs) 中的双语文字与节点，先运行 `npm ci --prefix docs/architecture` 安装文档导出工具，再运行 `node docs/architecture/render.mjs` 同步生成中英文 SVG 与高清 PNG；[导出说明](docs/architecture/README.md)。
-
-## 🚀 本地运行
-
-无需安装任何东西：
+## 🚀 本地运行与 📝 设计笔记
 
 ```bash
 git clone https://github.com/xxc2007/In-memory-of-Nanchang-No.-15-Middle-School.git
 cd In-memory-of-Nanchang-No.-15-Middle-School
-python -m http.server 8000   # 或任意静态服务器；浏览器打开 http://localhost:8000
+python -m http.server 8000   # 打开 http://localhost:8000（留言墙需线上 Artalk 服务）
 ```
 
-> 留言墙依赖自托管的 Artalk 服务（`/comment/`），本地打开时该区域会提示加载失败，其余功能完整可用。直接双击 `index.html`（file://）也可浏览，仅定位图瓦片与留言墙需要网络。
-
-## 📝 设计笔记
-
-- **视觉方向**：Claude / Anthropic 视觉语言（米白纸感 + 赤陶橙 + 衬线），由站长在项目之初指定，此后所有迭代都在这个方向上生长。背景保持纯净的米白纸面，不加任何装饰层——动效永远让位于内容。
-- **多语架构**：十个静态页（`/` `/zh-Hant/` `/en/` `/ja/` `/ko/` `/ru/` `/es/` `/fr/` `/pt/` `/ar/`）而非 JS 运行时翻译——每页拥有完整的语义内容与 SEO 元数据，用 hreflang 与 sitemap 交替链接互认；`wall.js`/`map.js`/`main.js` 按 `<html lang>` 切换动态文案，十版共用同一面留言墙（同一 page_key），各语言留言汇成一面墙。
-- **桌面惯性滚动是刻意设计**：滚轮经惯性插值驱动（Oryzo/Lusion 手感），仅在精确指针设备启用；浏览器缩放（Ctrl+滚轮）、地图画布、输入框与灯箱均不劫持，触屏与 `prefers-reduced-motion` 用户走原生滚动。这不是 bug。
-- **浏览器支持矩阵**：面向现代常青浏览器（Chrome / Edge / Firefox / Safari 近两年版本），明确不支持 IE 及 Legacy Edge，全站无 polyfill。
-- **留言墙拉取上限**：单次最多取 100 条（纪念册体量足够），计数优先展示服务端真实总数；网络请求统一带 15 秒超时兜底。
-- **404 页的语言入口仍是药丸**：那是刻意取舍——404.html 设计成完全自包含（零外部请求、样式内联），引入主站的下拉交互就得带上 JS 与更多样式；两种形态并存不影响可用性。
-- **备用素材池**：`images/full|thumbs` 中的 `10-brick-building-court`、`22-running-track`、`23-library-gate`、`25-staff-lane` 共 4 组为刻意保留的备用素材，暂未编入画廊章节；新增/替换照片时优先从这里取用。
+- **动效让位于记忆**：纸面保持纯净无杂饰；桌面惯性滚动仅作用于精确指针，不劫持缩放、地图与灯箱。
+- **十语共写一面墙**：十份静态页共享同一 `page_key`，让散落各地的校友在同一个角落重逢；`404.html` 刻意保持零外部请求自包含。
+- **备用底片池**：`10-brick-building-court`、`22-running-track`、`23-library-gate`、`25-staff-lane` 保留为后续增补画廊的优先素材。
 
 ## 📄 License
 
-[MIT](LICENSE) © 2026 熊鑫晨（Xiong Xinchen）· 校园实景摄影 © 熊鑫晨
+[MIT](LICENSE) © 2026 熊鑫晨（Xiong Xinchen）· 校园实景摄影版权归熊鑫晨所有。
 
 ## 📈 Star History
 
 <p align="center">
-  <img src="https://api.star-history.com/svg?repos=xxc2007/In-memory-of-Nanchang-No.-15-Middle-School&type=Date" alt="Star History 星际历史：本仓库 GitHub Stars 随时间增长的曲线" width="100%">
+  <img src="https://api.star-history.com/svg?repos=xxc2007/In-memory-of-Nanchang-No.-15-Middle-School&type=Date" alt="Star History" width="100%">
 </p>
-<p align="center"><sub>
-  ▲ 曲线由 <a href="https://star-history.com">star-history.com</a> 动态生成，星数一变曲线就跟着长（GitHub 走图片代理缓存，更新会有几小时延迟）；仓库还年轻，这条线会从第一个星标开始有内容。
-</sub></p>
 
 ---
 
