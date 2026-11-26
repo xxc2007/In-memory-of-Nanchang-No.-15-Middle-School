@@ -8,7 +8,7 @@
 
 [![Live Site](https://img.shields.io/badge/🌐_线上访问-xxc2007.me/nc15-D97757)](https://xxc2007.me/nc15/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Vanilla JS](https://img.shields.io/badge/依赖-Vanilla_JS-orange)](#️-技术栈)
+[![Vanilla JS](https://img.shields.io/badge/依赖-Vanilla_JS-orange)](#-站点结构与--技术栈)
 [![Self-hosted](https://img.shields.io/badge/留言墙-Artalk_自托管-blueviolet)](#-特色)
 [![GitHub](https://img.shields.io/badge/GitHub-@xxc2007-1F1E1D)](https://github.com/xxc2007)
 [![抖音](https://img.shields.io/badge/抖音-Douyin-1F1E1D)](https://www.douyin.com/user/MS4wLjABAAAA-AYW1RCpFjwJmoMTnZy1vKmOQopmBOUjPLN9phlDpjI)
@@ -25,7 +25,7 @@
 收录 **25 张亲手拍摄的校园实景**（支持 AVIF 极速呈现）、一段 **8 机位时光漫游**、一张 **多源中文定位图**，<br>
 以及一面 **无需登录、十语读者共写的匿名留言墙**。纯 HTML / CSS / Vanilla JS，零框架、无构建步骤。
 
-[在线访问](https://xxc2007.me/nc15/) · [宣传片](#-宣传片展示) · [特色](#-特色) · [站点结构](#-站点结构) · [技术栈](#️-技术栈) · [本地运行](#-本地运行) · [设计笔记](#-设计笔记) · [迁移手册](docs/MIGRATION.md)
+[在线访问](https://xxc2007.me/nc15/) · [宣传片](#-宣传片展示) · [特色](#-特色) · [站点结构](#-站点结构与--技术栈) · [技术栈](#-站点结构与--技术栈) · [本地运行](#-本地运行与--设计笔记) · [设计笔记](#-本地运行与--设计笔记) · [迁移手册](docs/MIGRATION.md)
 
 </div>
 
