@@ -8,7 +8,7 @@
 
 [![Live Site](https://img.shields.io/badge/🌐_Live-xxc2007.me/nc15/en-D97757)](https://xxc2007.me/nc15/en/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Vanilla JS](https://img.shields.io/badge/Dependencies-Vanilla_JS-orange)](#️-site-structure--tech-stack)
+[![Vanilla JS](https://img.shields.io/badge/Dependencies-Vanilla_JS-orange)](#-site-structure---tech-stack)
 [![Self-hosted](https://img.shields.io/badge/Guestbook-Artalk_Self--hosted-blueviolet)](#-highlights)
 [![GitHub](https://img.shields.io/badge/GitHub-@xxc2007-1F1E1D)](https://github.com/xxc2007)
 [![Douyin](https://img.shields.io/badge/Douyin-抖音-1F1E1D)](https://www.douyin.com/user/MS4wLjABAAAA-AYW1RCpFjwJmoMTnZy1vKmOQopmBOUjPLN9phlDpjI)
@@ -25,7 +25,7 @@ A private digital chronicle dedicated to **Nanchang No. 15 Middle School**—<br
 featuring **25 original campus photographs** (served in AVIF), an **eight-viewpoint Tour Through Time**, a **multi-source MapLibre campus map**,<br>
 and a **login-free anonymous guestbook** shared across ten static languages. Pure HTML, CSS, and vanilla JS—zero frameworks, zero build step.
 
-[Live Site](https://xxc2007.me/nc15/en/) · [Promo Film](#-promo-showcase) · [Highlights](#-highlights) · [Structure &amp; Stack](#️-site-structure--tech-stack) · [Run Locally](#-run-locally--design-notes) · [Migration Guide](docs/MIGRATION.en.md)
+[Live Site](https://xxc2007.me/nc15/en/) · [Promo Film](#-promo-showcase) · [Highlights](#-highlights) · [Structure &amp; Stack](#-site-structure---tech-stack) · [Run Locally](#-run-locally---design-notes) · [Migration Guide](docs/MIGRATION.en.md)
 
 </div>
 
